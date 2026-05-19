@@ -1,0 +1,8 @@
+{
+    "move_left":    ["left", "a"],
+    "move_right":   ["right", "d"],
+    "move_up":      ["up", "w"],
+    "move_down":    ["down", "s"],
+    "skip_splash": ["tab", "space"],
+    "pause":        ["escape"]
+}

@@ -1,0 +1,30 @@
+#ifndef GAMECONTEXT_HPP
+#define GAMECONTEXT_HPP
+
+#include <random>
+#include <functional>
+#include "Renderer.hpp"
+#include "TextureManager.hpp"
+#include "FontManager.hpp"
+#include "AudioManager.hpp"
+#include "InputManager.hpp"
+
+class Grid;
+
+#define DEBUGMODE true
+#define GOD_MODE true
+
+struct GameContext {
+    Renderer* renderer;
+    TextureManager* txm;
+    FontManager* fm;
+    AudioManager* am;
+    InputManager* im;
+    Grid* grid;
+    function<void(int)> changeScene;
+};
+
+inline GameContext context;
+inline mt19937 gen(random_device{}());
+
+#endif
