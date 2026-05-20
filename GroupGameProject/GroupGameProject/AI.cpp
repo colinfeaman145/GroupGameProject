@@ -74,12 +74,14 @@ void AI::Hone() {
     float threshold = cellSize * 0.35f;
 
     //smaller = closer to center before allowing vector change
+    /*
     if ((dx * dx + dy * dy) < (threshold * threshold) || adjustCourseTimer < 0) {
         Vector2 flowDir = context.grid->GetFlowVector(myCell, targetCoord);
         if (flowDir.x != 0.f || flowDir.y != 0.f)
             velocity = flowDir * movementSpeed;
         adjustCourseTimer = 5.0f;
     }
+    */
 
     return;
 }
