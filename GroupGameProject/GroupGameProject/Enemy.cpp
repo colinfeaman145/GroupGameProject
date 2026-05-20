@@ -1,7 +1,9 @@
 #include "Enemy.hpp"
 #include "Grid.hpp"
-#include "Player.hpp"
-#include "Nature.hpp"
+//#include "Player.hpp"
+//#include "Nature.hpp"
+
+/*
 
 Enemy::Enemy() {}
 
@@ -18,8 +20,8 @@ void Enemy::Initialize(Vector2 pos, AnimatedSprite* spr, float retarget, int tar
     currentRetargetTime = retarget;
     targetRadius = targetRad;
     adjustCourseTimer = 1.5f;
-    atlasTargetChance = max(atlasTarget, 0.0f);//must be atleast 0
-    playerTargetChance = max(playerTarget, 0.0f);//must be atleast 
+    //atlasTargetChance = max(atlasTarget, 0.0f);//must be atleast 0
+    //playerTargetChance = max(playerTarget, 0.0f);//must be atleast 
     Entity::Initialize(pos, Vector2(), spr);
     collideType = CollidableType::ENEMY;
     previousPosition = pos;
@@ -174,6 +176,7 @@ void Enemy::SetExplosion() {
 
 }
 
+
 Explosion* Enemy::GetExplosion() {
     return explosion;
 }
@@ -273,3 +276,4 @@ void Enemy::HandleCollision(Collidable* other, Vector2 penetration) {
         }
     }
 }
+*/

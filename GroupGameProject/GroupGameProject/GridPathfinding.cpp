@@ -1,3 +1,6 @@
+
+
+/*
 #include "Grid.hpp"
 #include <queue>
 #include <cfloat>
@@ -272,3 +275,4 @@ void Grid::DebugDumpFlowField(GridCoord target, int centerCol, int centerRow, in
     fclose(f);
     printf("Flow field dumped around (%d,%d)\n", centerCol, centerRow);
 }
+*/

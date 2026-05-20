@@ -4,7 +4,7 @@
 #include "Entity.hpp"
 #include "GridCoord.hpp"
 #include "AnimatedSprite.hpp"
-#include "Explosion.hpp"
+//#include "Explosion.hpp"
 
 enum class EnemyType {
 	WALL_FOCUS,//GREY
@@ -30,15 +30,15 @@ public:
 	EnemyType GetType();
 	void SetDamage(int d);
 	int GetDamage();
-	void SetDead() override;
-	void Damage(float amount) override;
+	void SetDead();
+	void Damage(float amount);
 	bool IsDying();
-	void SetAttackCooldown(float atckCool)
+	void SetAttackCooldown(float atckCool);
 	
 	float GetAttackCooldown();
 	void SetKilledByPlayer();
-	ResourceType GetDropType() const override;
-	int GetDropAmount() const override;
+	//ResourceType GetDropType() const;
+	int GetDropAmount() const;
 
 	void Attack(Attackable* a);
 

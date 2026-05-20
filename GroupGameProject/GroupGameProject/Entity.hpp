@@ -2,8 +2,8 @@
 #define ENTITY_HPP
 #include "Element.hpp"
 #include "Collidable.hpp"
-#include "Attackable.hpp"
 #include "PercentageBar.hpp"
+#include "Sprite.hpp"
 
 struct GridOccupancy {
 	int minCol, maxCol, minRow, maxRow;
@@ -14,8 +14,8 @@ struct GridOccupancy {
 	}
 };
 
+class Attackable;
 class Renderer;
-class Sprite;
 
 //A thing with a position
 class Entity : public virtual Element, public Collidable {

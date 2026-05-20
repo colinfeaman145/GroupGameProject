@@ -1,7 +1,7 @@
 #ifndef AI_HPP
 #define AI_HPP
 
-#include "Entity.hpp"
+#include "Attackable.hpp"
 #include "Grid.hpp"
 
 //An living thing that moves
@@ -18,7 +18,7 @@ class AI : public Attackable {
 		void SetFrozen(float duration);
 		bool IsFrozen();
 
-	private:
+	protected:
 		Collidable* target;
 
 		//traits

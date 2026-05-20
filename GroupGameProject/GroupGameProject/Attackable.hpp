@@ -18,7 +18,7 @@ class Attackable : public Entity {
 		void SetHealth(float h);
 		void Damage(float amount);
 		void Heal(float amount);
-		void SetPosition(Vector2 pos) override;
+		void SetPosition(Vector2 pos);
 
 		PercentageBar* GetHealthBar() const { return healthBar; };
 		bool IsAlive() const { return isAlive; };

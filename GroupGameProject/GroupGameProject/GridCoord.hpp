@@ -1,6 +1,8 @@
 #ifndef GRIDCOORD_HPP
 #define GRIDCOORD_HPP
 
+#include <functional>
+
 struct GridCoord {
     int col;
     int row;
@@ -12,6 +14,7 @@ struct GridCoord {
 
 struct GridCoordHash {
     size_t operator()(const GridCoord& c) const {
+
         return std::hash<int>()(c.col) ^ (std::hash<int>()(c.row) << 16);
     }
 };
