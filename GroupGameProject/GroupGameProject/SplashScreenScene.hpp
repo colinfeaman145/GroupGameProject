@@ -5,13 +5,6 @@
 
 using namespace std;
 class SplashScreens : public Scene {
-protected:
-    vector<Element*> elements;
-    vector<Sprite*> UI;
-
-    Sprite* autLogo;
-    Sprite* fmodLogo;
-    float timer;
 
 public:
     SplashScreens() {}
@@ -22,6 +15,14 @@ public:
     void Draw(Renderer* renderer) override;
 
     void ReadInputs(float deltaTime) override;
+
+protected:
+    vector<Element*> elements;
+    vector<Sprite*> UI;
+
+    Sprite* autLogo;
+    Sprite* fmodLogo;
+    float timer;
 
 };
 

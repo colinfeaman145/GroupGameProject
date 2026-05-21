@@ -42,8 +42,8 @@ bool Grid::Initialize(SDL_Texture* cellTexture) {
         cells[row] = new GridCell * [gridWidth];
         for (int col = 0; col < gridWidth; ++col) {
             Sprite* spr = new Sprite();
-            spr->Initialize(cellTexture, 740, 740, 0, 0, cellSize, cellSize);
-            spr->SetColor({ 220, 255, 220 });
+            spr->Initialize(cellTexture, 750, 750, 0, 0, cellSize, cellSize);
+            spr->SetColor({ 220, 255, 220, 255 });
 
             GridCell* cell = new GridCell(spr);
             cell->SetCoords(GridCoord(col, row));

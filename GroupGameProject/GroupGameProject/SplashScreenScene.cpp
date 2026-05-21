@@ -36,5 +36,8 @@ void SplashScreens::Draw(Renderer* renderer) {
 
 void SplashScreens::ReadInputs(float deltaTime) {
     if (context.im->IsKeyPressed("skip_splash") || context.im->IsMouseButtonPressed(1))
-        context.changeScene(0);
+        context.changeScene(1);
+
+	if (context.im->IsKeyPressed("testing_room"))
+		context.changeScene(9);
 }

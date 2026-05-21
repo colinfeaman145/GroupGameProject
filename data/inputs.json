@@ -4,5 +4,6 @@
     "move_up":      ["up", "w"],
     "move_down":    ["down", "s"],
     "skip_splash": ["tab", "space"],
-    "pause":        ["escape"]
+    "pause":        ["escape"],
+    "testing_room": ["f2"]
 }

@@ -2,6 +2,7 @@
 #include <SDL_image.h>
 #include "game.hpp"
 #include "SplashScreenScene.hpp"
+#include "TestingAreaScene.hpp"
 
 /*
 CALL PIPELINE
@@ -43,11 +44,23 @@ bool Game::Initialize() {
 
     scenes.resize(10, nullptr);//make space for atleast 10 scenes
 
+    // main game scenes
     Scene* splash;
-
     splash = new SplashScreens();
     splash->Initialize();
     scenes[0] = splash;
+
+    Scene* mainMenu;
+    mainMenu = new TestingAreaScene();
+    mainMenu->Initialize();
+    scenes[1] = mainMenu;
+
+
+    // testing area
+    Scene* game;
+    game = new TestingAreaScene();
+    game->Initialize();
+    scenes[9] = game;
 
     return true;
 }

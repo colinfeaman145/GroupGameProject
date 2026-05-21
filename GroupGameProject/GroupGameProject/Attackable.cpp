@@ -1,9 +1,32 @@
 #include "Attackable.hpp"
+#include "InlineHelper.hpp"
+
+bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
+	Entity::Initialize(pos, spr);
+
+	// default statsheet values
+	m_pStats = new StatSheet();
+	m_pStats->baseHealth = 100;
+	m_pStats->bonusHealth = 0;
+	m_pStats->healthMult = 1;
+
+	m_pStats->baseSpeed = 500;
+	m_pStats-> bonusSpeed = 0;
+	m_pStats->speedMult = 1;
+
+	m_pStats->baseDamage = 100;
+	m_pStats->bonusDamage = 0;
+	m_pStats->damageMult = 1;
+
+	m_fCurrentHealth = 100;
+	return true;
+}
 
 void Attackable::Process(float deltaTime) {
+	Entity::Process(deltaTime);
 
-	if (health < 0) isAlive = false;
-	else if (health > 0) isAlive = true;
+	if (m_fCurrentHealth < 0) isAlive = false;
+	else if (m_fCurrentHealth > 0) isAlive = true;
 
 	healthBar->SetPosition(position.x, position.y);
 
@@ -16,44 +39,51 @@ void Attackable::Draw(Renderer* renderer) {
 }
 
 int Attackable::GetHealth() {
-	return health;
+	return m_fCurrentHealth;
 }
 
 int Attackable::GetMaxHealth() {
-	return maxHealth;
+	if (m_pStats) {
+		return m_pStats->GetHealth();
+	} 
+	return 0;
 }
 
 void Attackable::SetHealth(float h) {
-	maxHealth = h;
-	health = h;
+
+	// clip health to 0 and max health
+	int maxHealth = m_pStats ? m_pStats->GetHealth() : h;
+	m_fCurrentHealth = clip(h, 0, m_pStats ? m_pStats->GetHealth() : h);
 
 	Vector2 size = sprite->GetDrawSize();
-	healthBar = new PercentageBar(health, maxHealth, size.x * 0.9, size.y * 0.1, { 255, 50, 50, 150 }, { 0, 0, 0, 150 });
+	healthBar = new PercentageBar(m_fCurrentHealth, maxHealth, size.x * 0.9, size.y * 0.1, { 255, 50, 50, 150 }, { 0, 0, 0, 150 });
 	healthBar->SetPosition(position.x, position.y);
 	healthBar->SetOffset((size.x * 0.05), (size.y * 0.8));
 }
 
-void Attackable::Damage(float amount) {
+void Attackable::ApplyDamage(float amount) {
+	float maxHealth = m_pStats ? m_pStats->GetHealth() : m_fCurrentHealth;
+
 	if (amount == -1) {//full kill
-		health = 0;
+		m_fCurrentHealth = 0;
 		return;
 	}
 
-	health -= amount;
+	m_fCurrentHealth = clip(m_fCurrentHealth - amount, 0, maxHealth);
 	SetFlash(true);
-	healthBar->SetValues(health, maxHealth);
+	healthBar->SetValues(m_fCurrentHealth, maxHealth);
 }
 
 void Attackable::Heal(float amount) {
+	float maxHealth = m_pStats ? m_pStats->GetHealth() : m_fCurrentHealth;
+
 	if (amount == -1) {//full heal
-		health = maxHealth;
+		m_fCurrentHealth = maxHealth;
 		return;
 	}
 
-	health += amount;
-	if (health >= maxHealth)
-		health = maxHealth;
-	healthBar->SetValues(health, maxHealth);
+	m_fCurrentHealth = clip(m_fCurrentHealth + amount, 0, maxHealth);
+	healthBar->SetValues(m_fCurrentHealth, maxHealth);
 }
 
 void Attackable::SetPosition(Vector2 pos) {
