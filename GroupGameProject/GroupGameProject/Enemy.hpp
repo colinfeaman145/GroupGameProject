@@ -4,6 +4,8 @@
 #include "Entity.hpp"
 #include "GridCoord.hpp"
 #include "AnimatedSprite.hpp"
+#include "Attackable.hpp"
+
 //#include "Explosion.hpp"
 
 enum class EnemyType {
@@ -16,7 +18,7 @@ enum class EnemyType {
 	RANDOM//PINK = random
 };
 
-class Enemy : public Entity {
+class Enemy : public Attackable {
 public:
 	Enemy();
 	~Enemy();

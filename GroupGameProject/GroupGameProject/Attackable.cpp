@@ -10,7 +10,7 @@ bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 	m_pStats->bonusHealth = 0;
 	m_pStats->healthMult = 1;
 
-	m_pStats->baseSpeed = 500;
+	m_pStats->baseSpeed = 1000;
 	m_pStats-> bonusSpeed = 0;
 	m_pStats->speedMult = 1;
 

@@ -26,9 +26,9 @@ void Player::Initialize(Vector2 pos, AnimatedSprite* spr) {
 	
 	// grid setup
 	Vector2 size = sprite->GetDrawSize();
-	healthBar = new PercentageBar(m_fCurrentHealth, m_pStats ? m_pStats->GetHealth() : m_fCurrentHealth, size.x * 1.1, size.y * 0.2, {255, 50, 50}, {150, 50, 50});
+	healthBar = new PercentageBar(m_fCurrentHealth, m_pStats ? m_pStats->GetHealth() : m_fCurrentHealth, size.x * 0.9, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255});
 	healthBar->SetPosition(position.x, position.y);
-	healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.7));
+	healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.2));
 
 
 }
@@ -39,6 +39,7 @@ void Player::Process(float deltaTime) {
 	HandleMovement();
 	HandleAnimation();
 }
+
 void Player::HandleAnimation() {
 	if (velocity.x != 0 || velocity.y != 0) {
 		if (sprite != moving) {
@@ -56,6 +57,11 @@ void Player::HandleAnimation() {
 }
 
 void Player::HandleMovement() {
+
+	// just very basic movement handling
+	// improve it if you want
+
+	// horizontal movement
 	if (context.im->IsKeyDown("move_left")) {
 		velocity.x = -m_pStats->GetSpeed();
 	}
@@ -66,6 +72,7 @@ void Player::HandleMovement() {
 		velocity.x = 0;
 	}
 
+	// vertical movement
 	if (context.im->IsKeyDown("move_up")) {
 		velocity.y = -m_pStats->GetSpeed();
 	}
@@ -80,6 +87,7 @@ void Player::HandleMovement() {
 void Player::Draw(Renderer* renderer) {
 	Entity::Draw(renderer);
 	renderer->cam->Follow(GetPosition());
+	healthBar->Draw(renderer);
 }
 
 void Player::HandleCollision(Collidable* other, Vector2 penetration) {
