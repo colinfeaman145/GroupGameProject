@@ -54,11 +54,6 @@ bool Game::Initialize() {
     splash->Initialize();
     scenes[0] = splash;
 
-    Scene* mainMenu;
-    mainMenu = new TestingAreaScene();
-    mainMenu->Initialize();
-    scenes[1] = mainMenu;
-
 
     // testing area
     Scene* game;
@@ -117,6 +112,7 @@ void Game::ChangeScene(int s) {
 
     if (s < 0 || s >= (int)scenes.size()) return;
     currentScene = s;
+	context.currentScene = scenes[currentScene];
 }
 
 void Game::Quit() {

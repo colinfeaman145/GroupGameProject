@@ -16,6 +16,7 @@ public:
     void Process(float deltaTime) override;
     void Draw(Renderer* renderer) override;
 	void ReadInputs(float deltaTime) override;
+	void AddElement(Element* e) override { elementsToAdd.push_back(e); }
 
 protected:
     vector<Element*> elements;

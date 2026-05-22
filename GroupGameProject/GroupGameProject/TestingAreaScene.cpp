@@ -7,7 +7,7 @@ bool TestingAreaScene::Initialize() {
     context.grid = new Grid(GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
     SDL_Texture* grassTex = context.txm->LoadTexture(context.renderer, "../../assets/sprites/DungeonTextures/dungeon_floor_with_moss.png");
     context.grid->Initialize(grassTex);
-    elements.push_back(context.grid);
+    AddElement(context.grid);
 
 
 	//animation setup
@@ -23,12 +23,21 @@ bool TestingAreaScene::Initialize() {
     // player setup
     player = new Player();
     player->Initialize(Vector2(0,0), idle);
-    elements.push_back(player);
+	AddElement(player);
 
     return true;
 }
 
 void TestingAreaScene::Process(float deltaTime) {
+
+	// fill in elements to add from last frame
+	if (!elementsToAdd.empty()) {
+		for (Element* e : elementsToAdd) {
+			elements.push_back(e);
+		}
+		elementsToAdd.clear();
+	}
+
     for (Element* e : elements) {
         e->Process(deltaTime);
     }
@@ -36,8 +45,6 @@ void TestingAreaScene::Process(float deltaTime) {
 
 void TestingAreaScene::Draw(Renderer* renderer) {
     for (Element* e : elements) {
-        //std::cout << "e = " << e << "\n";
-        //std::cout << "vtable = " << *(void**)e << "\n";
         e->Draw(renderer);
     }
 }

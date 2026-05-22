@@ -1,6 +1,7 @@
 #pragma once
 #include "StatSheet.hpp"
 #include <math.h>
+#include "Vector2.hpp"
 
 class Attackable;
 
@@ -37,6 +38,7 @@ struct HitInfo {
 struct EventContext {
 	Attackable* source;
 	Attackable* target;
+	Vector2 targetPosition;
 	HitInfo hitInfo;
 };
 

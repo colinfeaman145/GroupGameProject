@@ -17,7 +17,7 @@ public:
 	}
 
 	void Reset() {
-		baseHealth = 500;
+		baseHealth = 100;
 		bonusHealth = 0;
 		healthMult = 1;
 		baseDamage = 100;

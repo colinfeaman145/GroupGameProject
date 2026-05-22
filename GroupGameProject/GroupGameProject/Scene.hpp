@@ -14,8 +14,12 @@
 using namespace std;
 class Scene {
 protected:
-    vector<Element*> elements;
     vector<Sprite*> UI;
+    vector<Element*> elements;
+
+    // list for items to add next frame
+    // add new items to this instead of elements during runtime
+    vector<Element*> elementsToAdd;
 public:
     Scene() {}
     virtual ~Scene() {}
@@ -23,8 +27,8 @@ public:
     virtual bool Initialize() = 0; //makes and saves sprites and entities
     virtual void Process(float deltaTime) = 0;
     virtual void Draw(Renderer* renderer) = 0;
-
     virtual void ReadInputs(float deltaTime) = 0;
+	virtual void AddElement(Element* e) { elementsToAdd.push_back(e); }
 };
 
 #endif

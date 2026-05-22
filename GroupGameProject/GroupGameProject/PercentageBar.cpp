@@ -53,7 +53,7 @@ void PercentageBar::Draw(Renderer* renderer) {
 			float sectionPct = (i + 1) / sections;
 			if (sectionPct > pct) break;
 			int sectionX = x + offsetX + (int)(w * sectionPct);
-			renderer->AddFilledRect(sectionX, y + offsetY, 2, h, { 0, 0, 0, 50 }, RenderLayer::PERCENTBAR);
+			renderer->AddFilledRect(sectionX, y + offsetY, 2, h, { 0, 0, 0, 150 }, RenderLayer::PERCENTBAR);
 		}
 
     }

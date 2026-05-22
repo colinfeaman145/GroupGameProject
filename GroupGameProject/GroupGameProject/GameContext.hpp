@@ -11,6 +11,7 @@
 #include "ItemRegistry.hpp"
 
 class Grid;
+class Scene;
 
 #define DEBUGMODE false
 #define GOD_MODE true
@@ -22,6 +23,7 @@ struct GameContext {
     AudioManager* am;
     InputManager* im;
 	ItemRegistry* ir;
+	Scene* currentScene;
     Grid* grid;
     function<void(int)> changeScene;
 };

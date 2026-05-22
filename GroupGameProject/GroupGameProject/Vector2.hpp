@@ -8,7 +8,6 @@
 
 #define PI 3.14159265
 
-class Vector2;
 
 using namespace std;
 class Vector2 {
