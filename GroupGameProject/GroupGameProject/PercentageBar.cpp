@@ -44,8 +44,19 @@ void PercentageBar::Draw(Renderer* renderer) {
     int fillWidth = (int)(w * pct);
 
     // fill
-    if (fillWidth > 0)
+    if (fillWidth > 0) {
+		float sections = max / 20.0f;
+
         renderer->AddFilledRect(x + offsetX, y + offsetY, fillWidth, h, fillColor, RenderLayer::PERCENTBAR);
+
+		for (int i = 0; i < sections; ++i) {
+			float sectionPct = (i + 1) / sections;
+			if (sectionPct > pct) break;
+			int sectionX = x + offsetX + (int)(w * sectionPct);
+			renderer->AddFilledRect(sectionX, y + offsetY, 2, h, { 0, 0, 0, 50 }, RenderLayer::PERCENTBAR);
+		}
+
+    }
 
     // outline
     renderer->AddDrawRect(x + offsetX, y + offsetY, w, h, outlineColor, RenderLayer::PERCENTBAR);

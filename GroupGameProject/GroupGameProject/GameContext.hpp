@@ -8,10 +8,11 @@
 #include "FontManager.hpp"
 #include "AudioManager.hpp"
 #include "InputManager.hpp"
+#include "ItemRegistry.hpp"
 
 class Grid;
 
-#define DEBUGMODE true
+#define DEBUGMODE false
 #define GOD_MODE true
 
 struct GameContext {
@@ -20,6 +21,7 @@ struct GameContext {
     FontManager* fm;
     AudioManager* am;
     InputManager* im;
+	ItemRegistry* ir;
     Grid* grid;
     function<void(int)> changeScene;
 };

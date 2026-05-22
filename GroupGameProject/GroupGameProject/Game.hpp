@@ -23,6 +23,7 @@ public:
 private:
     void Process(float deltaTime);
     void Draw();
+	void SetupItemRegistry();
 
 private:
     vector<Scene*> scenes;

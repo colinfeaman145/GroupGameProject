@@ -1,19 +1,11 @@
 #include "Player.hpp"
 
 void Player::Initialize(Vector2 pos, AnimatedSprite* spr) {
+
 	Attackable::Initialize(pos, spr);
+	inventory->Add(1, 1);
 
-
-	//animation setup
-    SDL_Texture* playerIdle = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Soldier/soldier_idle.png");
-    idle = new AnimatedSprite();
-    idle->Initialize(playerIdle, 34, 34, 0, 0, 500, 500, 3, 5);
-    idle->SetDrawLayer(RenderLayer::PLAYER);
-    idle->SetFrameDuration(0.25);
-    idle->SetLooping(true);
-    idle->SetLeaveOnLastFrame(true);
-	sprite = idle;
-	idle->Animate();
+	idle = spr;
 
     SDL_Texture* playerRunning = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Soldier/soldier_walk.png");
     moving = new AnimatedSprite();
@@ -26,7 +18,7 @@ void Player::Initialize(Vector2 pos, AnimatedSprite* spr) {
 	
 	// grid setup
 	Vector2 size = sprite->GetDrawSize();
-	healthBar = new PercentageBar(m_fCurrentHealth, m_pStats ? m_pStats->GetHealth() : m_fCurrentHealth, size.x * 0.9, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255});
+	healthBar = new PercentageBar(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth, size.x * 1, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255});
 	healthBar->SetPosition(position.x, position.y);
 	healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.2));
 
@@ -36,8 +28,10 @@ void Player::Initialize(Vector2 pos, AnimatedSprite* spr) {
 void Player::Process(float deltaTime) {
 	Attackable::Process(deltaTime);
 
+
 	HandleMovement();
 	HandleAnimation();
+	healthBar->SetValues(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth);
 }
 
 void Player::HandleAnimation() {
@@ -63,10 +57,10 @@ void Player::HandleMovement() {
 
 	// horizontal movement
 	if (context.im->IsKeyDown("move_left")) {
-		velocity.x = -m_pStats->GetSpeed();
+		velocity.x = -m_pStats->GetFinalSpeed();
 	}
 	else if (context.im->IsKeyDown("move_right")) {
-		velocity.x = m_pStats->GetSpeed();
+		velocity.x = m_pStats->GetFinalSpeed();
 	}
 	else {
 		velocity.x = 0;
@@ -74,18 +68,24 @@ void Player::HandleMovement() {
 
 	// vertical movement
 	if (context.im->IsKeyDown("move_up")) {
-		velocity.y = -m_pStats->GetSpeed();
+		velocity.y = -m_pStats->GetFinalSpeed();
 	}
 	else if (context.im->IsKeyDown("move_down")) {
-		velocity.y = m_pStats->GetSpeed();
+		velocity.y = m_pStats->GetFinalSpeed();
 	}
 	else {
 		velocity.y = 0;
 	}
+
+	if (context.im->IsMouseButtonPressed(1)) {
+		inventory->Print();
+		inventory->Add(2, 1);
+	}
+
 }
 
 void Player::Draw(Renderer* renderer) {
-	Entity::Draw(renderer);
+ 	Entity::Draw(renderer);
 	renderer->cam->Follow(GetPosition());
 	healthBar->Draw(renderer);
 }

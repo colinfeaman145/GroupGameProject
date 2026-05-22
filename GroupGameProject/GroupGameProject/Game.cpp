@@ -3,6 +3,7 @@
 #include "game.hpp"
 #include "SplashScreenScene.hpp"
 #include "TestingAreaScene.hpp"
+#include "ItemRegistry.hpp"
 
 /*
 CALL PIPELINE
@@ -21,6 +22,7 @@ Game::Game() {
     context.fm = new FontManager();
     context.im = new InputManager();
     context.am = new AudioManager();
+	context.ir = new ItemRegistry();
     context.im->Initialize("../../data/inputs.json");
     context.changeScene = [this](int i) { this->ChangeScene(i); };
 
@@ -43,6 +45,8 @@ Game::~Game() {
 bool Game::Initialize() {
 
     scenes.resize(10, nullptr);//make space for atleast 10 scenes
+
+    SetupItemRegistry();
 
     // main game scenes
     Scene* splash;

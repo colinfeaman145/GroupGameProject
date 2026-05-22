@@ -5,35 +5,9 @@
 #include "Collidable.hpp"
 #include "Entity.hpp"
 #include "PercentageBar.hpp"
+#include "StatSheet.hpp"
+#include "Inventory.hpp"
 #include <random>
-
-
-
-struct StatSheet {
-	// character stats are calculated as (base + bonus) * mult
-	int baseHealth;
-	int bonusHealth;
-	float healthMult;
-	
-	int baseDamage;
-	int bonusDamage;
-	float damageMult;
-
-	int baseSpeed;
-	int bonusSpeed;
-	float speedMult;
-
-	float GetHealth() const {
-		return (baseHealth + bonusHealth) * healthMult;
-	}
-
-	float GetAttack() const {
-		return (baseDamage + bonusDamage) * damageMult;
-	}
-	float GetSpeed() const {
-		return (baseSpeed + bonusSpeed) * speedMult;
-	}
-};
 
 
 //A living thing
@@ -43,20 +17,33 @@ class Attackable : public Entity {
 		void Process(float deltaTime);
 		void Draw(Renderer* renderer);
 
+		void DealDamageTo(Attackable* target, HitInfo info);
+		float ApplyDamage(HitInfo info);
+		void ApplyHeal(float amount);
+
+		// getter
+		bool IsAlive() const { return isAlive; };
 		int GetHealth();
 		int GetMaxHealth();
-		void SetHealth(float h);
-		void ApplyDamage(float amount);
-		void Heal(float amount);
-		void SetPosition(Vector2 pos);
-
 		PercentageBar* GetHealthBar() const { return healthBar; };
-		bool IsAlive() const { return isAlive; };
 
+		// setter
 		void SetFlash(bool flash);
+		void SetHealth(float h);
+		void SetPosition(Vector2 pos) override;
+
+
+
+		// item effects
+		void RecalculateStats();
+		void FireEvent(EventType type, EventContext ctx);
+		void ApplyStatusEffect(StatusEffectType status, Attackable* source);
+		void TickStatusEffect(float deltaTime);
 
 	protected:
 		StatSheet* m_pStats;
+		Inventory* inventory;
+		std::vector<StatusEffect> m_activeStatusEffects;
 		float m_fCurrentHealth;
 
 		PercentageBar* healthBar;

@@ -23,22 +23,27 @@ class Entity : public virtual Element, public Collidable {
 	public:
 		Entity();
 		~Entity();
+
+		// lifecycle functions
 		bool Initialize(Vector2 pos, Sprite* spr = nullptr);
 		void Draw(Renderer* renderer) override;
 		void Process(float deltaTime) override;
 
-		virtual void SetPosition(Vector2 pos);
-		void SetVelocity(Vector2 vel);
+
 		void Rotate(float direction);
 
+		// getter
 		Vector2 GetPosition() const override; //returns center
 		Vector2 GetCorner();
 		Vector2& GetVelocity();
 		float GetRadius();
 		Vector2 GetFacingDirection();
 		Sprite* GetSprite();
-
 		GridOccupancy GetOccupancy() const;
+
+		// setter
+		virtual void SetPosition(Vector2 pos);
+		void SetVelocity(Vector2 vel);
 		void SetOccupancy(GridOccupancy occ);
 
 	protected:

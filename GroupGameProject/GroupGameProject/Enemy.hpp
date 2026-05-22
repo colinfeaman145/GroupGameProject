@@ -22,29 +22,33 @@ class Enemy : public Attackable {
 public:
 	Enemy();
 	~Enemy();
+
+	// lifecycle functions
 	void Initialize(Vector2 pos, AnimatedSprite* spr, float retarget, int targetRad, float atlasTarget, float playerTarget);
 	void Draw(Renderer* renderer) override;
 	void Process(float deltaTime) override;
+	void HandleCollision(Collidable* other, Vector2 penetration) override;
+
+
+	// getter
+	bool IsDying();
+	EnemyType GetType();
+	int GetDamage();
+	float GetAttackCooldown();
+	int GetDropAmount() const;
+
+	//setter
 	void SetSprites(AnimatedSprite* move, AnimatedSprite* attack, AnimatedSprite* die);
 	void SetSpritesDrawSize(int size);
 	void SetSpriteDirection(bool b);
 	void SetType(EnemyType t);
-	EnemyType GetType();
 	void SetDamage(int d);
-	int GetDamage();
 	void SetDead();
-	void Damage(float amount);
-	bool IsDying();
 	void SetAttackCooldown(float atckCool);
-	
-	float GetAttackCooldown();
 	void SetKilledByPlayer();
-	//ResourceType GetDropType() const;
-	int GetDropAmount() const;
 
-	void Attack(Attackable* a);
 
-	void HandleCollision(Collidable* other, Vector2 penetration) override;
+
 
 private:
 	GridCoord lastCell;

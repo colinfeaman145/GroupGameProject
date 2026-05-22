@@ -28,7 +28,6 @@ void Enemy::Process(float deltaTime) {
 
     if (!IsAlive()) return;
 
-
     //standard process
     Entity::Process(deltaTime);
 
@@ -86,12 +85,6 @@ void Enemy::SetDead() {
     sprite = death;
 }
 
-void Enemy::Damage(float amount) {
-    float damage = amount * 2.5;
-    ApplyDamage(damage);
-    uniform_int_distribution<int> slimeSoundGen(1, 3);
-    context.am->PlaySound("SlimeHit" + to_string(slimeSoundGen(gen)), "Default", { position.x, 100, position.y }, { 0, 0, 0 }, Vector2(0.85, 1.15));
-}
 
 bool Enemy::IsDying() {
     if (isAlive) return false;
@@ -112,24 +105,6 @@ float Enemy::GetAttackCooldown() {
 
 void Enemy::SetKilledByPlayer() {
     killedByPlayer = true;
-}
-
-
-void Enemy::Attack(Attackable* a) {
-    if (currentAttackCooldown > 0) return;//cant attack
-    if (attacking->IsAnimating()) return;
-
-    a->ApplyDamage(damage);//do normal damage
-
-    attacking->Restart();
-    attacking->Animate();
-    attacking->SetPosition(position.x, position.y);
-    sprite = attacking;
-    velocity = Vector2();//stop moving when attacking
-    currentAttackCooldown = attackCooldown;
-
-    uniform_int_distribution<int> slimeSoundGen(1, 3);
-    context.am->PlaySound("SlimeHit" + to_string(slimeSoundGen(gen)), "Default", { position.x, 100, position.y }, { 0, 0, 0 }, Vector2(0.85, 1.15));
 }
 
 
