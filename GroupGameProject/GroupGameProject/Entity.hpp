@@ -26,8 +26,8 @@ class Entity : public virtual Element, public Collidable {
 
 		// lifecycle functions
 		bool Initialize(Vector2 pos, Sprite* spr = nullptr);
-		void Draw(Renderer* renderer) override;
-		void Process(float deltaTime) override;
+		virtual void Draw(Renderer* renderer) override;
+		virtual void Process(float deltaTime) override;
 
 
 		void Rotate(float direction);

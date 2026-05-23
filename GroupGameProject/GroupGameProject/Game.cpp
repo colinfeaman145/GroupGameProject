@@ -93,7 +93,7 @@ void Game::Process(float deltaTime) {
         context.im->HandleEvent(event);
     }
 
-    scenes[currentScene]->Process(deltaTime);
+   scenes[currentScene]->Process(deltaTime);
 }
 
 void Game::Draw()

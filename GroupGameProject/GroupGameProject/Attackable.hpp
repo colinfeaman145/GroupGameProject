@@ -14,8 +14,8 @@
 class Attackable : public Entity {
 	public:
 		bool Initialize(Vector2 pos, Sprite* spr = nullptr);
-		void Process(float deltaTime);
-		void Draw(Renderer* renderer);
+		virtual void Process(float deltaTime) override;
+		virtual void Draw(Renderer* renderer) override;
 
 		void DealDamageTo(Attackable* target, HitInfo info);
 		float ApplyDamage(HitInfo info);

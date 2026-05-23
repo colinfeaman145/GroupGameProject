@@ -12,8 +12,16 @@ bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 	// default statsheet values
 	m_pStats = new StatSheet();
 	m_pStats->Reset();
-
 	m_fCurrentHealth = m_pStats->GetFinalHealth();
+
+	isAlive = true;
+
+	// healthbar setup
+	Vector2 size = sprite->GetDrawSize();
+	healthBar = new PercentageBar(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth, size.x * 1, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255});
+	healthBar->SetPosition(position.x, position.y);
+	healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.2));
+
 	return true;
 }
 
@@ -32,6 +40,7 @@ void Attackable::Process(float deltaTime) {
 }
 
 void Attackable::Draw(Renderer* renderer) {
+	Entity::Draw(renderer);
 	healthBar->Draw(renderer);
 }
 
@@ -101,6 +110,7 @@ void Attackable::SetFlash(bool flash) {
 
 void Attackable::DealDamageTo(Attackable* target, HitInfo info) {
 	float damageDealt = target->ApplyDamage(info);
+	info.damageDealt = damageDealt;
 
 	EventContext ctx;
 	ctx.source = this;

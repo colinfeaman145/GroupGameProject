@@ -1,7 +1,5 @@
 #include "Enemy.hpp"
 #include "Grid.hpp"
-//#include "Player.hpp"
-//#include "Nature.hpp"
 
 
 Enemy::Enemy() {}
@@ -14,14 +12,13 @@ Enemy::~Enemy() {
 
 void Enemy::Initialize(Vector2 pos, AnimatedSprite* spr, float retarget, int targetRad, float atlasTarget, float playerTarget) {
 
-
-    Entity::Initialize(pos, spr);
+    Attackable::Initialize(pos, spr);
     collideType = CollidableType::ENEMY;
-
+	spr->Animate();
 }
 
 void Enemy::Draw(Renderer* renderer) {
-    Entity::Draw(renderer);
+    Attackable::Draw(renderer);
 }
 
 void Enemy::Process(float deltaTime) {
@@ -29,8 +26,7 @@ void Enemy::Process(float deltaTime) {
     if (!IsAlive()) return;
 
     //standard process
-    Entity::Process(deltaTime);
-
+    Attackable::Process(deltaTime);
 }
 
 void Enemy::SetSprites(AnimatedSprite* move, AnimatedSprite* attack, AnimatedSprite* die) {

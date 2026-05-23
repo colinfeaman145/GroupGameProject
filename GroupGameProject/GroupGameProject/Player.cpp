@@ -1,14 +1,11 @@
 #include "Player.hpp"
 
 void Player::Initialize(Vector2 pos, AnimatedSprite* spr) {
-
 	Attackable::Initialize(pos, spr);
 
-	// add gun to player inventory for testing
-	inventory->Add(1, 1);
+	inventory->Add(1, 1); // player gets a gun
+	inventory->Add(2, 5); // player gets max health 
 
-	// set initial idle animation
-	idle = spr;
 
     SDL_Texture* playerRunning = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Soldier/soldier_walk.png");
     moving = new AnimatedSprite();
@@ -18,20 +15,31 @@ void Player::Initialize(Vector2 pos, AnimatedSprite* spr) {
     moving->SetLooping(true);
     moving->SetLeaveOnLastFrame(true);
 
-	
-	// grid setup
-	Vector2 size = sprite->GetDrawSize();
-	healthBar = new PercentageBar(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth, size.x * 1, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255});
-	healthBar->SetPosition(position.x, position.y);
-	healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.2));
+	// set initial idle animation
+	idle = spr;
 }
 
 void Player::Process(float deltaTime) {
 	Attackable::Process(deltaTime);
 
+	auto occ = GetOccupancy();
+
 	// left click actions just for testing
 	if (context.im->IsMouseButtonPressed(1)) {
-		FireEvent(EventType::OnAttack, EventContext{ .source = this, .targetPosition = context.im->GetMouseWorldPosition(context.renderer->cam) });
+		auto mousePos = context.im->GetMouseWorldPosition(context.renderer->cam);
+		auto hitInfo = HitInfo{ 
+			.damageDealt = m_pStats ? m_pStats->GetFinalDamage() : 0,
+			.isCritical = false,
+			.isDodged = false 
+		};
+		auto event = EventContext{ 
+			.source = this,
+			.targetPosition = mousePos,
+			.hitInfo = hitInfo
+		};
+
+		// executes all onAttack item effects from the inventory
+		FireEvent(EventType::OnAttack, event);
 	}
 
 	HandleMovement();
@@ -86,7 +94,7 @@ void Player::HandleMovement() {
 }
 
 void Player::Draw(Renderer* renderer) {
- 	Entity::Draw(renderer);
+ 	Attackable::Draw(renderer);
 	renderer->cam->Follow(GetPosition());
 	healthBar->Draw(renderer);
 }

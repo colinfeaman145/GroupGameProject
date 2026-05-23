@@ -13,14 +13,14 @@ public:
 	}
 	float CalculateDamageReceived(float incomingDamage) const {
 		// simple armor calculation, can be improved
-		return incomingDamage * (100 / (100 + armor));
+		return incomingDamage * (100.f / (100 + armor));
 	}
 
 	void Reset() {
 		baseHealth = 100;
 		bonusHealth = 0;
 		healthMult = 1;
-		baseDamage = 100;
+		baseDamage = 10;
 		bonusDamage = 0;
 		damageMult = 1;
 		baseSpeed = 1000;

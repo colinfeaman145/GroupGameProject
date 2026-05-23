@@ -9,6 +9,7 @@ Entity::Entity() {
     position = Vector2(0.0f, 0.0f);
     velocity = Vector2(0.0f, 0.0f);
     occupancy = { -1, -1, -1, -1 };
+	isToBeDeleted = false;
 
     canCollide = true;
     collisionBound = CollisionShape::MakeCircle(1);

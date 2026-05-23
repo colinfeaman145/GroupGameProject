@@ -1,6 +1,7 @@
 #pragma once
 #include "Scene.hpp"
 #include "Player.hpp"
+#include "Enemy.hpp"
 
 
 #define GRID_WIDTH 15000
@@ -16,13 +17,10 @@ public:
     void Process(float deltaTime) override;
     void Draw(Renderer* renderer) override;
 	void ReadInputs(float deltaTime) override;
-	void AddElement(Element* e) override { elementsToAdd.push_back(e); }
 
 protected:
-    vector<Element*> elements;
-    vector<Sprite*> UI;
-
     Sprite* levelBackground;
 	Player* player;
+	Enemy* enemy;
 };
 

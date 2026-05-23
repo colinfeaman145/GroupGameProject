@@ -22,31 +22,40 @@ bool TestingAreaScene::Initialize() {
 
     // player setup
     player = new Player();
-    player->Initialize(Vector2(0,0), idle);
+    player->Initialize(Vector2(1000,1000), idle);
+    context.grid->UpdateOccupancy((Entity*)player, &GridCell::AddOther, &GridCell::RemoveOther);
 	AddElement(player);
+
+
+	//animation setup
+    AnimatedSprite* enemyIdle;
+    SDL_Texture* enemyIdleTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Enemy/big_demon.png");
+    enemyIdle = new AnimatedSprite();
+    enemyIdle->Initialize(enemyIdleTexture, 34, 34, 0, 0, 500, 500, 3, 4);
+    enemyIdle->SetDrawLayer(RenderLayer::ENEMIES);
+    enemyIdle->SetFrameDuration(0.10);
+    enemyIdle->SetLooping(true);
+    enemyIdle->SetLeaveOnLastFrame(true);
+
+	enemy = new Enemy();
+	enemy->Initialize(Vector2(2000, 1000), enemyIdle, 0, 0, 0, 0);
+    context.grid->UpdateEnemyOccupancy(enemy);
+	AddElement(enemy);
 
     return true;
 }
 
 void TestingAreaScene::Process(float deltaTime) {
+	Scene::Process(deltaTime);
 
-	// fill in elements to add from last frame
-	if (!elementsToAdd.empty()) {
-		for (Element* e : elementsToAdd) {
-			elements.push_back(e);
-		}
-		elementsToAdd.clear();
-	}
+    //collision updates
+    context.grid->UpdateOccupancy((Entity*)player, &GridCell::AddOther, &GridCell::RemoveOther);
+    context.grid->ResolveCollisions(player); //collison updates
 
-    for (Element* e : elements) {
-        e->Process(deltaTime);
-    }
 }
 
 void TestingAreaScene::Draw(Renderer* renderer) {
-    for (Element* e : elements) {
-        e->Draw(renderer);
-    }
+	Scene::Draw(renderer);
 }
 
 void TestingAreaScene::ReadInputs(float deltaTime) {
