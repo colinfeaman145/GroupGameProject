@@ -60,6 +60,7 @@ public:
 		if (Attackable* target = dynamic_cast<Attackable*>(other)) {
 			HitInfo info{ .damageDealt = damage, .isCritical = false, .isDodged = false };
 			source->DealDamageTo(target, info);
+			target->ApplyStatusEffect(StatusEffectType::Burning, source);
 			pierceCount--;
 		}
 	}

@@ -6,6 +6,7 @@
 class Attackable;
 
 enum StatusEffectType {
+	Bleeding,
 	Burning,
 	Poisoning,
 	Freezing,

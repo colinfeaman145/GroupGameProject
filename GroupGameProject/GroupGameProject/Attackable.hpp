@@ -43,6 +43,7 @@ class Attackable : public Entity {
 	protected:
 		StatSheet* m_pStats;
 		Inventory* inventory;
+		float m_fLastStatusEffectTick;
 		std::vector<StatusEffect> m_activeStatusEffects;
 		float m_fCurrentHealth;
 

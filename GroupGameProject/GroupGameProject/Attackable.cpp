@@ -36,7 +36,8 @@ void Attackable::Process(float deltaTime) {
 	if (flashDuration > 0) flashDuration -= deltaTime;
 	else SetFlash(false);
 
-	ApplyHeal(m_pStats ? m_pStats->regernation * deltaTime : 0);
+	TickStatusEffect(deltaTime);
+	ApplyHeal(m_pStats ? m_pStats->regernation * deltaTime : 0); // apply regenration
 }
 
 void Attackable::Draw(Renderer* renderer) {
@@ -136,29 +137,39 @@ void Attackable::FireEvent(EventType type, EventContext ctx) {
 }
 
 void Attackable::ApplyStatusEffect(StatusEffectType status, Attackable* source) {
-	m_activeStatusEffects.push_back({status, 3.0f, source});
+	m_activeStatusEffects.push_back({status, 5.0f, source});
 }
 
 void Attackable::TickStatusEffect(float deltaTime) {
 	if (m_activeStatusEffects.empty()) return;
 	if (!m_pStats) return;
+
+	m_fLastStatusEffectTick += deltaTime;
+	if (m_fLastStatusEffectTick < 0.5) return;// tick every half a second
+
 	for (auto& status : m_activeStatusEffects) {
 
 		// bleeding effect
+		if (status.type == StatusEffectType::Bleeding) {
+			ApplyDamage({ m_fCurrentHealth * 0.05f, false, false }); //apply 5% current health damage per tick
+			status.duration -= m_fLastStatusEffectTick;
+		}
+
+		// bleeding effect
 		if (status.type == StatusEffectType::Burning) {
-			ApplyDamage({ 5 * deltaTime, false, false }); //apply 5 damage per second
-			status.duration -= deltaTime;
+			ApplyDamage({  1, false, false }); //apply 1 damage per tick
+			status.duration -= m_fLastStatusEffectTick;
 		}
 		// burning effect
-		if (status.type == StatusEffectType::Burning) {
-			ApplyDamage({ m_pStats->GetFinalHealth() * 0.1f * deltaTime, false, false });// 10% max health damage per second
-			status.duration -= deltaTime;
+		if (status.type == StatusEffectType::Poisoning) {
+			ApplyDamage({ m_pStats->GetFinalHealth() * 0.05f, false, false });// 5% max health damage per tick
+			status.duration -= m_fLastStatusEffectTick;
 		}
 		
 		
 	}
 	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) { return s.duration <= 0; });
-
+	m_fLastStatusEffectTick = 0;
 }
 
 void Attackable::RecalculateStats() {
