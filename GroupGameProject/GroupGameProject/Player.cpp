@@ -3,8 +3,7 @@
 void Player::Initialize(Vector2 pos, AnimatedSprite* spr) {
 	Attackable::Initialize(pos, spr);
 
-	inventory->Add(1, 1); // player gets a gun
-	inventory->Add(2, 5); // player gets max health 
+	LoadEntityDataFromJson("Player");
 
 
     SDL_Texture* playerRunning = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Soldier/soldier_walk.png");

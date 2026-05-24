@@ -41,6 +41,10 @@ public:
 			printf("Item ID: %d, Stacks: %d\n", pair.first, pair.second);
 		}
 	}
+	void Clear() {
+		m_stacks.clear();
+		onChangeCallback();
+	}
 
 private:
 	std::unordered_map<ItemID, int> m_stacks;

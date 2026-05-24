@@ -2,6 +2,9 @@
 #include "StatSheet.hpp"
 #include <math.h>
 #include "Vector2.hpp"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 class Attackable;
 
@@ -45,10 +48,23 @@ struct EventContext {
 
 class ItemEffect {
 public:
-	virtual void OnPickup(Attackable* owner, int stacks) = 0;
-	virtual void OnRemove(Attackable* owner, int stacks) = 0;
-	virtual void OnModifyStats(StatSheet& stats, int stacks) = 0;
-	virtual void OnEvent(EventType type, EventContext ctx, int stacks) = 0;
+	virtual void OnPickup(Attackable* owner, int stacks) {}
+	virtual void OnRemove(Attackable* owner, int stacks) {}
+	virtual void OnModifyStats(StatSheet& stats, int stacks) {}
+	virtual void OnEvent(EventType type, EventContext ctx, int stacks) {}
+
+	template<typename T>
+	static T* CreateItemEffectFromJson(json data) {
+		auto newItem = new T();
+		if (auto item = dynamic_cast<ItemEffect*>(newItem)) {
+			item->data = data;
+		}
+		else {
+			delete newItem;
+			throw std::runtime_error("Type T must be derived from ItemEffect");
+		}
+		return newItem;
+	}
 
 	static float GetLinearStackingItemValue(float itemBase, int perStack, int stacks) {
 		return itemBase + perStack * (stacks - 1);
@@ -56,6 +72,9 @@ public:
 	static float GeHyperbolicStackingItemValue(int perStack, int stacks) {
 		return 1 - pow(1 - perStack, stacks);
 	}
+
+protected:
+	json data;
 };
 
 

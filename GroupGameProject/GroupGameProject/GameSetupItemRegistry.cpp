@@ -2,21 +2,32 @@
 #include "Gun.hpp"
 #include "ItemRegistry.hpp"
 #include "BisonSteak.hpp"
+#include <fstream>
+#include "json.hpp"
 
+using json = nlohmann::json;
 
-void Game::SetupItemRegistry() {
+void Game::SetupItemRegistry(const std::string& filepath) {
+
+    ifstream file(filepath);
+    if (!file.is_open()) {
+        cerr << "Failed to open items file: " << filepath << endl;
+        return;
+    }
+    json data = json::parse(file);
+
 	context.ir->RegisterItem({
 		.id = 1,
-		.name = "Gun",
-		.description = "A basic gun that shoots bullets.",
+		.name = data["1"]["name"].get<std::string>(),
+		.description = data["1"]["description"].get<std::string>(),
 		.tier = ItemTier::Common,
-		.effect = new Gun()
+		.effect = ItemEffect::CreateItemEffectFromJson<Gun>(data["1"])
 	});
 	context.ir->RegisterItem({
 		.id = 2,
-		.name = "BisonSteak",
-		.description = "Get BUFFED",
+		.name = data["2"]["name"].get<std::string>(),
+		.description = data["2"]["description"].get<std::string>(),
 		.tier = ItemTier::Common,
-		.effect = new BisonSteak()
+		.effect = ItemEffect::CreateItemEffectFromJson<BisonSteak>(data["2"])
 	});
 }

@@ -23,7 +23,7 @@ public:
 private:
     void Process(float deltaTime);
     void Draw();
-	void SetupItemRegistry();
+	void SetupItemRegistry(const std::string& filepath);
 
 private:
     vector<Scene*> scenes;

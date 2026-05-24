@@ -1,0 +1,48 @@
+{
+  "Player": {
+    "stats": {
+      "baseHealth": 100,
+      "bonusHealth": 0,
+      "healthMult": 1,
+      "baseDamage": 15,
+      "bonusDamage": 0,
+      "damageMult": 1,
+      "baseSpeed": 1000,
+      "bonusSpeed": 0,
+      "speedMult": 1,
+      "armor": 20,
+      "regeneration": 1
+    },
+    "inventory": [
+      {
+        "id": 1,
+        "stacks": 1
+      },
+      {
+        "id": 2,
+        "stacks": 5
+      }
+    ]
+  },
+  "Enemy": {
+    "stats": {
+      "baseHealth": 200,
+      "bonusHealth": 0,
+      "healthMult": 1,
+      "baseDamage": 8,
+      "bonusDamage": 0,
+      "damageMult": 1,
+      "baseSpeed": 12,
+      "bonusSpeed": 0,
+      "speedMult": 1,
+      "armor": 0,
+      "regeneration": 10
+    },
+    "inventory": [
+      {
+        "id": 2,
+        "stacks": 5
+      }
+    ]
+  }
+}

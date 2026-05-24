@@ -1,5 +1,6 @@
 #include "Attackable.hpp"
 #include "InlineHelper.hpp"
+#include <fstream>
 
 bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 	Entity::Initialize(pos, spr);
@@ -11,6 +12,7 @@ bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 
 	// default statsheet values
 	m_pStats = new StatSheet();
+	m_pStats->SetDefaultValues();
 	m_pStats->Reset();
 	m_fCurrentHealth = m_pStats->GetFinalHealth();
 
@@ -37,7 +39,18 @@ void Attackable::Process(float deltaTime) {
 	else SetFlash(false);
 
 	TickStatusEffect(deltaTime);
-	ApplyHeal(m_pStats ? m_pStats->regernation * deltaTime : 0); // apply regenration
+	TickRegeneration(deltaTime);
+}
+
+void Attackable::TickRegeneration(float deltaTime) {
+	if (!m_pStats) return;
+	if (m_pStats->regernation <= 0) return;
+
+	m_fLastHealTick += deltaTime;
+	if (m_fLastHealTick < 0.5) return;// tick every half a second
+	m_fLastHealTick = 0;
+	ApplyHeal(m_pStats->regernation);
+
 }
 
 void Attackable::Draw(Renderer* renderer) {
@@ -166,7 +179,6 @@ void Attackable::TickStatusEffect(float deltaTime) {
 			status.duration -= m_fLastStatusEffectTick;
 		}
 		
-		
 	}
 	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) { return s.duration <= 0; });
 	m_fLastStatusEffectTick = 0;
@@ -182,4 +194,45 @@ void Attackable::RecalculateStats() {
 			def.effect->OnModifyStats(*m_pStats, stacks);
 		}
 	}
+}
+
+void Attackable::LoadEntityDataFromJson(const string& section) {
+	auto filepath = "../../data/entities.json";
+    ifstream file(filepath);
+    if (!file.is_open()) {
+        cerr << "Failed to open stats file: " << filepath << endl;
+        return;
+    }
+    json data = json::parse(file);
+	LoadStatsFromJson(data[section]["stats"]);
+	LoadInventoryFromJson(data[section]["inventory"]);
+	m_fCurrentHealth = m_pStats->GetFinalHealth();// set current health after item calculations
+}
+
+
+void Attackable::LoadInventoryFromJson(json items) {
+	inventory->Clear();
+	for (auto& item : items) {
+		int itemId = item["id"].get<int>();
+		int stacks = item["stacks"].get<int>();
+		inventory->Add(itemId, stacks);
+	}
+}
+
+void Attackable::LoadStatsFromJson(json stats) {
+	if (!m_pStats) return;
+	m_pStats->SetDefaultValues(
+		stats["baseHealth"].get<int>(),
+		stats["bonusHealth"].get<int>(),
+		stats["healthMult"].get<float>(),
+		stats["baseDamage"].get<int>(),
+		stats["bonusDamage"].get<int>(),
+		stats["damageMult"].get<float>(),
+		stats["baseSpeed"].get<int>(),
+		stats["bonusSpeed"].get<int>(),
+		stats["speedMult"].get<float>(),
+		stats["armor"].get<int>(),
+		stats["regeneration"].get<float>()
+	);
+	m_pStats->Reset();
 }

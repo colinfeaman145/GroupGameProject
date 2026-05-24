@@ -15,6 +15,8 @@ void Enemy::Initialize(Vector2 pos, AnimatedSprite* spr, float retarget, int tar
     Attackable::Initialize(pos, spr);
     collideType = CollidableType::ENEMY;
 	spr->Animate();
+
+	LoadEntityDataFromJson("Enemy");
 }
 
 void Enemy::Draw(Renderer* renderer) {

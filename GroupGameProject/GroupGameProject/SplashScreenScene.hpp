@@ -8,7 +8,6 @@ class SplashScreens : public Scene {
 
 public:
     SplashScreens() {}
-    ~SplashScreens() {}
 
     bool Initialize() override;
     void Process(float deltaTime) override;

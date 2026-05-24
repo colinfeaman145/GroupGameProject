@@ -16,7 +16,16 @@ class Scene {
 
 public:
     Scene() {}
-    virtual ~Scene() {}
+	~Scene() {
+		for (Element* e : elements) {
+			delete e;
+		}
+		elements.clear();
+		for (Sprite* s : UI) {
+			delete s;
+		}
+		UI.clear();
+	}
 
 	virtual bool Initialize() { return true; } //makes and saves sprites and entities
     virtual void Process(float deltaTime) {
@@ -43,10 +52,18 @@ public:
 				elementsToDelete.push_back(e);
 			}
 		}
+
+		for (Sprite* s : UI) {
+			s->Process(deltaTime);
+		}
+
     }
 	virtual void Draw(Renderer* renderer) {
 		for (Element* e : elements) {
 			e->Draw(renderer);
+		}
+		for (Sprite* s : UI) {
+			s->Draw(renderer);
 		}
 	}
 	virtual void ReadInputs(float deltaTime) {};
@@ -62,5 +79,7 @@ protected:
     vector<Element*> elementsToDelete;
 
 };
+
+
 
 #endif

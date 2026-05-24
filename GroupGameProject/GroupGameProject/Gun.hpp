@@ -10,10 +10,10 @@ class StatSheet;
 class Bullet : public Entity {
 public:
 
-	bool Initialize(EventContext ctx, int pierceCount, float ttl, AnimatedSprite* spr = nullptr) {
+	bool Initialize(EventContext ctx, int pierceCount, float ttl, float bulletSpeed, AnimatedSprite* spr = nullptr) {
 		Entity::Initialize(ctx.source->GetPosition(), spr);
 
-		velocity = (ctx.targetPosition - ctx.source->GetPosition()).Normalized() * 2000.f;//just a very high speed for now, can be changed
+		velocity = (ctx.targetPosition - ctx.source->GetPosition()).Normalized() * bulletSpeed;//just a very high speed for now, can be changed
 
 		collisionBound = CollisionShape::MakeCircle(10);//make bullet hitbox a circle with radius 10, can be changed
 		collideType = CollidableType::ENEMY;
@@ -23,6 +23,7 @@ public:
 		source = ctx.source;
 		this->pierceCount = pierceCount;
 		this->ttl = ttl;
+		this->bulletSpeed = bulletSpeed;
 		spr->Animate();
 
 		context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
@@ -57,10 +58,14 @@ public:
 		if (dynamic_cast<Player*>(other)) {
 			return;//dont hit player
 		}
+		if (std::find(collisions.begin(), collisions.end(), other) != collisions.end()) {
+			return;//already collided with this target
+		}
 		if (Attackable* target = dynamic_cast<Attackable*>(other)) {
 			HitInfo info{ .damageDealt = damage, .isCritical = false, .isDodged = false };
 			source->DealDamageTo(target, info);
 			target->ApplyStatusEffect(StatusEffectType::Burning, source);
+			collisions.push_back(other);
 			pierceCount--;
 		}
 	}
@@ -68,14 +73,18 @@ public:
 
 private:
 	float damage;
+	float ttl;
+	float bulletSpeed;
+
 	Attackable* source;
 	int pierceCount; //for piercing bullets, can be implemented later
-	float ttl;
 
+	vector<Collidable*> collisions;//to prevent multiple collisions with the same target
 };
 
 
 class Gun : public ItemEffect {
+
 	void OnPickup(Attackable* owner, int stacks) {
 	}
 
@@ -103,7 +112,11 @@ class Gun : public ItemEffect {
 
 
 		auto newBullet = new Bullet();
-		newBullet->Initialize(ctx, 1, 5, bulletSprite);
+		auto pierceCount = data["params"]["pierceCount"].get<float>();
+		auto ttl = data["params"]["ttl"].get<float>();
+		auto bulletSpeed = data["params"]["bulletSpeed"].get<float>();
+
+		newBullet->Initialize(ctx, pierceCount, ttl, bulletSpeed, bulletSprite);
 
 		context.currentScene->AddElement(newBullet);
 	}

@@ -11,7 +11,6 @@
 class TestingAreaScene : public Scene {
 public:
     TestingAreaScene() {}
-    ~TestingAreaScene() {}
 
     bool Initialize() override;
     void Process(float deltaTime) override;

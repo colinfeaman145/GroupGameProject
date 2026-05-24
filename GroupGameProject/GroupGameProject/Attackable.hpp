@@ -39,11 +39,18 @@ class Attackable : public Entity {
 		void FireEvent(EventType type, EventContext ctx);
 		void ApplyStatusEffect(StatusEffectType status, Attackable* source);
 		void TickStatusEffect(float deltaTime);
+		void TickRegeneration(float deltaTime);
+
+		void LoadEntityDataFromJson(const string& section);
+private:
+	void LoadInventoryFromJson(json inventory);
+	void LoadStatsFromJson(json stats);
 
 	protected:
 		StatSheet* m_pStats;
 		Inventory* inventory;
 		float m_fLastStatusEffectTick;
+		float m_fLastHealTick;
 		std::vector<StatusEffect> m_activeStatusEffects;
 		float m_fCurrentHealth;
 

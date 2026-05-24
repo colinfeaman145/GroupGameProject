@@ -1,0 +1,19 @@
+{
+  "1": {
+    "name": "Gun",
+    "description": "A simple gun you can shoot with",
+    "params": {
+      "pierceCount": 1,
+      "ttl": 5,
+      "bulletSpeed": 5000
+    }
+  },
+  "2": {
+    "name": "BisonSteak",
+    "description": "Get BUFFED",
+    "params": {
+      "baseHealth": 50,
+      "increasePerStack": 20
+    }
+  }
+}

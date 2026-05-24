@@ -26,6 +26,8 @@ Game::Game() {
     context.im->Initialize("../../data/inputs.json");
     context.changeScene = [this](int i) { this->ChangeScene(i); };
 
+    SetupItemRegistry("../../data/items.json");
+
     currentScene = 0;
     running = true;
 
@@ -45,8 +47,6 @@ Game::~Game() {
 bool Game::Initialize() {
 
     scenes.resize(10, nullptr);//make space for atleast 10 scenes
-
-    SetupItemRegistry();
 
     // main game scenes
     Scene* splash;
