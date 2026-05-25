@@ -1,12 +1,23 @@
 #include "Attackable.hpp"
-#include "InlineHelper.hpp"
+
 #include <fstream>
+
+#include "InlineHelper.hpp"
+#include "Sprite.hpp"
+#include "Inventory.hpp"
+#include "StatSheet.hpp"
+#include "PercentageBar.hpp"
+#include "ItemRegistry.hpp"
+#include "GameContext.hpp"
+#include "ItemSpawner.hpp"
+
 
 bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 	Entity::Initialize(pos, spr);
+	m_itemSpawner = new ItemSpawner();
 
 	// register callback to automatically recalculate stats when inventory changes
-	inventory = new Inventory(
+	m_inventory = new Inventory(
 		[this]() { this->RecalculateStats(); }
 	);
 
@@ -141,7 +152,7 @@ void Attackable::DealDamageTo(Attackable* target, HitInfo info) {
 // apply effects of items on event
 void Attackable::FireEvent(EventType type, EventContext ctx) {
 	// fire item effects
-	for (auto& [itemID, stacks] : inventory->All()) {
+	for (auto& [itemID, stacks] : m_inventory->All()) {
 		ItemDef def = context.ir->Get(itemID);
 		if (def.effect) {
 			def.effect->OnEvent(type, ctx, stacks);
@@ -184,11 +195,15 @@ void Attackable::TickStatusEffect(float deltaTime) {
 	m_fLastStatusEffectTick = 0;
 }
 
+void Attackable::AddItem(ItemID id, int count) {
+	m_inventory->Add(id, count);
+}
+
 void Attackable::RecalculateStats() {
 	if (!m_pStats) return;
 	m_pStats->Reset();
 
-	for (auto& [itemID, stacks] : inventory->All()) {
+	for (auto& [itemID, stacks] : m_inventory->All()) {
 		ItemDef def = context.ir->Get(itemID);
 		if (def.effect) {
 			def.effect->OnModifyStats(*m_pStats, stacks);
@@ -206,17 +221,22 @@ void Attackable::LoadEntityDataFromJson(const string& section) {
     json data = json::parse(file);
 	LoadStatsFromJson(data[section]["stats"]);
 	LoadInventoryFromJson(data[section]["inventory"]);
+	LoadItemSpawnerSettingsFromJson(data[section]["spawner"]);
 	m_fCurrentHealth = m_pStats->GetFinalHealth();// set current health after item calculations
 }
 
 
 void Attackable::LoadInventoryFromJson(json items) {
-	inventory->Clear();
+	m_inventory->Clear();
 	for (auto& item : items) {
 		int itemId = item["id"].get<int>();
 		int stacks = item["stacks"].get<int>();
-		inventory->Add(itemId, stacks);
+		m_inventory->Add(itemId, stacks);
 	}
+}
+
+void Attackable::LoadItemSpawnerSettingsFromJson(json config) {
+	m_itemSpawner->Initialise(config);
 }
 
 void Attackable::LoadStatsFromJson(json stats) {

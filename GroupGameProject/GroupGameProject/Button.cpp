@@ -1,4 +1,7 @@
 #include "Button.hpp"
+#include "GameContext.hpp"
+#include "Vector2.hpp"
+
 
 Button::Button(int x, int y, int w, int h, Color fillColor, Color hoverFillColor, Color borderColor,
     Color borderHoverColor, int borderThickness, function<void()> onClick, float hoverScale, float alpha) {

@@ -1,19 +1,23 @@
 #ifndef ATTACKABLE_HPP
 #define ATTACKABLE_HPP
-
-#include "Vector2.hpp"
-#include "Collidable.hpp"
-#include "Entity.hpp"
-#include "PercentageBar.hpp"
-#include "StatSheet.hpp"
-#include "Inventory.hpp"
 #include <random>
+
+#include "Entity.hpp"
+#include "ItemEffect.hpp"
+
+using ItemID = uint32_t;
+
+class ItemSpawner;
+class StatSheet;
+class Inventory;
+class PercentageBar;
+class Sprite;
 
 
 //A living thing
 class Attackable : public Entity {
 	public:
-		bool Initialize(Vector2 pos, Sprite* spr = nullptr);
+		virtual bool Initialize(Vector2 pos, Sprite* spr) override;
 		virtual void Process(float deltaTime) override;
 		virtual void Draw(Renderer* renderer) override;
 
@@ -35,6 +39,7 @@ class Attackable : public Entity {
 
 
 		// item effects
+		void AddItem(ItemID id, int count);
 		void RecalculateStats();
 		void FireEvent(EventType type, EventContext ctx);
 		void ApplyStatusEffect(StatusEffectType status, Attackable* source);
@@ -44,11 +49,13 @@ class Attackable : public Entity {
 		void LoadEntityDataFromJson(const string& section);
 private:
 	void LoadInventoryFromJson(json inventory);
+	void LoadItemSpawnerSettingsFromJson(json spawner);
 	void LoadStatsFromJson(json stats);
 
 	protected:
 		StatSheet* m_pStats;
-		Inventory* inventory;
+		Inventory* m_inventory;
+		ItemSpawner* m_itemSpawner;
 		float m_fLastStatusEffectTick;
 		float m_fLastHealTick;
 		std::vector<StatusEffect> m_activeStatusEffects;

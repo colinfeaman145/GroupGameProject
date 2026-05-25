@@ -3,11 +3,7 @@
 
 #include <string>
 #include "Sprite.hpp"
-#include "FontManager.hpp"
-#include "TextureManager.hpp"
-#include "Renderer.hpp"
 #include "Element.hpp"
-#include "GameContext.hpp"
 
 using namespace std;
 class Text : public Sprite, public Element {

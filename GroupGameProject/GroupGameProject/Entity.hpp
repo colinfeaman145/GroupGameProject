@@ -1,9 +1,9 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
+
+#include "Vector2.hpp"
 #include "Element.hpp"
 #include "Collidable.hpp"
-#include "PercentageBar.hpp"
-#include "Sprite.hpp"
 
 struct GridOccupancy {
 	int minCol, maxCol, minRow, maxRow;
@@ -14,8 +14,8 @@ struct GridOccupancy {
 	}
 };
 
-class Attackable;
 class Renderer;
+class Sprite;
 
 //A thing with a position
 class Entity : public virtual Element, public Collidable {
@@ -25,7 +25,7 @@ class Entity : public virtual Element, public Collidable {
 		~Entity();
 
 		// lifecycle functions
-		bool Initialize(Vector2 pos, Sprite* spr = nullptr);
+		virtual bool Initialize(Vector2 pos, Sprite* spr = nullptr);
 		virtual void Draw(Renderer* renderer) override;
 		virtual void Process(float deltaTime) override;
 

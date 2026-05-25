@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "ItemEffect.hpp"
+#include "Item.hpp"
 
+class ItemEffect;
 enum ItemTier {
 	Common,
 	Uncommon,
@@ -14,10 +15,9 @@ enum ItemTier {
 using ItemID = uint32_t;
 struct ItemDef {
 	ItemID id;
-	std::string name;
-	std::string description;
 	ItemTier tier;
 	ItemEffect* effect;
+	json data;
 };
 
 class ItemRegistry{
@@ -33,7 +33,7 @@ public:
 				return item;
 			}
 		}
-		return { 0, "Unknown Item", "No description available.", ItemTier::Common, nullptr }; // Return a default item if not found
+		return { 0, ItemTier::Common, nullptr }; // Return a default item if not found
 	}
 
 private:

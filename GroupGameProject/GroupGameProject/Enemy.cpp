@@ -1,5 +1,5 @@
 #include "Enemy.hpp"
-#include "Grid.hpp"
+#include "AnimatedSprite.hpp"
 
 
 Enemy::Enemy() {}

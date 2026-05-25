@@ -1,8 +1,14 @@
 #include "Grid.hpp"
-#include "Renderer.hpp"
+
 #include <algorithm>
 #include <cmath>
 #include <unordered_set>
+
+#include "Renderer.hpp"
+#include "GameContext.hpp"
+#include "Sprite.hpp"
+#include "Camera.hpp"
+#include "Collision.hpp"
 
 Grid::Grid(int worldWidth, int worldHeight, int cellSize)
     : cellSize(cellSize)

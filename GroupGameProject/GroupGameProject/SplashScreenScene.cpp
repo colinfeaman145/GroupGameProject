@@ -1,4 +1,7 @@
 #include "SplashScreenScene.hpp"
+#include "GameContext.hpp"
+#include "Sprite.hpp"
+#include "Camera.hpp"
 
 bool SplashScreens::Initialize() {
     timer = 0.0f;

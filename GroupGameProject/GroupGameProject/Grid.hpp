@@ -5,12 +5,16 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
+#include <SDL.h>
 #include "Vector2.hpp"
-#include "Entity.hpp"
 #include "GridCell.hpp"
-#include "GridCoord.hpp"
-#include "GameContext.hpp"
+#include "Entity.hpp"
 #include "FlowField.hpp"
+
+
+class GridCoord;
+class GridCoordHash;
+class GridCoordEqual;
 
 class Grid : public Element {
 public:

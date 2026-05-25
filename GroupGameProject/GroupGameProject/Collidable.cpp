@@ -1,5 +1,7 @@
 #include "Collidable.hpp"
 #include "AI.hpp"
+#include "EnumTypes.hpp"
+#include "Renderer.hpp"
 
 Collidable::~Collidable() {
     ClearTargetedBy();

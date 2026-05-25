@@ -4,7 +4,7 @@
 #include <vector>
 #include <SDL.h>
 #include <SDL_image.h>
-#include "Scene.hpp"
+#include <string>
 
 using namespace std;
 class Scene;
@@ -23,7 +23,7 @@ public:
 private:
     void Process(float deltaTime);
     void Draw();
-	void SetupItemRegistry(const std::string& filepath);
+	void SetupItemRegistry(const string& filepath);
 
 private:
     vector<Scene*> scenes;

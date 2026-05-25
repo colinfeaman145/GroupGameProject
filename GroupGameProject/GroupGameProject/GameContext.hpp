@@ -9,12 +9,12 @@
 #include "AudioManager.hpp"
 #include "InputManager.hpp"
 #include "ItemRegistry.hpp"
-
-class Grid;
-class Scene;
+#include "Grid.hpp"
+#include "Scene.hpp"
 
 #define DEBUGMODE false
 #define GOD_MODE true
+
 
 struct GameContext {
     Renderer* renderer;
