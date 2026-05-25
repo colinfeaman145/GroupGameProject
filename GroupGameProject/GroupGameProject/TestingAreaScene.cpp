@@ -1,5 +1,10 @@
 #include "TestingAreaScene.hpp"
 #include "Grid.hpp"
+#include "Player.hpp"
+#include "Enemy.hpp"
+#include "GameContext.hpp"
+#include "AnimatedSprite.hpp"
+
 
 bool TestingAreaScene::Initialize() {
 

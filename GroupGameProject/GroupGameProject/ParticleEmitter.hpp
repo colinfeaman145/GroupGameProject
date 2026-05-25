@@ -2,10 +2,12 @@
 #define PARTICLE_EMITTER_HPP
 
 #include "Element.hpp"
-#include "Sprite.hpp"
-#include "Particle.hpp"
+#include "Vector2.hpp"
+#include "Renderer.hpp"
 #include <vector>
 #include <random>
+
+class Particle;
 
 using namespace std;
 class ParticleEmitter : public Element

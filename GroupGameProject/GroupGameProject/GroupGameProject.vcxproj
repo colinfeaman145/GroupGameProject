@@ -143,6 +143,7 @@
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Attackable.cpp" />
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="BisonSteak.cpp" />
     <ClCompile Include="BisonSteak.hpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -161,7 +162,11 @@
     <ClCompile Include="GridEnemyManager.cpp" />
     <ClCompile Include="GridOtherManager.cpp" />
     <ClCompile Include="GridPathfinding.cpp" />
+    <ClCompile Include="Gun.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemSpawner.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="TestingAreaScene.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -196,9 +201,11 @@
     <ClInclude Include="Gun.hpp" />
     <ClInclude Include="InlineHelper.hpp" />
     <ClInclude Include="InputManager.hpp" />
+    <ClInclude Include="Item.hpp" />
     <ClInclude Include="Inventory.hpp" />
     <ClInclude Include="ItemEffect.hpp" />
     <ClInclude Include="ItemRegistry.hpp" />
+    <ClInclude Include="ItemSpawner.hpp" />
     <ClInclude Include="StatSheet.hpp" />
     <ClInclude Include="TestingAreaScene.hpp" />
     <ClInclude Include="Particle.hpp" />

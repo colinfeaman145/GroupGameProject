@@ -1,5 +1,7 @@
 #include "AI.hpp"
 #include "Grid.hpp"
+#include "Sprite.hpp"
+#include "GameContext.hpp"
 
 void AI::Process(float deltaTime) {
     if (!IsAlive()) return;

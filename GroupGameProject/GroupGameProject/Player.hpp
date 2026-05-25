@@ -1,7 +1,7 @@
 #pragma once
-#include "AnimatedSprite.hpp"
 #include "Attackable.hpp"
 
+class AnimatedSprite;
 class Player : public Attackable {
 
 public:
@@ -19,6 +19,6 @@ private:
 private:
 	AnimatedSprite* moving;
 	AnimatedSprite* idle;
-
+	int coinCount;
 };
 

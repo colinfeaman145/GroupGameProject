@@ -1,4 +1,5 @@
 #include "Sprite.hpp"
+#include "Renderer.hpp"
 
 Sprite::Sprite() {
     texture = nullptr;

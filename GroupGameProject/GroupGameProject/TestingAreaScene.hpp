@@ -1,7 +1,8 @@
 #pragma once
 #include "Scene.hpp"
-#include "Player.hpp"
-#include "Enemy.hpp"
+
+class Player;
+class Enemy;
 
 
 #define GRID_WIDTH 15000

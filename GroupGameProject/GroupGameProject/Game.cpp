@@ -4,6 +4,8 @@
 #include "SplashScreenScene.hpp"
 #include "TestingAreaScene.hpp"
 #include "ItemRegistry.hpp"
+#include "GameContext.hpp"
+#include "Camera.hpp"
 
 /*
 CALL PIPELINE

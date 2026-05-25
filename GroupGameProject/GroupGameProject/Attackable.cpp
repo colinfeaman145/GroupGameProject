@@ -1,5 +1,11 @@
 #include "Attackable.hpp"
 #include "InlineHelper.hpp"
+#include "Sprite.hpp"
+#include "Inventory.hpp"
+#include "StatSheet.hpp"
+#include "PercentageBar.hpp"
+#include "ItemRegistry.hpp"
+#include "GameContext.hpp"
 #include <fstream>
 
 bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
@@ -182,6 +188,10 @@ void Attackable::TickStatusEffect(float deltaTime) {
 	}
 	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) { return s.duration <= 0; });
 	m_fLastStatusEffectTick = 0;
+}
+
+void Attackable::AddItem(ItemID id, int count) {
+	inventory->Add(id, count);
 }
 
 void Attackable::RecalculateStats() {

@@ -2,6 +2,7 @@
 #include "Sprite.hpp"
 #include "Renderer.hpp"
 #include "Grid.hpp"
+#include "GameContext.hpp"
 
 Entity::Entity() {
     sprite = nullptr;

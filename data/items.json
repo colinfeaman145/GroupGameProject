@@ -1,7 +1,9 @@
 {
   "1": {
+    "id": 1,
     "name": "Gun",
     "description": "A simple gun you can shoot with",
+    "spritePath": "..\\..\\assets\\sprites\\Perks\\armor.png",
     "params": {
       "pierceCount": 1,
       "ttl": 5,
@@ -9,11 +11,22 @@
     }
   },
   "2": {
+    "id": 2,
     "name": "BisonSteak",
     "description": "Get BUFFED",
+    "spritePath": "..\\..\\assets\\sprites\\Perks\\great_medikit.png",
     "params": {
       "baseHealth": 50,
       "increasePerStack": 20
+    }
+  },
+  "3": {
+    "id": 3,
+    "name": "ItemSpawner",
+    "description": "Spawn a specific item",
+    "spritePath": "",
+    "params": {
+      "itemToSpawn": 1
     }
   }
 }

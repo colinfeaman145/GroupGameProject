@@ -1,4 +1,10 @@
 #include "Player.hpp"
+#include <SDL.h>
+#include "AnimatedSprite.hpp"
+#include "GameContext.hpp"
+#include "StatSheet.hpp"
+#include "PercentageBar.hpp"
+#include "Camera.hpp"
 
 void Player::Initialize(Vector2 pos, AnimatedSprite* spr) {
 	Attackable::Initialize(pos, spr);
@@ -13,6 +19,8 @@ void Player::Initialize(Vector2 pos, AnimatedSprite* spr) {
     moving->SetFrameDuration(0.25);
     moving->SetLooping(true);
     moving->SetLeaveOnLastFrame(true);
+
+	collideType = CollidableType::PLAYER;
 
 	// set initial idle animation
 	idle = spr;
@@ -39,6 +47,10 @@ void Player::Process(float deltaTime) {
 
 		// executes all onAttack item effects from the inventory
 		FireEvent(EventType::OnAttack, event);
+
+
+
+
 	}
 
 	HandleMovement();

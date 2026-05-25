@@ -1,7 +1,9 @@
+#include <algorithm>
 #include "GridCell.hpp"
 #include "Entity.hpp"
 #include "Renderer.hpp"
-#include <algorithm>
+#include "Sprite.hpp"
+#include "Enemy.hpp"
 
 GridCell::GridCell(Sprite* spr) {
     coords = { -1, -1 };

@@ -2,7 +2,6 @@
 #define AI_HPP
 
 #include "Attackable.hpp"
-#include "Grid.hpp"
 
 //An living thing that moves
 class AI : public Attackable {

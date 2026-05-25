@@ -1,12 +1,8 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
-#include "Entity.hpp"
-#include "GridCoord.hpp"
-#include "AnimatedSprite.hpp"
 #include "Attackable.hpp"
-
-//#include "Explosion.hpp"
+#include "GridCoord.hpp"
 
 enum class EnemyType {
 	WALL_FOCUS,//GREY
@@ -18,6 +14,8 @@ enum class EnemyType {
 	RANDOM//PINK = random
 };
 
+
+class AnimatedSprite;
 class Enemy : public Attackable {
 public:
 	Enemy();
