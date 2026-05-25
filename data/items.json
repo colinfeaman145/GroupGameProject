@@ -22,11 +22,8 @@
   },
   "3": {
     "id": 3,
-    "name": "ItemSpawner",
-    "description": "Spawn a specific item",
-    "spritePath": "",
-    "params": {
-      "itemToSpawn": 1
-    }
+    "name": "Coin",
+    "description": "Just a coin",
+    "spritePath": "..\\..\\assets\\sprites\\Perks\\Lv3_vest.png"
   }
 }

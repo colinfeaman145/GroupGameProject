@@ -17,14 +17,12 @@ public:
 		m_stacks[itemId] += amount;
 
 		onChangeCallback();
-		Print();
 	}
 	void Remove(ItemID itemId, int amount) {
 		m_stacks[itemId] -= amount;
 		if (m_stacks[itemId] <= 0) m_stacks.erase(itemId);
 
 		onChangeCallback();
-		Print();
 	}
 	int Count(ItemID itemId) const {
 		auto it = m_stacks.find(itemId);

@@ -5,6 +5,7 @@
 #include "StatSheet.hpp"
 #include "PercentageBar.hpp"
 #include "Camera.hpp"
+#include "ItemSpawner.hpp"
 
 void Player::Initialize(Vector2 pos, AnimatedSprite* spr) {
 	Attackable::Initialize(pos, spr);
@@ -31,28 +32,8 @@ void Player::Process(float deltaTime) {
 
 	auto occ = GetOccupancy();
 
-	// left click actions just for testing
-	if (context.im->IsMouseButtonPressed(1)) {
-		auto mousePos = context.im->GetMouseWorldPosition(context.renderer->cam);
-		auto hitInfo = HitInfo{ 
-			.damageDealt = m_pStats ? m_pStats->GetFinalDamage() : 0,
-			.isCritical = false,
-			.isDodged = false 
-		};
-		auto event = EventContext{ 
-			.source = this,
-			.targetPosition = mousePos,
-			.hitInfo = hitInfo
-		};
 
-		// executes all onAttack item effects from the inventory
-		FireEvent(EventType::OnAttack, event);
-
-
-
-
-	}
-
+	HandleMouseClick();
 	HandleMovement();
 	HandleAnimation();
 	healthBar->SetValues(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth);
@@ -72,6 +53,29 @@ void Player::HandleAnimation() {
 		}
 	}
 	sprite->SetFlip(velocity.x > 0);//flip if moving left
+}
+
+void Player::HandleMouseClick() {
+	// left click actions just for testing
+	if (context.im->IsMouseButtonPressed(1)) {
+		auto mousePos = context.im->GetMouseWorldPosition(context.renderer->cam);
+		auto hitInfo = HitInfo{ 
+			.damageDealt = m_pStats ? m_pStats->GetFinalDamage() : 0,
+			.isCritical = false,
+			.isDodged = false 
+		};
+		auto event = EventContext{ 
+			.source = this,
+			.targetPosition = mousePos,
+			.hitInfo = hitInfo
+		};
+
+		// executes all onAttack item effects from the inventory
+		FireEvent(EventType::OnAttack, event);
+
+		// activate spawner on mouse click
+		m_itemSpawner->SpawnItems(mousePos);
+	}
 }
 
 void Player::HandleMovement() {

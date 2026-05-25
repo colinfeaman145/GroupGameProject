@@ -8,10 +8,7 @@ using json = nlohmann::json;
 
 class Item : public Entity {
 public:
-	Item();
 	Item(json itemData);
-
-
 
 	void Draw(Renderer* renderer) override;
 	void Process(float deltaTime) override;

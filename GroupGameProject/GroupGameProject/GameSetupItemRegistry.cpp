@@ -8,7 +8,7 @@
 #include "Item.hpp"
 #include "Gun.hpp"
 #include "BisonSteak.hpp"
-#include "ItemSpawner.hpp"
+#include "Coin.hpp"
 
 using json = nlohmann::json;
 
@@ -36,7 +36,7 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 	context.ir->RegisterItem({
 		.id = 3,
 		.tier = ItemTier::Common,
-		.effect = ItemEffect::CreateItemEffectFromJson<ItemSpawner>(data["3"]),
+		.effect = ItemEffect::CreateItemEffectFromJson<Coin>(data["3"]),
 		.data = data["3"]
 	});
 }

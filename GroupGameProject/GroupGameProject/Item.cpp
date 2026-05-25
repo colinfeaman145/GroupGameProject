@@ -5,8 +5,6 @@
 #include "AnimatedSprite.hpp"
 #include <limits>
 
-Item::Item() : id(0), basePos({0,0}), m_fAmplitude(0), m_fFrequency(0) {}
-
 Item::Item(json itemData) {
 	id = itemData["id"].get<ItemID>();
 	//animation setup
@@ -15,6 +13,10 @@ Item::Item(json itemData) {
 	itemSprite = new Sprite();
 	itemSprite->Initialize(itemTexture, 16, 16, 0, 0, 100, 100);
     itemSprite->SetDrawLayer(RenderLayer::ENEMIES);
+
+	// make the starting wobbling position random (looks better if multiple items spawn simultaniously)
+	std::uniform_real_distribution<float> dis(0, m_fAmplitude);
+	m_fSinYPos = dis(gen);
 
 	Entity::Initialize(basePos, itemSprite);
 }
@@ -43,7 +45,6 @@ void Item::HandleCollision(Collidable* other, Vector2 penetration) {
 	if (isToBeDeleted) {
 		return;
 	}
-
 
 	if (auto entity = dynamic_cast<Attackable*>(other)) {
 		entity->AddItem(id, 1);

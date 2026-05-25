@@ -7,6 +7,7 @@
 
 using ItemID = uint32_t;
 
+class ItemSpawner;
 class StatSheet;
 class Inventory;
 class PercentageBar;
@@ -48,11 +49,13 @@ class Attackable : public Entity {
 		void LoadEntityDataFromJson(const string& section);
 private:
 	void LoadInventoryFromJson(json inventory);
+	void LoadItemSpawnerSettingsFromJson(json spawner);
 	void LoadStatsFromJson(json stats);
 
 	protected:
 		StatSheet* m_pStats;
-		Inventory* inventory;
+		Inventory* m_inventory;
+		ItemSpawner* m_itemSpawner;
 		float m_fLastStatusEffectTick;
 		float m_fLastHealTick;
 		std::vector<StatusEffect> m_activeStatusEffects;

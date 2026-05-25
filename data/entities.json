@@ -22,11 +22,21 @@
         "id": 2,
         "stacks": 5
       },
-{
+      {
         "id": 3,
         "stacks": 1
       }
-    ]
+    ],
+    "spawner": {
+      "spawnRadius": 200,
+      "items": [
+        {
+          "id": 3,
+          "dropRatePerItem": 0.5,
+	  "count": 4
+        }        
+      ]
+    }
   },
   "Enemy": {
     "stats": {
@@ -47,6 +57,16 @@
         "id": 2,
         "stacks": 5
       }
-    ]
+    ],
+    "spawner": {
+      "spawnRadius": 100,
+      "items": [
+        {
+          "id": 2,
+          "dropRatePerItem": 0.5,
+	  "count": 5
+        }
+      ]
+    }
   }
 }

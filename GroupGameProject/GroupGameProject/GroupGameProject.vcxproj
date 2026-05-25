@@ -147,6 +147,7 @@
     <ClCompile Include="BisonSteak.hpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="Container.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="AudioManager.hpp" />
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="Coin.hpp" />
     <ClInclude Include="Collidable.hpp" />
     <ClInclude Include="Collision.hpp" />
     <ClInclude Include="Container.hpp" />

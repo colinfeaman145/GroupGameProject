@@ -13,6 +13,7 @@ public:
 
 private:
 	void HandleAnimation();
+	void HandleMouseClick();
 	void HandleMovement();
 
 
