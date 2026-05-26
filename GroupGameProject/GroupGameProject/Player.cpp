@@ -71,6 +71,12 @@ void Player::HandleMouseClick() {
 		// executes all onAttack item effects from the inventory
 		FireEvent(EventType::OnAttack, event);
 	}
+	if (context.im->IsMouseButtonPressed(3)) {
+		auto event = EventContext{ 
+			.source = this,
+		};
+		FireEvent(EventType::OnCashout, event);
+	}
 }
 
 void Player::HandleMovement() {

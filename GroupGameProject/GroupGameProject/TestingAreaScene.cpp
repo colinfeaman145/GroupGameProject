@@ -27,6 +27,16 @@ bool TestingAreaScene::Initialize() {
     context.grid->UpdateEnemyOccupancy(enemy);
 	AddElement(enemy);
 
+	auto enemy2 = new Enemy();
+	enemy2->Initialize(Vector2(2000, 2000), 0, 0, 0, 0);
+    context.grid->UpdateEnemyOccupancy(enemy2);
+	AddElement(enemy2);
+
+	auto enemy3 = new Enemy();
+	enemy3->Initialize(Vector2(2000, 3000), 0, 0, 0, 0);
+    context.grid->UpdateEnemyOccupancy(enemy3);
+	AddElement(enemy3);
+
     return true;
 }
 

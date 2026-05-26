@@ -34,6 +34,7 @@ class Attackable : public Entity {
 		int GetHealth();
 		int GetMaxHealth();
 		PercentageBar* GetHealthBar() const { return healthBar; };
+		int GetItemCount(ItemID id);
 		bool IsDying();
 
 		// setter

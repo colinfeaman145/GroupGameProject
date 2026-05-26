@@ -22,6 +22,7 @@ struct StatusEffect {
 };
 
 enum EventType {
+	OnCashout,
 	OnHit,
 	OnGettigHit,
 	OnKill,

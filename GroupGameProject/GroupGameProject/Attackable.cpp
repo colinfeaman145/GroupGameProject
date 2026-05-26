@@ -229,6 +229,10 @@ void Attackable::SetDead() {
 }
 
 
+int Attackable::GetItemCount(ItemID id) {
+	return m_inventory->Count(id);
+}
+
 bool Attackable::IsDying() {
     if (isAlive) return false;
 
