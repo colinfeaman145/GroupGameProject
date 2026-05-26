@@ -171,6 +171,7 @@ vector<Collidable*>& Grid::GetNearbyCollidables(GridCoord coord, int radius) {
 
     for (GridCell* cell : GetNeighbourCells(coord, radius)) {
         for (Collidable* c : cell->GetCollidables()) {
+            if (!c->CanCollide()) continue;
             if (collidableSeen.insert(c).second) //returns false if alrady present
                 collidableScratch.push_back(c);
         }

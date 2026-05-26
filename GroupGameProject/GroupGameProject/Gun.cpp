@@ -42,7 +42,6 @@ public:
 			return;
 		}
 		context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
-		context.grid->ResolveCollisions(this);
 
 		if (ttl > 0) {
 			ttl -= deltaTime;

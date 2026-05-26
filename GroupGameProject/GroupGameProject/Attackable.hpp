@@ -12,12 +12,15 @@ class StatSheet;
 class Inventory;
 class PercentageBar;
 class Sprite;
+class AnimatedSprite;
 
 
 //A living thing
 class Attackable : public Entity {
 	public:
-		virtual bool Initialize(Vector2 pos, Sprite* spr) override;
+		Attackable();
+		~Attackable();
+		virtual bool Initialize(Vector2 pos, Sprite* spr ) override;
 		virtual void Process(float deltaTime) override;
 		virtual void Draw(Renderer* renderer) override;
 
@@ -30,12 +33,16 @@ class Attackable : public Entity {
 		int GetHealth();
 		int GetMaxHealth();
 		PercentageBar* GetHealthBar() const { return healthBar; };
+		bool IsDying();
 
 		// setter
 		void SetFlash(bool flash);
 		void SetHealth(float h);
 		void SetPosition(Vector2 pos) override;
-
+		void SetDead();
+		void SetSprites(AnimatedSprite* move, AnimatedSprite* attack, AnimatedSprite* die);
+		void SetSpritesDrawSize(int size);
+		void SetSpriteDirection(bool b);
 
 
 		// item effects
@@ -51,11 +58,13 @@ private:
 	void LoadInventoryFromJson(json inventory);
 	void LoadItemSpawnerSettingsFromJson(json spawner);
 	void LoadStatsFromJson(json stats);
+		void LoadAnimationsFromJson(json animations);
 
 	protected:
 		StatSheet* m_pStats;
 		Inventory* m_inventory;
 		ItemSpawner* m_itemSpawner;
+
 		float m_fLastStatusEffectTick;
 		float m_fLastHealTick;
 		std::vector<StatusEffect> m_activeStatusEffects;
@@ -65,6 +74,11 @@ private:
 		bool isAlive;
 
 		float flashDuration;
+
+		AnimatedSprite* deathAnimation;
+		AnimatedSprite* movingAnimation;
+		AnimatedSprite* attackingAnimation;
+		AnimatedSprite* idleAnimation;
 };
 
 #endif
