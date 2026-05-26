@@ -13,6 +13,7 @@ class Inventory;
 class PercentageBar;
 class Sprite;
 class AnimatedSprite;
+class EventContext;
 
 
 //A living thing
@@ -25,7 +26,7 @@ class Attackable : public Entity {
 		virtual void Draw(Renderer* renderer) override;
 
 		void DealDamageTo(Attackable* target, HitInfo info);
-		float ApplyDamage(HitInfo info);
+		void ApplyDamage(EventContext&  ctx);
 		void ApplyHeal(float amount);
 
 		// getter

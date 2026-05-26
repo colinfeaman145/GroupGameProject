@@ -9,6 +9,7 @@
 #include "Gun.hpp"
 #include "BisonSteak.hpp"
 #include "Coin.hpp"
+#include "CashoutModule.hpp"
 
 using json = nlohmann::json;
 
@@ -39,4 +40,11 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 		.effect = ItemEffect::CreateItemEffectFromJson<Coin>(data["3"]),
 		.data = data["3"]
 	});
+	context.ir->RegisterItem({
+		.id = 4,
+		.tier = ItemTier::Common,
+		.effect = ItemEffect::CreateItemEffectFromJson<CashoutModule>(data["4"]),
+		.data = data["4"]
+	});
+
 }

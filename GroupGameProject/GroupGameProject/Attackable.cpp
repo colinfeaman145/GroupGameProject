@@ -114,24 +114,26 @@ void Attackable::SetHealth(float h) {
 }
 
 // returns the actual damage received after armor calculations
-float Attackable::ApplyDamage(HitInfo info) {
+void Attackable::ApplyDamage(EventContext& ctx) {
 	float maxHealth = m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth;
-	float damageReceived = m_pStats ? m_pStats->CalculateDamageReceived(info.damageDealt) : info.damageDealt;
+	float damageReceived = m_pStats ? m_pStats->CalculateDamageReceived(ctx.hitInfo.damageDealt) : ctx.hitInfo.damageDealt;
+	ctx.hitInfo.damageDealt = damageReceived;
 
-	if (info.damageDealt == -1) {//full kill
+	if (ctx.hitInfo.damageDealt == -1) {//full kill
 		m_fCurrentHealth = 0;
-		return -1;
 	}
 
 	m_fCurrentHealth = clip(m_fCurrentHealth - damageReceived, 0, maxHealth);
 	SetFlash(true);
 	healthBar->SetValues(m_fCurrentHealth, maxHealth);
 
-	if (m_fCurrentHealth <= 0) {
+	if (m_fCurrentHealth <= 0 && IsAlive()) {
+		FireEvent(EventType::OnDeath, ctx);
+		ctx.source->FireEvent(EventType::OnKill, ctx);
 		SetDead();
 	}
 
-	return damageReceived;
+	FireEvent(EventType::OnGettigHit, ctx);
 }
 
 void Attackable::ApplyHeal(float amount) {
@@ -158,21 +160,19 @@ void Attackable::SetFlash(bool flash) {
 	if (flash) flashDuration = 0.25f;
 }
 
-// if this method is called it is assumed it has actaully it the target so OnHit effects can be executed
+// if this method is called it is assumed it has actaully hit the target so OnHit and OnGettingHit effects are procced
 void Attackable::DealDamageTo(Attackable* target, HitInfo info) {
-	float damageDealt = target->ApplyDamage(info);
-	info.damageDealt = damageDealt;
-
 	EventContext ctx;
 	ctx.source = this;
 	ctx.target = target;
 	ctx.hitInfo = info;
 
+	target->ApplyDamage(ctx);
+
 	FireEvent(EventType::OnHit, ctx);
 	if (info.isCritical) {
 		FireEvent(EventType::OnCrit, ctx);
 	}
-	target->FireEvent(EventType::OnGettigHit, ctx);
 }
 
 
@@ -246,26 +246,34 @@ void Attackable::TickStatusEffect(float deltaTime) {
 
 	m_fLastStatusEffectTick += deltaTime;
 	if (m_fLastStatusEffectTick < 0.5) return;// tick every half a second
+	EventContext ctx;
 
 	for (auto& status : m_activeStatusEffects) {
 
 		// bleeding effect
 		if (status.type == StatusEffectType::Bleeding) {
-			ApplyDamage({ m_fCurrentHealth * 0.05f, false, false }); //apply 5% current health damage per tick
+
+			ctx.source = status.source;
+			ctx.target = this;
+			ctx.hitInfo = { m_fCurrentHealth * 0.05f, false, false };
 			status.duration -= m_fLastStatusEffectTick;
 		}
 
 		// bleeding effect
 		if (status.type == StatusEffectType::Burning) {
-			ApplyDamage({  1, false, false }); //apply 1 damage per tick
+			ctx.source = status.source;
+			ctx.target = this;
+			ctx.hitInfo = { 1, false, false };
 			status.duration -= m_fLastStatusEffectTick;
 		}
 		// burning effect
 		if (status.type == StatusEffectType::Poisoning) {
-			ApplyDamage({ m_pStats->GetFinalHealth() * 0.05f, false, false });// 5% max health damage per tick
+			ctx.source = status.source;
+			ctx.target = this;
+			ctx.hitInfo = { m_pStats->GetFinalHealth() * 0.05f, false, false };
 			status.duration -= m_fLastStatusEffectTick;
 		}
-		
+		ApplyDamage(ctx);
 	}
 	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) { return s.duration <= 0; });
 	m_fLastStatusEffectTick = 0;

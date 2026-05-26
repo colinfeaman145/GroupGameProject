@@ -25,5 +25,11 @@
     "name": "Coin",
     "description": "Just a coin",
     "spritePath": "..\\..\\assets\\sprites\\Perks\\Lv3_vest.png"
+  },
+  "4": {
+    "id": 4,
+    "name": "KillCounter",
+    "description": "Counts the kills this entity made- kills = n=1",
+    "spritePath": ""
   }
 }
