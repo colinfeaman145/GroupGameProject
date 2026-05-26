@@ -83,10 +83,23 @@ void Attackable::TickRegeneration(float deltaTime) {
 	if (!m_pStats) return;
 	if (m_pStats->regernation <= 0) return;
 
+	auto healAmount = m_pStats->regernation;
+
+	HitInfo info = {
+		.healAmount = healAmount,
+		.isCritical = false
+	};
+
+	EventContext ctx = {
+		.source = this,
+		.target = this,
+		.hitInfo = info
+	};
+
 	m_fLastHealTick += deltaTime;
 	if (m_fLastHealTick < 0.5) return;// tick every half a second
 	m_fLastHealTick = 0;
-	ApplyHeal(m_pStats->regernation);
+	ApplyHeal(ctx);
 
 }
 
@@ -136,16 +149,23 @@ void Attackable::ApplyDamage(EventContext& ctx) {
 	FireEvent(EventType::OnGettigHit, ctx);
 }
 
-void Attackable::ApplyHeal(float amount) {
+void Attackable::ApplyHeal(EventContext& ctx) {
 	float maxHealth = m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth;
+	auto isHealCrit = HasHitChance(m_pStats->critChance) && m_pStats->hasHealCritEnabled;
 
-	if (amount == -1) {//full heal
+	if (ctx.hitInfo.healAmount == -1) {//full heal
 		m_fCurrentHealth = maxHealth;
 		return;
 	}
+	if (isHealCrit) {
+		ctx.hitInfo.healAmount *= m_pStats->critMultiplyer;
+		ctx.hitInfo.isCritical = true;
+	}
 
-	m_fCurrentHealth = clip(m_fCurrentHealth + amount, 0, maxHealth);
+	m_fCurrentHealth = clip(m_fCurrentHealth + ctx.hitInfo.healAmount, 0, maxHealth);
 	healthBar->SetValues(m_fCurrentHealth, maxHealth);
+
+	FireEvent(EventType::OnHeal, ctx);
 }
 
 void Attackable::SetPosition(Vector2 pos) {
@@ -394,7 +414,8 @@ void Attackable::LoadStatsFromJson(json stats) {
 		stats["armor"].get<int>(),
 		stats["regeneration"].get<float>(),
 		stats["critChance"].get<float>(),
-		stats["critMultiplyer"].get<float>()
+		stats["critMultiplyer"].get<float>(),
+		stats["hasHealCritEnabled"].get<int>()
 	);
 	m_pStats->Reset();
 }

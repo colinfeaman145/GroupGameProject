@@ -11,9 +11,10 @@
       "bonusSpeed": 0,
       "speedMult": 1,
       "armor": 20,
-      "regeneration": 1,
+      "regeneration": 20,
       "critChance": 0.5,
-      "critMultiplyer": 1.5
+      "critMultiplyer": 1.5,
+      "hasHealCritEnabled": 0
     },
     "animations": {
       "idle": {
@@ -92,7 +93,8 @@
       "armor": 0,
       "regeneration": 0,
       "critChance": 0.5,
-      "critMultiplyer": 1.5
+      "critMultiplyer": 1.5,
+      "hasHealCritEnabled": 0
     },
     "animations": {
       "idle": {

@@ -27,7 +27,7 @@ class Attackable : public Entity {
 
 		void DealDamageTo(Attackable* target, HitInfo info);
 		void ApplyDamage(EventContext&  ctx);
-		void ApplyHeal(float amount);
+		void ApplyHeal(EventContext& ctx);
 
 		// getter
 		bool IsAlive() const { return isAlive; };

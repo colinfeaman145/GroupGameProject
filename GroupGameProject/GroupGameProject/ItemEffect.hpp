@@ -27,15 +27,16 @@ enum EventType {
 	OnGettigHit,
 	OnKill,
 	OnCrit,
-	OnHeal,
-	OnStep,
 	OnAttack,
 	OnDeath,
+	OnHeal,
+	OnStep,
 	OnDodge
 };
 
 struct HitInfo {
 	float damageDealt;
+	float healAmount;
 	bool isCritical;
 	bool isDodged;
 };

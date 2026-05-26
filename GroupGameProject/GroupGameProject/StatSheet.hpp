@@ -15,7 +15,8 @@ public:
 		int armor = 0,
 		float regernation = 0,
 		float critChance = 0,
-		float critMultiplyer = 0
+		float critMultiplyer = 0,
+		bool healHasCritEnabled = false
 	) {
 		
 		defaultBaseHealth = baseHealth;
@@ -31,6 +32,7 @@ public:
 		defaultRegernation = regernation;
 		defaultCritChance = critChance;
 		defaultCritMultiplyer = critMultiplyer;
+		defaultHasHealCritEnabled = hasHealCritEnabled;
 		Reset();
 	}
 
@@ -62,6 +64,7 @@ public:
 		critChance = defaultCritChance;
 		critMultiplyer = defaultCritMultiplyer;
 		regernation = defaultRegernation;
+		hasHealCritEnabled = defaultHasHealCritEnabled;
 	}
 
 
@@ -82,6 +85,7 @@ public:
 	float critChance;
 	float critMultiplyer;
 	float regernation;
+	bool hasHealCritEnabled;
 
 
 private:
@@ -102,5 +106,6 @@ private:
 	float defaultCritChance;
 	float defaultCritMultiplyer;
 	float defaultRegernation;
+	bool defaultHasHealCritEnabled;
 };
 
