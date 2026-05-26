@@ -62,7 +62,6 @@ public:
 		if (Attackable* target = dynamic_cast<Attackable*>(other)) {
 			HitInfo info{ .damageDealt = damage, .isCritical = false, .isDodged = false };
 			source->DealDamageTo(target, info);
-			target->ApplyStatusEffect(StatusEffectType::Burning, source);
 			collisions.push_back(other);
 			pierceCount--;
 		}
@@ -93,10 +92,16 @@ void Gun::OnModifyStats(StatSheet& stats, int stacks) {
 }
 
 void Gun::OnEvent(EventType type, EventContext ctx, int stacks) {
-	if (type != EventType::OnAttack) {
+
+
+	if (type == EventType::OnCrit) {
+		ctx.target->ApplyStatusEffect(StatusEffectType::Burning, ctx.source);
 		return;
 	}
 
+	if (type != EventType::OnAttack) {
+		return;
+	}
 
 	SDL_Texture* playerRunning = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Bullets/SMG_Pistols_bullets.png");
 	auto bulletSprite = new AnimatedSprite();

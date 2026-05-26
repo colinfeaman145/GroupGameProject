@@ -162,6 +162,11 @@ void Attackable::SetFlash(bool flash) {
 
 // if this method is called it is assumed it has actaully hit the target so OnHit and OnGettingHit effects are procced
 void Attackable::DealDamageTo(Attackable* target, HitInfo info) {
+	if (HasHitChance(m_pStats->critChance)) {
+		info.damageDealt *= m_pStats->critMultiplyer;
+		info.isCritical = true;
+	}
+
 	EventContext ctx;
 	ctx.source = this;
 	ctx.target = target;
@@ -387,7 +392,9 @@ void Attackable::LoadStatsFromJson(json stats) {
 		stats["bonusSpeed"].get<int>(),
 		stats["speedMult"].get<float>(),
 		stats["armor"].get<int>(),
-		stats["regeneration"].get<float>()
+		stats["regeneration"].get<float>(),
+		stats["critChance"].get<float>(),
+		stats["critMultiplyer"].get<float>()
 	);
 	m_pStats->Reset();
 }
