@@ -51,6 +51,8 @@ void Entity::Process(float deltaTime) {
         sprite->Process(deltaTime);
 
     }
+
+    context.grid->ResolveCollisions(this); //collison updates
 }
 
 void Entity::Draw(Renderer* renderer) {

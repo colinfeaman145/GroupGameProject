@@ -15,37 +15,27 @@ bool TestingAreaScene::Initialize() {
     AddElement(context.grid);
 
 
-	//animation setup
-    AnimatedSprite* idle;
-    SDL_Texture* playerIdle = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Soldier/soldier_idle.png");
-    idle = new AnimatedSprite();
-    idle->Initialize(playerIdle, 34, 34, 0, 0, 500, 500, 3, 5);
-    idle->SetDrawLayer(RenderLayer::PLAYER);
-    idle->SetFrameDuration(0.25);
-    idle->SetLooping(true);
-    idle->SetLeaveOnLastFrame(true);
-
     // player setup
     player = new Player();
-    player->Initialize(Vector2(1000,1000), idle);
+    player->Initialize(Vector2(1000,1000));
     context.grid->UpdateOccupancy((Entity*)player, &GridCell::AddOther, &GridCell::RemoveOther);
 	AddElement(player);
 
 
-	//animation setup
-    AnimatedSprite* enemyIdle;
-    SDL_Texture* enemyIdleTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Enemy/big_demon.png");
-    enemyIdle = new AnimatedSprite();
-    enemyIdle->Initialize(enemyIdleTexture, 34, 34, 0, 0, 500, 500, 3, 4);
-    enemyIdle->SetDrawLayer(RenderLayer::ENEMIES);
-    enemyIdle->SetFrameDuration(0.10);
-    enemyIdle->SetLooping(true);
-    enemyIdle->SetLeaveOnLastFrame(true);
-
 	enemy = new Enemy();
-	enemy->Initialize(Vector2(2000, 1000), enemyIdle, 0, 0, 0, 0);
+	enemy->Initialize(Vector2(2000, 1000), 0, 0, 0, 0);
     context.grid->UpdateEnemyOccupancy(enemy);
 	AddElement(enemy);
+
+	auto enemy2 = new Enemy();
+	enemy2->Initialize(Vector2(2000, 2000), 0, 0, 0, 0);
+    context.grid->UpdateEnemyOccupancy(enemy2);
+	AddElement(enemy2);
+
+	auto enemy3 = new Enemy();
+	enemy3->Initialize(Vector2(2000, 3000), 0, 0, 0, 0);
+    context.grid->UpdateEnemyOccupancy(enemy3);
+	AddElement(enemy3);
 
     return true;
 }
@@ -53,9 +43,7 @@ bool TestingAreaScene::Initialize() {
 void TestingAreaScene::Process(float deltaTime) {
 	Scene::Process(deltaTime);
 
-    //collision updates
-    context.grid->UpdateOccupancy((Entity*)player, &GridCell::AddOther, &GridCell::RemoveOther);
-    context.grid->ResolveCollisions(player); //collison updates
+
 
 }
 

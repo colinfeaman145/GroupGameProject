@@ -9,6 +9,7 @@
 #include "Gun.hpp"
 #include "BisonSteak.hpp"
 #include "Coin.hpp"
+#include "CashoutModule.hpp"
 
 using json = nlohmann::json;
 
@@ -23,7 +24,7 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 
 	context.ir->RegisterItem({
 		.id = 1,
-		.tier = ItemTier::Common,
+		.tier = ItemTier::Module,
 		.effect = ItemEffect::CreateItemEffectFromJson<Gun>(data["1"]),
 		.data = data["1"]
 	});
@@ -35,8 +36,15 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 	});
 	context.ir->RegisterItem({
 		.id = 3,
-		.tier = ItemTier::Common,
+		.tier = ItemTier::Module,
 		.effect = ItemEffect::CreateItemEffectFromJson<Coin>(data["3"]),
 		.data = data["3"]
 	});
+	context.ir->RegisterItem({
+		.id = 4,
+		.tier = ItemTier::Module,
+		.effect = ItemEffect::CreateItemEffectFromJson<CashoutModule>(data["4"]),
+		.data = data["4"]
+	});
+
 }
