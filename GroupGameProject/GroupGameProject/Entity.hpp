@@ -5,6 +5,12 @@
 #include "Element.hpp"
 #include "Collidable.hpp"
 
+enum Visibility {
+	VISIBLE, // is visible and can collide
+	HIDDEN,// is invisible but still can collide
+	ABSENT // is invisible and cannot collide
+};
+
 struct GridOccupancy {
 	int minCol, maxCol, minRow, maxRow;
 
@@ -40,14 +46,17 @@ class Entity : public virtual Element, public Collidable {
 		Vector2 GetFacingDirection();
 		Sprite* GetSprite();
 		GridOccupancy GetOccupancy() const;
+		Visibility IsVisible();
 
 		// setter
 		virtual void SetPosition(Vector2 pos);
 		void SetVelocity(Vector2 vel);
 		void SetOccupancy(GridOccupancy occ);
+		void SetVisibliliy(Visibility visible);
 
 	protected:
 		Sprite* sprite;
+		Visibility visibility;
 		float radius;//for collision
 		Vector2 position;
 		Vector2 velocity;

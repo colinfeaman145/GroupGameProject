@@ -36,6 +36,12 @@ void AI::Process(float deltaTime) {
         stuckTime += deltaTime;
 }
 
+void AI::Draw(Renderer* renderer) {
+    Attackable::Draw(renderer);
+}
+
+
+
 void AI::SetTarget(Collidable* c) {
     if (target) {
         auto& vec = target->targetedBy;
@@ -49,10 +55,6 @@ void AI::SetTarget(Collidable* c) {
 
 void AI::Hone() {
 
-    if (currentRetargetTime < 0) {
-        SetTarget(FindNewTarget());
-        currentRetargetTime = retargetCooldown;
-    }
     if (target == nullptr) return;
 
     GridCoord myCell = context.grid->WorldToGrid(GetPosition());
@@ -75,25 +77,14 @@ void AI::Hone() {
     float dy = Collidable::GetCenter().y - cellCenter.y;
     float threshold = cellSize * 0.35f;
 
-    //smaller = closer to center before allowing vector change
     /*
+    //smaller = closer to center before allowing vector change
     if ((dx * dx + dy * dy) < (threshold * threshold) || adjustCourseTimer < 0) {
         Vector2 flowDir = context.grid->GetFlowVector(myCell, targetCoord);
         if (flowDir.x != 0.f || flowDir.y != 0.f)
             velocity = flowDir * movementSpeed;
         adjustCourseTimer = 5.0f;
-    }
-    */
+    }*/
 
     return;
-}
-
-void AI::SetFrozen(float duration) {
-    velocity = Vector2();
-    frozenTime = max(duration, frozenTime);
-    frozen = true;
-}
-
-bool AI::IsFrozen() {
-    return frozenTime > 0;
 }

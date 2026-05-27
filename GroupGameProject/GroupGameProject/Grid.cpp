@@ -171,7 +171,6 @@ vector<Collidable*>& Grid::GetNearbyCollidables(GridCoord coord, int radius) {
 
     for (GridCell* cell : GetNeighbourCells(coord, radius)) {
         for (Collidable* c : cell->GetCollidables()) {
-            if (!c->CanCollide()) continue;
             if (collidableSeen.insert(c).second) //returns false if alrady present
                 collidableScratch.push_back(c);
         }
@@ -197,6 +196,7 @@ bool Grid::ResolveCollisions(Entity* entity) {
     for (Collidable* other : candidates) {
         if (!other) continue;//if destroyed
         if (other == entity) continue;//if self
+        if (!other->CanCollide() || !entity->CanCollide()) continue;
 
         Vector2 penetration;
         if (Collision::TestShapes(

@@ -9,6 +9,7 @@ class Attackable;
 class StatSheet;
 
 enum StatusEffectType {
+	Invincible,
 	Bleeding,
 	Burning,
 	Poisoning,

@@ -155,6 +155,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EnumTypes.hpp" />
     <ClCompile Include="FlowField.hpp" />
+    <ClCompile Include="FlyingDevil.cpp" />
     <ClCompile Include="FontManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameSetupItemRegistry.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="GridPathfinding.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="InvincibleModule.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemSpawner.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -196,6 +198,7 @@
     <ClInclude Include="Element.hpp" />
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="Entity.hpp" />
+    <ClInclude Include="FlyingDevil.hpp" />
     <ClInclude Include="FontManager.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameContext.hpp" />
@@ -205,6 +208,7 @@
     <ClInclude Include="Gun.hpp" />
     <ClInclude Include="InlineHelper.hpp" />
     <ClInclude Include="InputManager.hpp" />
+    <ClInclude Include="InvincibleModule.hpp" />
     <ClInclude Include="Item.hpp" />
     <ClInclude Include="Inventory.hpp" />
     <ClInclude Include="ItemEffect.hpp" />

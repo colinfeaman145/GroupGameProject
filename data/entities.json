@@ -11,7 +11,7 @@
       "bonusSpeed": 0,
       "speedMult": 1,
       "armor": 20,
-      "regeneration": 20,
+      "regeneration": 1,
       "critChance": 0.5,
       "critMultiplyer": 1.5,
       "hasHealCritEnabled": 0
@@ -23,7 +23,7 @@
         "frameHeight": 34,
         "framesPerRow": 3,
         "framesTotal": 5,
-	"frameDuration": 0.2
+        "frameDuration": 0.2
       },
       "moving": {
         "path": "../../assets/sprites/Soldier/soldier_walk.png",
@@ -31,7 +31,7 @@
         "frameHeight": 34,
         "framesPerRow": 2,
         "framesTotal": 4,
-	"frameDuration": 0.2
+        "frameDuration": 0.2
       },
       "death": {
         "path": "",
@@ -39,7 +39,7 @@
         "frameHeight": 0,
         "framesPerRow": 0,
         "framesTotal": 0,
-	"frameDuration": 0
+        "frameDuration": 0
       },
       "attacking": {
         "path": "",
@@ -47,7 +47,7 @@
         "frameHeight": 0,
         "framesPerRow": 0,
         "framesTotal": 0,
-	"frameDuration": 0
+        "frameDuration": 0
       }
     },
     "inventory": [
@@ -66,6 +66,10 @@
       {
         "id": 4,
         "stacks": 1
+      },
+      {
+        "id": 5,
+        "stacks": 1
       }
     ],
     "spawner": {
@@ -79,12 +83,12 @@
       ]
     }
   },
-  "Enemy": {
+  "FlyingDevil": {
     "stats": {
       "baseHealth": 100,
       "bonusHealth": 0,
       "healthMult": 1,
-      "baseDamage": 8,
+      "baseDamage": 20,
       "bonusDamage": 0,
       "damageMult": 1,
       "baseSpeed": 12,
@@ -92,42 +96,42 @@
       "speedMult": 1,
       "armor": 0,
       "regeneration": 0,
-      "critChance": 0.5,
+      "critChance": 0,
       "critMultiplyer": 1.5,
       "hasHealCritEnabled": 0
     },
     "animations": {
       "idle": {
-        "path": "../../assets/sprites/Enemy/big_demon.png",
-        "frameWidth": 34,
-        "frameHeight": 34,
-        "framesPerRow": 3,
-        "framesTotal": 4,
-	"frameDuration": 0.2
+        "path": "../../assets/sprites/Enemy/Monsters_Creatures_Fantasy/Bat/fly.png",
+        "frameWidth": 87,
+        "frameHeight": 87,
+        "framesPerRow": 11,
+        "framesTotal": 11,
+        "frameDuration": 0.05
       },
       "moving": {
-        "path": "",
-        "frameWidth": 0,
-        "frameHeight": 0,
-        "framesPerRow": 0,
-        "framesTotal": 0,
-	"frameDuration": 0
+        "path": "../../assets/sprites/Enemy/Monsters_Creatures_Fantasy/Bat/fly.png",
+        "frameWidth": 87,
+        "frameHeight": 87,
+        "framesPerRow": 11,
+        "framesTotal": 11,
+        "frameDuration": 0.05
       },
       "death": {
-        "path": "",
-        "frameWidth": 0,
-        "frameHeight": 0,
-        "framesPerRow": 0,
-        "framesTotal": 0,
-	"frameDuration": 0
+        "path": "../../assets/sprites/Enemy/Monsters_Creatures_Fantasy/Bat/death.png",
+        "frameWidth": 87,
+        "frameHeight": 87,
+        "framesPerRow": 11,
+        "framesTotal": 11,
+        "frameDuration": 0.2
       },
       "attacking": {
-        "path": "",
-        "frameWidth": 0,
-        "frameHeight": 0,
-        "framesPerRow": 0,
-        "framesTotal": 0,
-	"frameDuration": 0
+        "path": "../../assets/sprites/Enemy/Monsters_Creatures_Fantasy/Bat/attack.png",
+        "frameWidth": 87,
+        "frameHeight": 87,
+        "framesPerRow": 11,
+        "framesTotal": 11,
+        "frameDuration": 0.1
       }
     },
     "inventory": [
@@ -144,7 +148,7 @@
           "dropRatePerItem": 0.5,
           "count": 5
         },
-	{
+        {
           "id": 2,
           "dropRatePerItem": 0.2,
           "count": 5

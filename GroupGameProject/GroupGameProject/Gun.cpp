@@ -16,7 +16,6 @@ public:
 
 		collisionBound = CollisionShape::MakeCircle(10);//make bullet hitbox a circle with radius 10, can be changed
 		collideType = CollidableType::ENEMY;
-		canCollide = true;
 
 		damage = ctx.hitInfo.damageDealt;
 		source = ctx.source;
@@ -95,7 +94,7 @@ void Gun::OnEvent(EventType type, EventContext ctx, int stacks) {
 
 
 	if (type == EventType::OnCrit) {
-		ctx.target->ApplyStatusEffect(StatusEffectType::Burning, ctx.source);
+		ctx.target->ApplyStatusEffect(StatusEffectType::Burning, 5.f, ctx.source);
 		return;
 	}
 

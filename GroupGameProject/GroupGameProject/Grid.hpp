@@ -45,31 +45,18 @@ public:
     bool HasCollision(Entity* entity);
 
     //pathfinding
-    Vector2 GetFlowVector(GridCoord from, GridCoord target);
-    void InvalidateFlowFieldsNear(GridCoord changedAt, int radius);
-    void InvalidateAllFlowFields();
+    //Vector2 GetFlowVector(GridCoord from, GridCoord target);
+    //void InvalidateFlowFieldsNear(GridCoord changedAt, int radius);
+    //void InvalidateAllFlowFields();
     //Structure* GetWallBetween(GridCoord from, GridCoord to) const;
-    void DebugDumpFlowField(GridCoord target, int centerCol, int centerRow, int radius);
+    //void DebugDumpFlowField(GridCoord target, int centerCol, int centerRow, int radius);
 
     //Enemies
     void AddEnemy(Enemy* enemy);
     void RemoveEnemy(Enemy* enemy);
     void UpdateEnemyOccupancy(Enemy* enemy);
 
-    //Walls
-    bool CanPlaceWall(GridCoord coord, WallDirection dir);
-    //bool PlaceWall(GridCoord coord, WallDirection dir, Structure* w);
-    bool RemoveWall(GridCoord coord, WallDirection dir);
-
-    ////Drops
-    //void AddDrop(Resource* drop);
-    //void RemoveDrop(Resource* drop);
-    //void SpawnDrops(ResourceDrop drop);
-    //void UpdateDropOccupancy(Resource* drop);
-    //void ChangeItemPickupRadius(int amount);
-    //int GetItemPickupRadius();
-
-    //Other
+       //Other
     void AddOther(Entity* e);
     void RemoveOther(Entity* e);
 

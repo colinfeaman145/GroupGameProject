@@ -52,11 +52,13 @@ void Entity::Process(float deltaTime) {
 
     }
 
-    context.grid->ResolveCollisions(this); //collison updates
+    if (visibility != Visibility::ABSENT) {
+        context.grid->ResolveCollisions(this); //collison updates
+    }
 }
 
 void Entity::Draw(Renderer* renderer) {
-    if (sprite) {
+    if (sprite && visibility == Visibility::VISIBLE) {
         sprite->Draw(renderer);
     }
    
@@ -114,6 +116,14 @@ Sprite* Entity::GetSprite() {
 
 GridOccupancy Entity::GetOccupancy() const {
     return occupancy;
+}
+
+void Entity::SetVisibliliy(Visibility visible) {
+    this->visibility = visible;
+}
+
+Visibility Entity::IsVisible() {
+    return visibility;
 }
 
 void Entity::SetOccupancy(GridOccupancy occ) {

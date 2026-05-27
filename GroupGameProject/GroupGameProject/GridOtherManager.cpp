@@ -16,7 +16,3 @@ void Grid::RemoveOther(Entity* e) {
     for (GridCell* cell : cells)
         cell->RemoveOther(e);
 }
-
-//Player* Grid::GetPlayer() {
-//    return playerCache;
-//}

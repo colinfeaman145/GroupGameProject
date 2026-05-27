@@ -1,7 +1,7 @@
 #include "TestingAreaScene.hpp"
 #include "Grid.hpp"
 #include "Player.hpp"
-#include "Enemy.hpp"
+#include "FlyingDevil.hpp"
 #include "GameContext.hpp"
 #include "AnimatedSprite.hpp"
 
@@ -22,20 +22,17 @@ bool TestingAreaScene::Initialize() {
 	AddElement(player);
 
 
-	enemy = new Enemy();
-	enemy->Initialize(Vector2(2000, 1000), 0, 0, 0, 0);
-    context.grid->UpdateEnemyOccupancy(enemy);
-	AddElement(enemy);
+	enemy = new FlyingDevil();
+	enemy->Initialize(Vector2(2000, 1000));
+    AddElement(enemy);
 
-	auto enemy2 = new Enemy();
-	enemy2->Initialize(Vector2(2000, 2000), 0, 0, 0, 0);
-    context.grid->UpdateEnemyOccupancy(enemy2);
-	AddElement(enemy2);
+	auto enemy2 = new FlyingDevil();
+	enemy2->Initialize(Vector2(2000, 2000));
+    AddElement(enemy2);
 
-	auto enemy3 = new Enemy();
-	enemy3->Initialize(Vector2(2000, 3000), 0, 0, 0, 0);
-    context.grid->UpdateEnemyOccupancy(enemy3);
-	AddElement(enemy3);
+	auto enemy3 = new FlyingDevil();
+	enemy3->Initialize(Vector2(2000, 3000));
+    AddElement(enemy3);
 
     return true;
 }

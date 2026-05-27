@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Gun",
     "description": "A simple gun you can shoot with",
-    "spritePath": "",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item1.png",
     "params": {
       "pierceCount": 1,
       "ttl": 5,
@@ -35,7 +35,7 @@
       "cashoutTiers": [
         {
           "tier": 1,
-	  "goldCount": 5,
+          "goldCount": 5,
           "threshold": 1,
           "randomItemCount": 2,
           "selectableItemCount": 1,
@@ -46,7 +46,7 @@
         },
         {
           "tier": 2,
-	  "goldCount": 10,
+          "goldCount": 10,
           "threshold": 2,
           "randomItemCount": 4,
           "selectableItemCount": 2,
@@ -57,7 +57,7 @@
         },
         {
           "tier": 3,
-	  "goldCount": 10,
+          "goldCount": 10,
           "threshold": 3,
           "randomItemCount": 6,
           "selectableItemCount": 3,
@@ -68,7 +68,7 @@
         },
         {
           "tier": 4,
-	  "goldCount": 15,
+          "goldCount": 15,
           "threshold": 40,
           "randomItemCount": 8,
           "selectableItemCount": 4,
@@ -78,6 +78,15 @@
           "legendaryChance": 0
         }
       ]
+    }
+  },
+  "5": {
+    "id": 5,
+    "name": "InvincibleModule",
+    "description": "Owner is invincible for a brief moment after getting hit",
+    "spritePath": "",
+    "params": {
+      "duration": 1
     }
   }
 }

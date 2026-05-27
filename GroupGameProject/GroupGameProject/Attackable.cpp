@@ -135,6 +135,9 @@ void Attackable::ApplyDamage(EventContext& ctx) {
 	if (ctx.hitInfo.damageDealt == -1) {//full kill
 		m_fCurrentHealth = 0;
 	}
+	if (ctx.hitInfo.damageDealt == 0) { // should not proc event if 0 damage is done
+		return;
+	}
 
 	m_fCurrentHealth = clip(m_fCurrentHealth - damageReceived, 0, maxHealth);
 	SetFlash(true);
@@ -151,7 +154,7 @@ void Attackable::ApplyDamage(EventContext& ctx) {
 
 void Attackable::ApplyHeal(EventContext& ctx) {
 	float maxHealth = m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth;
-	auto isHealCrit = HasHitChance(m_pStats->critChance) && m_pStats->hasHealCritEnabled;
+	auto isHealCrit = HasHitChance(m_pStats->critChance) && (m_pStats->hasHealCritEnabled);
 
 	if (ctx.hitInfo.healAmount == -1) {//full heal
 		m_fCurrentHealth = maxHealth;
@@ -247,6 +250,7 @@ void Attackable::SetDead() {
 
 	if (deathAnimation) {
 		deathAnimation->Restart();
+		deathAnimation->SetLooping(false);
 		deathAnimation->Animate();
 		deathAnimation->SetPosition(position.x, position.y);
 		sprite = deathAnimation;
@@ -265,8 +269,8 @@ bool Attackable::IsDying() {
     return deathPlaying;
 }
 
-void Attackable::ApplyStatusEffect(StatusEffectType status, Attackable* source) {
-	m_activeStatusEffects.push_back({status, 5.0f, source});
+void Attackable::ApplyStatusEffect(StatusEffectType status, float duration, Attackable* source) {
+	m_activeStatusEffects.push_back({status, duration, source});
 }
 
 void Attackable::TickStatusEffect(float deltaTime) {
@@ -274,9 +278,8 @@ void Attackable::TickStatusEffect(float deltaTime) {
 	if (!m_pStats) return;
 
 	m_fLastStatusEffectTick += deltaTime;
-	if (m_fLastStatusEffectTick < 0.5) return;// tick every half a second
+	auto applyTick = m_fLastStatusEffectTick >= 0.5; // tick every half a second
 	EventContext ctx;
-
 	for (auto& status : m_activeStatusEffects) {
 
 		// bleeding effect
@@ -285,27 +288,48 @@ void Attackable::TickStatusEffect(float deltaTime) {
 			ctx.source = status.source;
 			ctx.target = this;
 			ctx.hitInfo = { m_fCurrentHealth * 0.05f, false, false };
-			status.duration -= m_fLastStatusEffectTick;
+			status.duration -= deltaTime;
 		}
 
-		// bleeding effect
+		// burning effect
 		if (status.type == StatusEffectType::Burning) {
 			ctx.source = status.source;
 			ctx.target = this;
 			ctx.hitInfo = { 1, false, false };
-			status.duration -= m_fLastStatusEffectTick;
+			status.duration -= deltaTime;
 		}
-		// burning effect
+		// poison effect
 		if (status.type == StatusEffectType::Poisoning) {
 			ctx.source = status.source;
 			ctx.target = this;
 			ctx.hitInfo = { m_pStats->GetFinalHealth() * 0.05f, false, false };
-			status.duration -= m_fLastStatusEffectTick;
+			status.duration -= deltaTime;
 		}
-		ApplyDamage(ctx);
+		// burning effect
+		if (status.type == StatusEffectType::Invincible) {
+			
+			ctx.source = status.source;
+			ctx.target = this;
+			ctx.hitInfo = { 0, false, false };
+			//SetVisibliliy(Visibility::HIDDEN);
+			SetCanCollide(false);
+			status.duration -= deltaTime;
+		}
+
+		// only apply damage every tick
+		if (applyTick) ApplyDamage(ctx);
 	}
-	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) { return s.duration <= 0; });
-	m_fLastStatusEffectTick = 0;
+	if (applyTick) m_fLastStatusEffectTick = 0;
+
+	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) { 
+		if (s.duration <= 0) {
+			if (s.type == StatusEffectType::Invincible) {
+				s.source->SetCanCollide(true);
+			}
+			return true;
+		}
+		return false; 
+	});
 }
 
 void Attackable::AddItem(ItemID id, int count) {

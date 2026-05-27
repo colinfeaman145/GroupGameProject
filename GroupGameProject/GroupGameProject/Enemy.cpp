@@ -1,16 +1,14 @@
 #include "Enemy.hpp"
 #include "AnimatedSprite.hpp"
 #include "GameContext.hpp"
+#include "StatSheet.hpp"
+#include "InlineHelper.hpp"
 
 
-Enemy::Enemy() {
-	LoadEntityDataFromJson("Enemy");
-}
-
-
+Enemy::Enemy() = default;
 Enemy::~Enemy() = default;
 
-void Enemy::Initialize(Vector2 pos, float retarget, int targetRad, float atlasTarget, float playerTarget) {
+void Enemy::Initialize(Vector2 pos) {
 
     // the idle animation is always the base animation
     Attackable::Initialize(pos, idleAnimation);
@@ -30,23 +28,25 @@ void Enemy::Process(float deltaTime) {
     context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
 }
 
-void Enemy::SetType(EnemyType t) {
-    type = t;
+void Enemy::HandleCollision(Collidable* other, Vector2 penetration) {
+    if (!IsAlive()) return;
+    if (other->GetCollidableType() == CollidableType::ENEMY) return;//dont attack own kind
+
+    if (auto contact = dynamic_cast<Attackable*>(other)) {
+        if (contact->GetCollidableType() == CollidableType::PLAYER) {
+
+            auto damage = m_pStats->GetFinalDamage();
+            HitInfo info = {
+                .damageDealt = damage,
+            };
+            DealDamageTo(contact, info);
+        }
+    }
+
 }
 
-EnemyType Enemy::GetType() {
-    return type;
+void Enemy::OnStuck() {
 }
-
-void Enemy::SetDamage(int d) {
-    damage = d;
-}
-
-int Enemy::GetDamage() {
-    return damage;
-}
-
-
 
 void Enemy::SetAttackCooldown(float atckCool) {
     attackCooldown = atckCool;
@@ -56,16 +56,4 @@ void Enemy::SetAttackCooldown(float atckCool) {
 
 float Enemy::GetAttackCooldown() {
     return attackCooldown;
-}
-
-void Enemy::SetKilledByPlayer() {
-    killedByPlayer = true;
-}
-
-
-void Enemy::HandleCollision(Collidable* other, Vector2 penetration) {
-    if (!IsAlive()) return;
-    //Attackable::HandleCollision(other, penetration);
-    if (other->GetCollidableType() == CollidableType::ENEMY) return;//dont attack own kind
-
 }

@@ -51,7 +51,7 @@ class Attackable : public Entity {
 		void AddItem(ItemID id, int count);
 		void RecalculateStats();
 		void FireEvent(EventType type, EventContext ctx);
-		void ApplyStatusEffect(StatusEffectType status, Attackable* source);
+		void ApplyStatusEffect(StatusEffectType status, float duration, Attackable* source);
 		void TickStatusEffect(float deltaTime);
 		void TickRegeneration(float deltaTime);
 

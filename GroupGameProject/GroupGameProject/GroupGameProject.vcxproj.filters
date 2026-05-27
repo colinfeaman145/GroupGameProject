@@ -144,6 +144,12 @@
     <ClCompile Include="CashoutModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InvincibleModule.cpp">
+      <Filter>Source Files\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="FlyingDevil.cpp">
+      <Filter>Source Files\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.hpp">
@@ -267,6 +273,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CashoutModule.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InvincibleModule.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FlyingDevil.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
