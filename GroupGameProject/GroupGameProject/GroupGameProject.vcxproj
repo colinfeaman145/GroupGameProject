@@ -162,6 +162,7 @@
     <ClCompile Include="GridOtherManager.cpp" />
     <ClCompile Include="GridPathfinding.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="PlayerHUD.cpp" />
     <ClCompile Include="TestingAreaScene.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="Inventory.hpp" />
     <ClInclude Include="ItemEffect.hpp" />
     <ClInclude Include="ItemRegistry.hpp" />
+    <ClInclude Include="PlayerHUD.hpp" />
     <ClInclude Include="StatSheet.hpp" />
     <ClInclude Include="TestingAreaScene.hpp" />
     <ClInclude Include="Particle.hpp" />

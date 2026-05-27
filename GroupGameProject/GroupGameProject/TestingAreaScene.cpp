@@ -27,6 +27,12 @@ bool TestingAreaScene::Initialize() {
 	AddElement(player);
 
 
+    //player hud?
+    playerHUD = new PlayerHUD(player);
+    playerHUD->Initialize();
+    AddElement(playerHUD);
+
+
 	//animation setup
     AnimatedSprite* enemyIdle;
     SDL_Texture* enemyIdleTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Enemy/big_demon.png");

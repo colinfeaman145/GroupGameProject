@@ -96,3 +96,9 @@ void Sprite::SetIsFlashing(bool flash) {
 void Sprite::SetFlip(bool flipH) {
     flip = flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE;
 }
+
+//this is for the vertical flip, adds on an existing horizontal flip if there is one
+void Sprite::SetVerticalFlip(bool flipV) 
+{ 
+    flip = (SDL_RendererFlip)(flipV | SDL_FLIP_VERTICAL);
+}

@@ -1,0 +1,174 @@
+#include "PlayerHUD.hpp"
+#include <SDL.h>
+#include <string>
+
+PlayerHUD::PlayerHUD(Player* player)
+    : player(player)
+    , BulletTexture(0)
+    , WeaponTexture(0)
+    , BulletSpriteInitialized(false)
+    , WeaponSpriteInitialized(false)
+    , bulletType()
+    , weaponType()
+    , bulletSprite(0)
+    , weaponSprite(0)
+{
+}
+
+PlayerHUD::~PlayerHUD() 
+{
+    //delete BulletTexture;
+    //delete WeaponTexture;
+}
+
+bool PlayerHUD::Initialize() 
+{
+    bulletType = MachineGunBullet;
+    weaponType = Ar_1;
+
+    SetBulletTexture();
+    int bulletTextureW = 0;
+    int bulletTextureH = 0;
+    if (BulletTexture)
+    {
+        SDL_QueryTexture(BulletTexture, nullptr, nullptr, &bulletTextureW, &bulletTextureH);
+    }
+
+    bulletSprite = new Sprite();
+    bulletSprite->Initialize(BulletTexture, bulletTextureW, bulletTextureH, 0, 0, 50, 50, RenderLayer::PLAYER);
+    bulletSprite->SetDrawLayer(RenderLayer::PLAYER);
+    BulletSpriteInitialized = true;
+
+    SetWeaponTexture();
+    int weaponTextureW = 0;
+    int weaponTextureH = 0;
+    if (WeaponTexture)
+    {
+        SDL_QueryTexture(WeaponTexture, nullptr, nullptr, &weaponTextureW, &weaponTextureH);
+    }
+
+    weaponSprite = new Sprite();
+    weaponSprite->Initialize(WeaponTexture, weaponTextureW, weaponTextureH, 0, 0, 100, 100, RenderLayer::PLAYER);
+    weaponSprite->SetDrawLayer(RenderLayer::PLAYER);
+    WeaponSpriteInitialized = true;
+
+    return true;
+}
+
+void PlayerHUD::Process(float deltaTime) 
+{
+    SetBulletTexture();
+    SetWeaponTexture();
+
+    if (weaponSprite) 
+    {
+        Vector2 playerCenter = player->GetPosition();
+        Vector2 weaponSize = weaponSprite->GetDrawSize();
+
+        weaponSprite->SetPosition((int)(playerCenter.x - weaponSize.x * 0.5f),(int)(playerCenter.y - weaponSize.y * (-1.15f) ));
+
+        //follows mouse position, rotates weapon to point to it
+        Vector2 mouseWorldPosition = context.im->GetMouseWorldPosition(context.renderer->cam);
+        float angle = atan2(mouseWorldPosition.y - playerCenter.y, mouseWorldPosition.x - playerCenter.x) * 180.0f / PI;
+        weaponSprite->SetRotation(angle);
+
+        weaponSprite->SetFlip(true);
+        if (angle > 90 || angle < -90)//flips weapon if the mouse is on the left side of the player to prevent it from being upside down
+        {
+            weaponSprite->SetVerticalFlip(true);
+        }
+    }
+
+
+}
+
+void PlayerHUD::Draw(Renderer* renderer) 
+{
+    if (BulletSpriteInitialized && bulletSprite) 
+    {
+        bulletSprite->Draw(renderer);
+    }
+    if (WeaponSpriteInitialized && weaponSprite) 
+    {
+        weaponSprite->Draw(renderer);
+    }
+}
+
+void PlayerHUD::SetBulletTexture()
+{
+    switch (bulletType)
+    {
+    case BulletType::MachineGunBullet:
+        //delete BulletTexture;
+        //BulletTexture = nullptr;
+        BulletTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Bullets/AR_SR_DMR_Machinegun_bullet.png");
+        break;
+    case BulletType::ShotgunBullet:
+        //delete BulletTexture;
+        //BulletTexture = nullptr;
+        BulletTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Bullets/Shotguns_bullets.png");
+        break;
+    case BulletType::PistolBullet:
+        //delete BulletTexture;
+        //BulletTexture = nullptr;
+        BulletTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Bullets/SMG_Pistols_bullets.png");
+        break;
+    }
+}
+
+void PlayerHUD::SetWeaponTexture() 
+{
+    switch (weaponType)
+    {
+    case WeaponType::Ar_1:
+        //delete WeaponTexture;
+        //WeaponTexture = nullptr;
+        WeaponTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Weapons/Ar_1.png");
+        break;
+    case WeaponType::Ar_2:
+        //delete WeaponTexture;
+        //WeaponTexture = nullptr;
+        WeaponTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Weapons/Ar_2.png");
+        break;
+    case WeaponType::Ar_3:
+        //delete WeaponTexture;
+        //WeaponTexture = nullptr;
+        WeaponTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Weapons/Ar_3.png");
+        break;
+    case WeaponType::Ar_4:
+        //delete WeaponTexture;
+        //WeaponTexture = nullptr;
+        WeaponTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Weapons/Ar_4.png");
+        break;
+    case WeaponType::Ar_5:
+        //delete WeaponTexture;
+        //WeaponTexture = nullptr;
+        WeaponTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Weapons/Ar_5.png");
+        break;
+    case WeaponType::Ar_6:
+        //delete WeaponTexture;
+        //WeaponTexture = nullptr;
+        WeaponTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Weapons/Ar_6.png");
+        break;
+    case WeaponType::Ar_7:
+        //delete WeaponTexture;
+        //WeaponTexture = nullptr;
+        WeaponTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Weapons/Ar_7.png");
+        break;
+    case WeaponType::Ar_8:
+        //delete WeaponTexture;
+        //WeaponTexture = nullptr;
+        WeaponTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Weapons/Ar_8.png");
+        break;
+    case WeaponType::Ar_9:
+        //delete WeaponTexture;
+        //WeaponTexture = nullptr;
+        WeaponTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Weapons/Ar_9.png");
+        break;
+    case WeaponType::Ar_10:
+        //delete WeaponTexture;
+        //WeaponTexture = nullptr;
+        WeaponTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Weapons/Ar_10.png");
+        break;
+    }
+}

@@ -114,10 +114,13 @@
     <ClCompile Include="TestingAreaScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Gun.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
     <ClCompile Include="GameSetupItemRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BisonSteak.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerHUD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -231,6 +234,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StatSheet.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerHUD.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
