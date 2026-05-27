@@ -14,7 +14,7 @@
     "id": 2,
     "name": "BisonSteak",
     "description": "Get BUFFED",
-    "spritePath": "..\\..\\assets\\sprites\\Perks\\great_medikit.png",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item439.png",
     "params": {
       "baseHealth": 50,
       "increasePerStack": 20
@@ -24,7 +24,7 @@
     "id": 3,
     "name": "Coin",
     "description": "Just a coin",
-    "spritePath": "..\\..\\assets\\sprites\\Perks\\Lv3_vest.png"
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item1159.png"
   },
   "4": {
     "id": 4,

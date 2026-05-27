@@ -16,6 +16,9 @@
     <Filter Include="Source Files\Items">
       <UniqueIdentifier>{5df2446b-904d-40cd-878d-768d51ba3f9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Enemies">
+      <UniqueIdentifier>{eb4e8938-a1c2-443b-a756-6bc9d8bfc746}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -138,6 +141,9 @@
     <ClCompile Include="Coin.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="CashoutModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.hpp">
@@ -258,6 +264,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Coin.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CashoutModule.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
