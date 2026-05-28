@@ -132,7 +132,7 @@ void Gun::OnEvent(EventType type, EventContext ctx, int stacks) {
 }
 ```
 ## Add new status effects
-Status effets are ket track of with a enum. Add your effect to it.
+Status effets are kept track of with a enum. Add your effect to it.
 Then in the Attackable.cpp class, add a new Tick effect for your status effect. (Important to note is that every tick happens every half a second)
 For damaging status effects just edit the Effect context.
 For other stuff just edit it because *this* is the enitity, the status effect is appied to.
