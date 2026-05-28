@@ -23,6 +23,7 @@ protected:
 
     Sprite* autLogo;
     Sprite* fmodLogo;
+    Sprite* TeamLogo;
     float timer;
 
     bool isdone;
