@@ -4,6 +4,7 @@
 #include <vector>
 #include "Renderer.hpp"
 #include "Sprite.hpp"
+#include "Vector2.hpp"
 
 class Button;
 class Text;
@@ -21,21 +22,22 @@ public:
     void AddButton(Button* button, int localX, int localY);
     void AddText(Text* text, int localX, int localY);
 
-    void Process(float deltaTime) override;
-    void Draw(Renderer* renderer) override;
+    virtual void Process(float deltaTime) override;
+    virtual void Draw(Renderer* renderer) override;
 
     void SetPosition(int x, int y) override;
     void SetVisible(bool v);
     bool IsVisible() const;
     void Toggle();
 
-
-private:
+protected:
     Color fillColor;
     Color borderColor;
     int alpha;
     int borderThickness;
     bool visible;
+
+    Vector2 size;
 
     vector<SpriteItem> sprites;
     vector<ButtonItem> buttons;

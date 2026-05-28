@@ -167,6 +167,7 @@
     <ClCompile Include="GridPathfinding.cpp" />
     <ClCompile Include="Gun.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="InventoryOverlay.cpp" />
     <ClCompile Include="InvincibleModule.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemShopSocket.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="Gun.hpp" />
     <ClInclude Include="InlineHelper.hpp" />
     <ClInclude Include="InputManager.hpp" />
+    <ClInclude Include="InventoryOverlay.hpp" />
     <ClInclude Include="InvincibleModule.hpp" />
     <ClInclude Include="Item.hpp" />
     <ClInclude Include="Inventory.hpp" />

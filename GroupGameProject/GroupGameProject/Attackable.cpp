@@ -18,9 +18,8 @@ Attackable::Attackable() {
 	m_itemSpawner = new ItemSpawner();
 
 	// register callback to automatically recalculate stats when inventory changes
-	m_inventory = new Inventory(
-		[this]() { this->RecalculateStats(); }
-	);
+	m_inventory = new Inventory();
+	m_inventory->RegisterCallback([this]() { this->RecalculateStats();});
 
 	// default statsheet values
 	m_pStats = new StatSheet();
@@ -269,6 +268,10 @@ bool Attackable::IsDying() {
     return deathPlaying;
 }
 
+std::unordered_map<ItemID, int> Attackable::GetItems() {
+	return m_inventory->All();
+}
+
 void Attackable::ApplyStatusEffect(StatusEffectType status, float duration, Attackable* source) {
 	m_activeStatusEffects.push_back({status, duration, source});
 }
@@ -334,6 +337,10 @@ void Attackable::TickStatusEffect(float deltaTime) {
 
 void Attackable::AddItem(ItemID id, int count) {
 	m_inventory->Add(id, count);
+}
+
+void Attackable::RemoveItem(ItemID id, int count) {
+	m_inventory->Remove(id, count);
 }
 
 void Attackable::RecalculateStats() {

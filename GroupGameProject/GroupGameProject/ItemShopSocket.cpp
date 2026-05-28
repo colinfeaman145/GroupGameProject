@@ -62,11 +62,12 @@ void ItemShopSocket::HandleCollision(Collidable* other, Vector2 penetration) {
     if (player == nullptr) return;
 
     // only buy if player has enough coins
-    auto coinCount = player->GetCoinCount();
+    auto coinCount = player->GetItemCount(3);
     if (coinCount < cost) return;
 
     item->SetVisibliliy(Visibility::ABSENT);
     player->AddItem(item->id, 1);
+    player->RemoveItem(3, cost);
     isSoldOut = true;
 }
 

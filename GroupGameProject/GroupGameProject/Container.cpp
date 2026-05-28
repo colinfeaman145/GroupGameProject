@@ -11,6 +11,7 @@ Container::Container(int x, int y, int w, int h, Color fillColor, Color borderCo
     visible = true;
     dstRect = { x, y, w, h };
     SetDrawLayer(RenderLayer::UI, -1);
+    size = { (float)w,(float)h };
 }
 
 void Container::AddSprite(Sprite* sprite, int localX, int localY) {
