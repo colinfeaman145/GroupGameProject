@@ -15,6 +15,8 @@ public:
 
     void ReadInputs(float deltaTime) override;
 
+    bool IsDone();
+
 protected:
     vector<Element*> elements;
     vector<Sprite*> UI;
@@ -22,6 +24,8 @@ protected:
     Sprite* autLogo;
     Sprite* fmodLogo;
     float timer;
+
+    bool isdone;
 
 };
 

@@ -3,7 +3,7 @@
 
 class Player;
 class Enemy;
-
+class PlayerHUD;
 
 #define GRID_WIDTH 15000
 #define GRID_HEIGHT 15000
@@ -22,5 +22,6 @@ protected:
     Sprite* levelBackground;
 	Player* player;
 	Enemy* enemy;
+    PlayerHUD* playerHUD;
 };
 
