@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <string>
 
+
 PlayerHUD::PlayerHUD(Player* player)
     : player(player)
     , BulletTexture(0)
@@ -15,13 +16,13 @@ PlayerHUD::PlayerHUD(Player* player)
 {
 }
 
-PlayerHUD::~PlayerHUD() 
+PlayerHUD::~PlayerHUD()
 {
     //delete BulletTexture;
     //delete WeaponTexture;
 }
 
-bool PlayerHUD::Initialize() 
+bool PlayerHUD::Initialize()
 {
     bulletType = MachineGunBullet;
     weaponType = Ar_1;
@@ -55,17 +56,17 @@ bool PlayerHUD::Initialize()
     return true;
 }
 
-void PlayerHUD::Process(float deltaTime) 
+void PlayerHUD::Process(float deltaTime)
 {
     SetBulletTexture();
     SetWeaponTexture();
 
-    if (weaponSprite) 
+    if (weaponSprite)
     {
         Vector2 playerCenter = player->GetPosition();
         Vector2 weaponSize = weaponSprite->GetDrawSize();
 
-        weaponSprite->SetPosition((int)(playerCenter.x - weaponSize.x * 0.5f),(int)(playerCenter.y - weaponSize.y * (-1.15f) ));
+        weaponSprite->SetPosition((int)(playerCenter.x - weaponSize.x * 0.5f), (int)(playerCenter.y - weaponSize.y * (-1.15f)));
 
         //follows mouse position, rotates weapon to point to it
         Vector2 mouseWorldPosition = context.im->GetMouseWorldPosition(context.renderer->cam);
@@ -82,13 +83,13 @@ void PlayerHUD::Process(float deltaTime)
 
 }
 
-void PlayerHUD::Draw(Renderer* renderer) 
+void PlayerHUD::Draw(Renderer* renderer)
 {
-    if (BulletSpriteInitialized && bulletSprite) 
+    if (BulletSpriteInitialized && bulletSprite)
     {
         bulletSprite->Draw(renderer);
     }
-    if (WeaponSpriteInitialized && weaponSprite) 
+    if (WeaponSpriteInitialized && weaponSprite)
     {
         weaponSprite->Draw(renderer);
     }
@@ -116,7 +117,7 @@ void PlayerHUD::SetBulletTexture()
     }
 }
 
-void PlayerHUD::SetWeaponTexture() 
+void PlayerHUD::SetWeaponTexture()
 {
     switch (weaponType)
     {

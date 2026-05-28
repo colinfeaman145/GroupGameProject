@@ -5,8 +5,11 @@
 #include "Player.hpp"
 #include "Attackable.hpp"
 
-class PlayerHUD : public Element 
-{ 
+#include "Sprite.hpp"
+#include "GameContext.hpp"
+
+class PlayerHUD : public Element
+{
 
     enum WeaponType {
         Ar_1,

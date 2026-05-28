@@ -5,7 +5,7 @@
 #include "GameContext.hpp"
 #include "AnimatedSprite.hpp"
 #include "ItemShopSocket.hpp"
-
+#include "PlayerHUD.hpp"
 
 bool TestingAreaScene::Initialize() {
 
