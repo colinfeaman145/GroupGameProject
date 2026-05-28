@@ -116,5 +116,38 @@ These values can be accessed in each item implementation using its data member v
       "bulletSpeed": 5000
     }
 ```
- 
+
+## Work with status effets
+Some items may apply status effects or passives (that can be represented as status effects).
+For this you can just apply a effect to the ctx.target or ctx.soure class. (You get those from the parameters of the event based item effect function)
+
+Example: The gun applies a burning effect OnCrit for 5 seconds to the target.
+```c++
+void Gun::OnEvent(EventType type, EventContext ctx, int stacks) {
+	if (type == EventType::OnCrit) {
+		ctx.target->ApplyStatusEffect(StatusEffectType::Burning, 5.f, ctx.source);
+		return;
+	}
+	...
+}
+```
+## Add new status effects
+Status effets are ket track of with a enum. Add your effect to it.
+Then in the Attackable.cpp class, add a new Tick effect for your status effect. (Important to note is that every tick happens every half a second)
+For damaging status effects just edit the Effect context.
+For other stuff just edit it because *this* is the enitity, the status effect is appied to.
+
+Example bleeding effect:
+```c++
+// bleeding effect
+if (status.type == StatusEffectType::Bleeding) {
+
+	ctx.source = status.source;
+	ctx.target = this;
+	ctx.hitInfo = { m_fCurrentHealth * 0.05f, false, false };
+	status.duration -= deltaTime;
+}
+```
+
+Further down you find the code for when a stus effect ends. There is something that should happen when it wears off put it in there.
 
