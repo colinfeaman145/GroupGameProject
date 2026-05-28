@@ -1,7 +1,9 @@
 {
   "1": {
+    "id": 1,
     "name": "Gun",
     "description": "A simple gun you can shoot with",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item1.png",
     "params": {
       "pierceCount": 1,
       "ttl": 5,
@@ -9,11 +11,82 @@
     }
   },
   "2": {
+    "id": 2,
     "name": "BisonSteak",
     "description": "Get BUFFED",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item439.png",
     "params": {
       "baseHealth": 50,
       "increasePerStack": 20
+    }
+  },
+  "3": {
+    "id": 3,
+    "name": "Coin",
+    "description": "Just a coin",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item1159.png"
+  },
+  "4": {
+    "id": 4,
+    "name": "KillCounter",
+    "description": "Counts the kills this entity made - kills = n=1",
+    "spritePath": "",
+    "params": {
+      "cashoutTiers": [
+        {
+          "tier": 1,
+          "goldCount": 5,
+          "threshold": 1,
+          "randomItemCount": 2,
+          "selectableItemCount": 1,
+          "commonChance": 0.7,
+          "rareChance": 0,
+          "epicChance": 0,
+          "legendaryChance": 0
+        },
+        {
+          "tier": 2,
+          "goldCount": 10,
+          "threshold": 2,
+          "randomItemCount": 4,
+          "selectableItemCount": 2,
+          "commonChance": 0.6,
+          "rareChance": 0,
+          "epicChance": 0,
+          "legendaryChance": 0
+        },
+        {
+          "tier": 3,
+          "goldCount": 10,
+          "threshold": 3,
+          "randomItemCount": 6,
+          "selectableItemCount": 3,
+          "commonChance": 0.4,
+          "rareChance": 0,
+          "epicChance": 0,
+          "legendaryChance": 0
+        },
+        {
+          "tier": 4,
+          "goldCount": 15,
+          "threshold": 40,
+          "randomItemCount": 8,
+          "selectableItemCount": 4,
+          "commonChance": 0.2,
+          "rareChance": 0,
+          "epicChance": 0,
+          "legendaryChance": 0
+        }
+      ]
+    }
+  },
+  "5": {
+    "id": 5,
+    "name": "InvincibleModule",
+    "description": "Owner is invincible for a brief moment after getting hit",
+    "spritePath": "",
+    "params": {
+      "duration": 1
     }
   }
 }

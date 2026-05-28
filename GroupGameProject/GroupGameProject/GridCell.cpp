@@ -1,7 +1,9 @@
+#include <algorithm>
 #include "GridCell.hpp"
 #include "Entity.hpp"
 #include "Renderer.hpp"
-#include <algorithm>
+#include "Sprite.hpp"
+#include "Enemy.hpp"
 
 GridCell::GridCell(Sprite* spr) {
     coords = { -1, -1 };
@@ -27,48 +29,11 @@ void GridCell::SetCoords(GridCoord gridPos) {
 
 void GridCell::Draw(Renderer* renderer) {
     if (sprite) sprite->Draw(renderer);
-    //DrawWalls(renderer);
-    //DrawDrops(renderer);
 }
 
 void GridCell::Process(float deltaTime, bool isRendered) {
     if (sprite) sprite->Process(deltaTime);
-    //ProcessWalls(deltaTime);
-    //if (isRendered) ProcessDrops(deltaTime);
 }
-
-//void GridCell::DrawWalls(Renderer* renderer) {
-//    if (walls[(int)WallDirection::NORTH])  walls[(int)WallDirection::NORTH]->Draw(renderer);
-//    if (walls[(int)WallDirection::WEST]) walls[(int)WallDirection::WEST]->Draw(renderer);
-//}
-//
-//void GridCell::ProcessWalls(float deltaTime) {
-//    if (walls[(int)WallDirection::NORTH])  walls[(int)WallDirection::NORTH]->Process(deltaTime);
-//    if (walls[(int)WallDirection::WEST]) walls[(int)WallDirection::WEST]->Process(deltaTime);
-//}
-
-//void GridCell::DrawDrops(Renderer* renderer) {
-//    for (Resource* d : drops)
-//        d->Draw(renderer);
-//}
-//
-//void GridCell::ProcessDrops(float deltaTime) {
-//    for (auto it = drops.begin(); it != drops.end(); ) {//iterate through drops
-//        Resource* d = *it;
-//        if (d->IsAlive()) {
-//            d->Process(deltaTime);
-//            ++it;
-//        }
-//        else {//if set dead, remove it
-//            it = drops.erase(it);
-//            context.grid->RemoveDrop(d);
-//        }
-//    }
-//    //safe to modify vector
-//    for (Resource* d : drops)
-//        context.grid->UpdateDropOccupancy(d);
-//}
-
 
 vector<Collidable*> GridCell::GetCollidables() const {
     vector<Collidable*> result;
@@ -79,10 +44,7 @@ vector<Collidable*> GridCell::GetCollidables() const {
     for (Enemy* e : enemies)
         result.push_back(e);
 
-    //for (Resource* d : drops)
-    //    result.push_back(d);
-
-    for (Entity* e : entities)
+     for (Entity* e : entities)
         result.push_back(e);
 
     return result;
@@ -106,43 +68,6 @@ void GridCell::ClearEnemies() {
     enemies.clear();
 }
 
-
-//WALLS
-//assuming wall is free(checked in grid)
-//bool GridCell::PlaceWall(WallDirection dir) {
-//    int i = (int)dir;
-//    if (walls[i]) return false;//if wall there, return
-//    walls[i] = true;
-//    return true;
-//}
-//
-//bool GridCell::RemoveWall(WallDirection dir) {
-//    int i = (int)dir;
-//    if (!walls[i]) return false;//if no wall, return
-//    delete walls[i];
-//    walls[i] = false;
-//    return true;
-//}
-//
-//bool GridCell::HasWall(WallDirection dir) const {
-//    int i = (int)dir;
-//    if (holdingHologramWall[i]) return false; //available to place real wall
-//    else return walls[i] != nullptr;
-//}
-
-
-////DROPS
-//void GridCell::AddDrop(Resource* drop) {
-//    drops.push_back(drop);
-//}
-//
-//void GridCell::RemoveDrop(Resource* drop) {
-//    auto it = find(drops.begin(), drops.end(), drop);
-//    if (it != drops.end()) {
-//        *it = drops.back();
-//        drops.pop_back();
-//    }
-//}
 
 
 //OTHER

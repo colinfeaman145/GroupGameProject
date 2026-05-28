@@ -2,6 +2,7 @@
 #include "Sprite.hpp"
 #include "Renderer.hpp"
 #include "Grid.hpp"
+#include "GameContext.hpp"
 
 Entity::Entity() {
     sprite = nullptr;
@@ -26,8 +27,6 @@ bool Entity::Initialize(Vector2 pos, Sprite* spr) {
 
     if (sprite) {
         radius = spr->GetWidth() / 2;
-        sprite->SetDrawLayer(RenderLayer::ENEMIES);
-
         collisionBound = CollisionShape::MakeCircle(radius); //default circle
     }
 
@@ -50,10 +49,14 @@ void Entity::Process(float deltaTime) {
         sprite->Process(deltaTime);
 
     }
+
+    if (visibility != Visibility::ABSENT) {
+        context.grid->ResolveCollisions(this); //collison updates
+    }
 }
 
 void Entity::Draw(Renderer* renderer) {
-    if (sprite) {
+    if (sprite && visibility == Visibility::VISIBLE) {
         sprite->Draw(renderer);
     }
    
@@ -111,6 +114,14 @@ Sprite* Entity::GetSprite() {
 
 GridOccupancy Entity::GetOccupancy() const {
     return occupancy;
+}
+
+void Entity::SetVisibliliy(Visibility visible) {
+    this->visibility = visible;
+}
+
+Visibility Entity::IsVisible() {
+    return visibility;
 }
 
 void Entity::SetOccupancy(GridOccupancy occ) {

@@ -1,4 +1,7 @@
 #include "Container.hpp"
+#include "Button.hpp"
+#include "Text.hpp"
+#include "Renderer.hpp"
 
 Container::Container(int x, int y, int w, int h, Color fillColor, Color borderColor, int alpha, int borderThickness) {
     this->fillColor = fillColor;

@@ -13,7 +13,10 @@ public:
 		int bonusSpeed = 0,
 		float speedMult = 1,
 		int armor = 0,
-		float regernation = 0
+		float regernation = 0,
+		float critChance = 0,
+		float critMultiplyer = 0,
+		bool healHasCritEnabled = false
 	) {
 		
 		defaultBaseHealth = baseHealth;
@@ -27,6 +30,9 @@ public:
 		defaultSpeedMult = speedMult;
 		defaultArmor = armor;
 		defaultRegernation = regernation;
+		defaultCritChance = critChance;
+		defaultCritMultiplyer = critMultiplyer;
+		defaultHasHealCritEnabled = hasHealCritEnabled;
 		Reset();
 	}
 
@@ -55,7 +61,10 @@ public:
 		bonusSpeed = defaultBonusSpeed;
 		speedMult = defaultHealthMult;
 		armor = defaultArmor;
+		critChance = defaultCritChance;
+		critMultiplyer = defaultCritMultiplyer;
 		regernation = defaultRegernation;
+		hasHealCritEnabled = defaultHasHealCritEnabled;
 	}
 
 
@@ -73,7 +82,10 @@ public:
 	float speedMult;
 
 	int armor;
+	float critChance;
+	float critMultiplyer;
 	float regernation;
+	bool hasHealCritEnabled;
 
 
 private:
@@ -91,6 +103,9 @@ private:
 	float defaultSpeedMult;
 
 	int defaultArmor;
+	float defaultCritChance;
+	float defaultCritMultiplyer;
 	float defaultRegernation;
+	bool defaultHasHealCritEnabled;
 };
 

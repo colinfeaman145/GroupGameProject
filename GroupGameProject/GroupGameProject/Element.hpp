@@ -1,8 +1,7 @@
 #ifndef ELEMENT_HPP
 #define ELEMENT_HPP
-#include "Vector2.hpp"
-#include "Renderer.hpp"
-#include "Collidable.hpp"
+
+class Renderer;
 
 //VIRTUAL CLASS
 class Element {

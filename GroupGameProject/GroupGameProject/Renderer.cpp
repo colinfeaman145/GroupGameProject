@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 #include <iostream>
 #include <algorithm>
+#include "Camera.hpp"
 
 Renderer::Renderer() {
     window = nullptr;

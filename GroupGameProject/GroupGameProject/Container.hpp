@@ -3,10 +3,10 @@
 
 #include <vector>
 #include "Renderer.hpp"
-#include "Button.hpp"
 #include "Sprite.hpp"
-#include "Text.hpp"
-#include "GameContext.hpp"
+
+class Button;
+class Text;
 
 struct SpriteItem { Sprite* sprite; int localX, localY; };
 struct ButtonItem { Button* button; int localX, localY; };

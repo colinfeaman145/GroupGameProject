@@ -1,4 +1,5 @@
 #include "InputManager.hpp"
+#include "Camera.hpp"
 #include <fstream>
 #include <iostream>
 #include "json.hpp"

@@ -1,14 +1,15 @@
 #pragma once
-#include "StatSheet.hpp"
 #include <math.h>
 #include "Vector2.hpp"
-#include "json.hpp"
 
+#include "json.hpp"
 using json = nlohmann::json;
 
 class Attackable;
+class StatSheet;
 
 enum StatusEffectType {
+	Invincible,
 	Bleeding,
 	Burning,
 	Poisoning,
@@ -22,19 +23,21 @@ struct StatusEffect {
 };
 
 enum EventType {
+	OnCashout,
 	OnHit,
 	OnGettigHit,
 	OnKill,
 	OnCrit,
-	OnHeal,
-	OnStep,
 	OnAttack,
 	OnDeath,
+	OnHeal,
+	OnStep,
 	OnDodge
 };
 
 struct HitInfo {
 	float damageDealt;
+	float healAmount;
 	bool isCritical;
 	bool isDodged;
 };
@@ -53,6 +56,7 @@ public:
 	virtual void OnModifyStats(StatSheet& stats, int stacks) {}
 	virtual void OnEvent(EventType type, EventContext ctx, int stacks) {}
 
+	// used to register item effects from json data. T must be derived from ItemEffect and have a default constructor
 	template<typename T>
 	static T* CreateItemEffectFromJson(json data) {
 		auto newItem = new T();

@@ -1,5 +1,6 @@
 #include "Camera.hpp"
 #include "Grid.hpp"
+#include "GameContext.hpp"
 
 Camera::Camera() {
     x = y = 0;

@@ -1,8 +1,14 @@
 #include "Grid.hpp"
-#include "Renderer.hpp"
+
 #include <algorithm>
 #include <cmath>
 #include <unordered_set>
+
+#include "Renderer.hpp"
+#include "GameContext.hpp"
+#include "Sprite.hpp"
+#include "Camera.hpp"
+#include "Collision.hpp"
 
 Grid::Grid(int worldWidth, int worldHeight, int cellSize)
     : cellSize(cellSize)
@@ -190,6 +196,7 @@ bool Grid::ResolveCollisions(Entity* entity) {
     for (Collidable* other : candidates) {
         if (!other) continue;//if destroyed
         if (other == entity) continue;//if self
+        if (!other->CanCollide() || !entity->CanCollide()) continue;
 
         Vector2 penetration;
         if (Collision::TestShapes(

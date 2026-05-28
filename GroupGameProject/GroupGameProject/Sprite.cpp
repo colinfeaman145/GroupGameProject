@@ -1,4 +1,5 @@
 #include "Sprite.hpp"
+#include "Renderer.hpp"
 
 Sprite::Sprite() {
     texture = nullptr;
@@ -51,10 +52,14 @@ void Sprite::Process(float deltaTime) {}
 //draw using renderer
 void Sprite::Draw(Renderer* renderer) {
     if (texture) {
-        renderer->DrawTexture(texture, &srcRect, &dstRect, color, rotation, layer, subLayer, false, flip);
-        if (isFlashing)
-            renderer->DrawTexture(texture, &srcRect, &dstRect, { 250, 250, 250, 100 }, rotation, layer, subLayer, isFlashing, flip);
+		if (isFlashing) {
+			renderer->DrawTexture(texture, &srcRect, &dstRect, { 250, 250, 250, 200 }, rotation, layer, subLayer, isFlashing, flip);
+		}
+        else {
+            renderer->DrawTexture(texture, &srcRect, &dstRect, color, rotation, layer, subLayer, false, flip);
+        }
     }
+
 }
 
 void Sprite::SetPosition(int x, int y) {

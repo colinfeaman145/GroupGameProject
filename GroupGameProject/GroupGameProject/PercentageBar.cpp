@@ -1,4 +1,5 @@
 #include "PercentageBar.hpp"
+#include "Renderer.hpp"
 
 PercentageBar::PercentageBar(const PercentageBar& other) {
     current = other.current;

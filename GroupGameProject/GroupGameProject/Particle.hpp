@@ -2,12 +2,12 @@
 #define PARTICLE_HPP
 
 #include "Vector2.hpp"
-#include "Renderer.hpp"
-#include "Sprite.hpp"
-#include "GameContext.hpp"
 
 #define GRAVITY -100
 #define AIR_RESISTANCE 0.99
+
+class Sprite;
+class Renderer;
 
 class Particle
 {

@@ -1,9 +1,8 @@
 #ifndef COLLIDABLE_HPP
 #define COLLIDABLE_HPP
 #include "Vector2.hpp"
-#include "GameContext.hpp"
-#include "Renderer.hpp"
 #include "EnumTypes.hpp"
+#include "Renderer.hpp"
 
 class AI;
 using namespace std;
