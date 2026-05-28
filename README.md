@@ -26,7 +26,7 @@ class ItemId_? : public ItemEffect {
 ```
 (The name of the class should represent the items ID; the IDs are used in the code to refer to a specific item so please dont change existing ones.)
 
-3. Implement the 4 classes in it corresponding .cpp file.
+3. Implement the 4 classes in its corresponding .cpp file.
 
 Do you want to make the item just change stats or does it trigger on specific events? 
 Does the item only have effects on pickup or deletion?
@@ -116,7 +116,7 @@ These values can be accessed in each item implementation using its data member v
     }
 ```
 
-## Work with status effets
+## Work with status effects
 Some items may apply status effects or passives (that can be represented as status effects).
 For this you can just apply a effect to the ctx.target or ctx.soure class. (You get those from the parameters of the event based item effect function)
 
