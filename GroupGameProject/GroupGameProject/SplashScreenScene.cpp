@@ -3,8 +3,8 @@
 bool SplashScreens::Initialize() {
     timer = 0.0f;
 
-    SDL_Texture* autTex = context.txm->LoadTexture(context.renderer, "../../assets/AUT_logo.png");
-    SDL_Texture* fmodTex = context.txm->LoadTexture(context.renderer, "../../assets/fmod_logo.png");
+    SDL_Texture* autTex = context.txm->LoadTexture(context.renderer, "../../assets/sprites/SplashScreens/AUT_logo.png");
+    SDL_Texture* fmodTex = context.txm->LoadTexture(context.renderer, "../../assets/sprites/SplashScreens/FMOD Logo White - Black Background.png");
 
     autLogo = new Sprite();
     autLogo->Initialize(autTex, 375, 265, 0, 0, WIDTH * 1.5, HEIGHT * 2);
@@ -21,6 +21,11 @@ void SplashScreens::Process(float deltaTime) {
     ReadInputs(deltaTime);
     timer += deltaTime;
     if (timer >= 4 * 2) context.changeScene(0);
+
+    if (timer > 8) //once both logos have finished, set as done so it can move on to next scene(without it, the fmod would keep on flashing)
+    {
+        isdone = true;
+    }
 }
 
 void SplashScreens::Draw(Renderer* renderer) {
@@ -37,4 +42,8 @@ void SplashScreens::Draw(Renderer* renderer) {
 void SplashScreens::ReadInputs(float deltaTime) {
 	if (context.im->IsKeyPressed("testing_room"))
 		context.changeScene(9);
+}
+bool SplashScreens::IsDone()
+{
+    return isdone;
 }

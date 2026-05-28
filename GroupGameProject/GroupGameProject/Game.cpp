@@ -94,6 +94,11 @@ void Game::Process(float deltaTime) {
     }
 
    scenes[currentScene]->Process(deltaTime);
+
+   if (static_cast<SplashScreens*>(scenes[currentScene])->IsDone() == true)//checks if the splash screens are done then changes the scene
+   {
+       ChangeScene(9);
+   }
 }
 
 void Game::Draw()
