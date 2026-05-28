@@ -1,5 +1,9 @@
 #include "Text.hpp"
 #include <iostream>
+#include <SDL_ttf.h>
+#include "Renderer.hpp"
+#include "GameContext.hpp"
+
 using namespace std;
 
 Text::Text(){

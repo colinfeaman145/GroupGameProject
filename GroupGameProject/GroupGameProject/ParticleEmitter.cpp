@@ -1,4 +1,10 @@
 #include "ParticleEmitter.hpp"
+#include <SDL.h>
+#include "Renderer.hpp"
+#include "Particle.hpp"
+#include "Sprite.hpp"
+
+
 
 using namespace std;
 

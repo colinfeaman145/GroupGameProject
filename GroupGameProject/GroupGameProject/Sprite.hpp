@@ -3,8 +3,8 @@
 
 #include <SDL.h>
 #include "Renderer.hpp"
-#include "GameContext.hpp"
 
+class GameContext;
 class Sprite {
 public:
     Sprite();

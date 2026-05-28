@@ -6,7 +6,6 @@
 
 //Where enum types or structs go to live after
 //they were causing circular dependencies
-
 enum class ShapeType { 
     Square, 
     Circle, 

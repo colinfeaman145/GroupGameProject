@@ -2,21 +2,18 @@
 #define AI_HPP
 
 #include "Attackable.hpp"
-#include "Grid.hpp"
 
 //An living thing that moves
 class AI : public Attackable {
 
 	public:
-		void Process(float deltaTime);
+		virtual void Process(float deltaTime) override;
+		virtual void Draw(Renderer* renderer) override;
+
 		void SetTarget(Collidable* c);
-		virtual Collidable* FindNewTarget() = 0;//changes based on AI behavior
 		Collidable* GetTarget() const { return target; }
 		void Hone();
 		virtual void OnStuck() = 0;
-
-		void SetFrozen(float duration);
-		bool IsFrozen();
 
 	protected:
 		Collidable* target;

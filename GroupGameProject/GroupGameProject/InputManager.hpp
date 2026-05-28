@@ -6,9 +6,10 @@
 #include <vector>
 #include <string>
 #include "Vector2.hpp"
-#include "Camera.hpp"
 
 using namespace std;
+
+class Camera;
 class InputManager {
 public:
     InputManager() = default;

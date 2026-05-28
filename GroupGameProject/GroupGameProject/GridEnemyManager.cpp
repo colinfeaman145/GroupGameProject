@@ -1,4 +1,5 @@
 #include "Grid.hpp"
+#include "Enemy.hpp"
 
 void Grid::AddEnemy(Enemy* enemy) {
     if (!enemy) return;

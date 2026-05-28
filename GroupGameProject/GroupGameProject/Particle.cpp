@@ -1,4 +1,5 @@
 #include "Particle.hpp"
+#include "Sprite.hpp"
 
 Particle::Particle(Sprite* s, Vector2 pos, Vector2 initVel, float rotSpeed, float maxA, float a, float alphaDR) {
 	sprite = s;

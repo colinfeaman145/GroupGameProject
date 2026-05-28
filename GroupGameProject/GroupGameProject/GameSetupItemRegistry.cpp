@@ -1,9 +1,16 @@
 #include "Game.hpp"
-#include "Gun.hpp"
-#include "ItemRegistry.hpp"
-#include "BisonSteak.hpp"
+
 #include <fstream>
+#include "ItemRegistry.hpp"
 #include "json.hpp"
+#include "GameContext.hpp"
+
+#include "Item.hpp"
+#include "Gun.hpp"
+#include "BisonSteak.hpp"
+#include "Coin.hpp"
+#include "CashoutModule.hpp"
+#include "InvincibleModule.hpp"
 
 using json = nlohmann::json;
 
@@ -18,16 +25,33 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 
 	context.ir->RegisterItem({
 		.id = 1,
-		.name = data["1"]["name"].get<std::string>(),
-		.description = data["1"]["description"].get<std::string>(),
-		.tier = ItemTier::Common,
-		.effect = ItemEffect::CreateItemEffectFromJson<Gun>(data["1"])
+		.tier = ItemTier::Module,
+		.effect = ItemEffect::CreateItemEffectFromJson<Gun>(data["1"]),
+		.data = data["1"]
 	});
 	context.ir->RegisterItem({
 		.id = 2,
-		.name = data["2"]["name"].get<std::string>(),
-		.description = data["2"]["description"].get<std::string>(),
 		.tier = ItemTier::Common,
-		.effect = ItemEffect::CreateItemEffectFromJson<BisonSteak>(data["2"])
+		.effect = ItemEffect::CreateItemEffectFromJson<BisonSteak>(data["2"]),
+		.data = data["2"]
 	});
+	context.ir->RegisterItem({
+		.id = 3,
+		.tier = ItemTier::Module,
+		.effect = ItemEffect::CreateItemEffectFromJson<Coin>(data["3"]),
+		.data = data["3"]
+	});
+	context.ir->RegisterItem({
+		.id = 4,
+		.tier = ItemTier::Module,
+		.effect = ItemEffect::CreateItemEffectFromJson<CashoutModule>(data["4"]),
+		.data = data["4"]
+	});
+	context.ir->RegisterItem({
+		.id = 5,
+		.tier = ItemTier::Module,
+		.effect = ItemEffect::CreateItemEffectFromJson<InvincibleModule>(data["5"]),
+		.data = data["5"]
+	});
+
 }

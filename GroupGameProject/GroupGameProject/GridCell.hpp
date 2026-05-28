@@ -2,18 +2,15 @@
 #define GRID_CELL_HPP
 #include <vector>
 #include "Vector2.hpp"
-#include "Sprite.hpp"
 #include "GridCoord.hpp"
-//#include "Structure.hpp"
-#include "Renderer.hpp"
-#include "Entity.hpp"
-#include "Collidable.hpp"
-#include "Collision.hpp"
-//#include "Resource.hpp"
-#include "Enemy.hpp"
 
 class Nature;
 class Foliage;
+class Sprite;
+class Enemy;
+class Entity;
+class Collidable;
+class Renderer;
 
 using namespace std;
 class GridCell {

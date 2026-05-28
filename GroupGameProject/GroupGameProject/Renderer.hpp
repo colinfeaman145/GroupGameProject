@@ -3,10 +3,11 @@
 
 #include <SDL.h>
 #include <string>
-#include "Camera.hpp"
 #include <vector>
 #include "EnumTypes.hpp"
 
+
+class Camera;
 struct Color {
     float r;
     float g;

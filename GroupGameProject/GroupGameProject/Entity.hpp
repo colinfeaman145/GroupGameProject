@@ -1,9 +1,15 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
+
+#include "Vector2.hpp"
 #include "Element.hpp"
 #include "Collidable.hpp"
-#include "PercentageBar.hpp"
-#include "Sprite.hpp"
+
+enum Visibility {
+	VISIBLE, // is visible and can collide
+	HIDDEN,// is invisible but still can collide
+	ABSENT // is invisible and cannot collide
+};
 
 struct GridOccupancy {
 	int minCol, maxCol, minRow, maxRow;
@@ -14,8 +20,8 @@ struct GridOccupancy {
 	}
 };
 
-class Attackable;
 class Renderer;
+class Sprite;
 
 //A thing with a position
 class Entity : public virtual Element, public Collidable {
@@ -25,7 +31,7 @@ class Entity : public virtual Element, public Collidable {
 		~Entity();
 
 		// lifecycle functions
-		bool Initialize(Vector2 pos, Sprite* spr = nullptr);
+		virtual bool Initialize(Vector2 pos, Sprite* spr = nullptr);
 		virtual void Draw(Renderer* renderer) override;
 		virtual void Process(float deltaTime) override;
 
@@ -40,14 +46,17 @@ class Entity : public virtual Element, public Collidable {
 		Vector2 GetFacingDirection();
 		Sprite* GetSprite();
 		GridOccupancy GetOccupancy() const;
+		Visibility IsVisible();
 
 		// setter
 		virtual void SetPosition(Vector2 pos);
 		void SetVelocity(Vector2 vel);
 		void SetOccupancy(GridOccupancy occ);
+		void SetVisibliliy(Visibility visible);
 
 	protected:
 		Sprite* sprite;
+		Visibility visibility;
 		float radius;//for collision
 		Vector2 position;
 		Vector2 velocity;

@@ -1,12 +1,24 @@
 #include "Attackable.hpp"
-#include "InlineHelper.hpp"
+
 #include <fstream>
 
-bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
-	Entity::Initialize(pos, spr);
+#include "InlineHelper.hpp"
+#include "Sprite.hpp"
+#include "Inventory.hpp"
+#include "StatSheet.hpp"
+#include "PercentageBar.hpp"
+#include "ItemRegistry.hpp"
+#include "GameContext.hpp"
+#include "ItemSpawner.hpp"
+#include "AnimatedSprite.hpp"
+
+
+Attackable::Attackable() {
+
+	m_itemSpawner = new ItemSpawner();
 
 	// register callback to automatically recalculate stats when inventory changes
-	inventory = new Inventory(
+	m_inventory = new Inventory(
 		[this]() { this->RecalculateStats(); }
 	);
 
@@ -14,9 +26,24 @@ bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 	m_pStats = new StatSheet();
 	m_pStats->SetDefaultValues();
 	m_pStats->Reset();
-	m_fCurrentHealth = m_pStats->GetFinalHealth();
+}
 
-	isAlive = true;
+Attackable::~Attackable() {
+	delete idleAnimation;
+	idleAnimation = nullptr;
+	delete movingAnimation;
+	movingAnimation = nullptr;
+	delete deathAnimation;
+	deathAnimation = nullptr;
+	delete attackingAnimation;
+	attackingAnimation = nullptr;
+}
+
+bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
+	Entity::Initialize(pos, spr);
+	
+
+	m_fCurrentHealth = m_pStats->GetFinalHealth();
 
 	// healthbar setup
 	Vector2 size = sprite->GetDrawSize();
@@ -24,14 +51,15 @@ bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 	healthBar->SetPosition(position.x, position.y);
 	healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.2));
 
+	isAlive = true;
 	return true;
 }
 
 void Attackable::Process(float deltaTime) {
-	Entity::Process(deltaTime);
 
-	if (m_fCurrentHealth < 0) isAlive = false;
-	else if (m_fCurrentHealth > 0) isAlive = true;
+	if (!IsAlive() && !IsDying()) return;
+
+	Entity::Process(deltaTime);
 
 	healthBar->SetPosition(position.x, position.y);
 
@@ -40,22 +68,39 @@ void Attackable::Process(float deltaTime) {
 
 	TickStatusEffect(deltaTime);
 	TickRegeneration(deltaTime);
+
+
+}
+
+void Attackable::Draw(Renderer* renderer) {
+
+	if (!IsAlive() && !IsDying()) return;
+	Entity::Draw(renderer);
+	healthBar->Draw(renderer);
 }
 
 void Attackable::TickRegeneration(float deltaTime) {
 	if (!m_pStats) return;
 	if (m_pStats->regernation <= 0) return;
 
+	auto healAmount = m_pStats->regernation;
+
+	HitInfo info = {
+		.healAmount = healAmount,
+		.isCritical = false
+	};
+
+	EventContext ctx = {
+		.source = this,
+		.target = this,
+		.hitInfo = info
+	};
+
 	m_fLastHealTick += deltaTime;
 	if (m_fLastHealTick < 0.5) return;// tick every half a second
 	m_fLastHealTick = 0;
-	ApplyHeal(m_pStats->regernation);
+	ApplyHeal(ctx);
 
-}
-
-void Attackable::Draw(Renderer* renderer) {
-	Entity::Draw(renderer);
-	healthBar->Draw(renderer);
 }
 
 int Attackable::GetHealth() {
@@ -82,31 +127,48 @@ void Attackable::SetHealth(float h) {
 }
 
 // returns the actual damage received after armor calculations
-float Attackable::ApplyDamage(HitInfo info) {
+void Attackable::ApplyDamage(EventContext& ctx) {
 	float maxHealth = m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth;
-	float damageReceived = m_pStats ? m_pStats->CalculateDamageReceived(info.damageDealt) : info.damageDealt;
+	float damageReceived = m_pStats ? m_pStats->CalculateDamageReceived(ctx.hitInfo.damageDealt) : ctx.hitInfo.damageDealt;
+	ctx.hitInfo.damageDealt = damageReceived;
 
-	if (info.damageDealt == -1) {//full kill
+	if (ctx.hitInfo.damageDealt == -1) {//full kill
 		m_fCurrentHealth = 0;
-		return -1;
+	}
+	if (ctx.hitInfo.damageDealt == 0) { // should not proc event if 0 damage is done
+		return;
 	}
 
 	m_fCurrentHealth = clip(m_fCurrentHealth - damageReceived, 0, maxHealth);
 	SetFlash(true);
 	healthBar->SetValues(m_fCurrentHealth, maxHealth);
-	return damageReceived;
+
+	if (m_fCurrentHealth <= 0 && IsAlive()) {
+		FireEvent(EventType::OnDeath, ctx);
+		ctx.source->FireEvent(EventType::OnKill, ctx);
+		SetDead();
+	}
+
+	FireEvent(EventType::OnGettigHit, ctx);
 }
 
-void Attackable::ApplyHeal(float amount) {
+void Attackable::ApplyHeal(EventContext& ctx) {
 	float maxHealth = m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth;
+	auto isHealCrit = HasHitChance(m_pStats->critChance) && (m_pStats->hasHealCritEnabled);
 
-	if (amount == -1) {//full heal
+	if (ctx.hitInfo.healAmount == -1) {//full heal
 		m_fCurrentHealth = maxHealth;
 		return;
 	}
+	if (isHealCrit) {
+		ctx.hitInfo.healAmount *= m_pStats->critMultiplyer;
+		ctx.hitInfo.isCritical = true;
+	}
 
-	m_fCurrentHealth = clip(m_fCurrentHealth + amount, 0, maxHealth);
+	m_fCurrentHealth = clip(m_fCurrentHealth + ctx.hitInfo.healAmount, 0, maxHealth);
 	healthBar->SetValues(m_fCurrentHealth, maxHealth);
+
+	FireEvent(EventType::OnHeal, ctx);
 }
 
 void Attackable::SetPosition(Vector2 pos) {
@@ -121,27 +183,31 @@ void Attackable::SetFlash(bool flash) {
 	if (flash) flashDuration = 0.25f;
 }
 
-
+// if this method is called it is assumed it has actaully hit the target so OnHit and OnGettingHit effects are procced
 void Attackable::DealDamageTo(Attackable* target, HitInfo info) {
-	float damageDealt = target->ApplyDamage(info);
-	info.damageDealt = damageDealt;
+	if (HasHitChance(m_pStats->critChance)) {
+		info.damageDealt *= m_pStats->critMultiplyer;
+		info.isCritical = true;
+	}
 
 	EventContext ctx;
 	ctx.source = this;
 	ctx.target = target;
 	ctx.hitInfo = info;
 
+	target->ApplyDamage(ctx);
+
 	FireEvent(EventType::OnHit, ctx);
 	if (info.isCritical) {
 		FireEvent(EventType::OnCrit, ctx);
 	}
-	target->FireEvent(EventType::OnGettigHit, ctx);
 }
+
 
 // apply effects of items on event
 void Attackable::FireEvent(EventType type, EventContext ctx) {
 	// fire item effects
-	for (auto& [itemID, stacks] : inventory->All()) {
+	for (auto& [itemID, stacks] : m_inventory->All()) {
 		ItemDef def = context.ir->Get(itemID);
 		if (def.effect) {
 			def.effect->OnEvent(type, ctx, stacks);
@@ -149,8 +215,62 @@ void Attackable::FireEvent(EventType type, EventContext ctx) {
 	}
 }
 
-void Attackable::ApplyStatusEffect(StatusEffectType status, Attackable* source) {
-	m_activeStatusEffects.push_back({status, 5.0f, source});
+
+void Attackable::SetSprites(AnimatedSprite* move, AnimatedSprite* attack, AnimatedSprite* die) {
+    movingAnimation = static_cast<AnimatedSprite*>(move->Clone());
+    attackingAnimation = static_cast<AnimatedSprite*>(attack->Clone());
+    deathAnimation = static_cast<AnimatedSprite*>(die->Clone());
+    movingAnimation->Animate();
+}
+
+void Attackable::SetSpritesDrawSize(int size) {
+    movingAnimation->SetDrawSize(size, size);
+    attackingAnimation->SetDrawSize(size, size);
+    deathAnimation->SetDrawSize(size, size);
+
+    radius = size / 4;
+    collisionBound = CollisionShape::MakeCircle(radius, Vector2(radius, radius));
+    SetCanCollide(true);
+}
+
+void Attackable::SetSpriteDirection(bool b) {
+    movingAnimation->SetFlip(b);
+    attackingAnimation->SetFlip(b);
+    deathAnimation->SetFlip(b);
+}
+
+
+void Attackable::SetDead() {
+	// already dead
+	if (!isAlive) return;
+	isAlive = false;
+
+    SetCanCollide(false);
+	m_itemSpawner->SpawnItems(GetPosition());
+
+	if (deathAnimation) {
+		deathAnimation->Restart();
+		deathAnimation->SetLooping(false);
+		deathAnimation->Animate();
+		deathAnimation->SetPosition(position.x, position.y);
+		sprite = deathAnimation;
+	}
+}
+
+
+int Attackable::GetItemCount(ItemID id) {
+	return m_inventory->Count(id);
+}
+
+bool Attackable::IsDying() {
+    if (isAlive) return false;
+
+    bool deathPlaying = sprite == deathAnimation && deathAnimation->IsAnimating();
+    return deathPlaying;
+}
+
+void Attackable::ApplyStatusEffect(StatusEffectType status, float duration, Attackable* source) {
+	m_activeStatusEffects.push_back({status, duration, source});
 }
 
 void Attackable::TickStatusEffect(float deltaTime) {
@@ -158,37 +278,69 @@ void Attackable::TickStatusEffect(float deltaTime) {
 	if (!m_pStats) return;
 
 	m_fLastStatusEffectTick += deltaTime;
-	if (m_fLastStatusEffectTick < 0.5) return;// tick every half a second
-
+	auto applyTick = m_fLastStatusEffectTick >= 0.5; // tick every half a second
+	EventContext ctx;
 	for (auto& status : m_activeStatusEffects) {
 
 		// bleeding effect
 		if (status.type == StatusEffectType::Bleeding) {
-			ApplyDamage({ m_fCurrentHealth * 0.05f, false, false }); //apply 5% current health damage per tick
-			status.duration -= m_fLastStatusEffectTick;
+
+			ctx.source = status.source;
+			ctx.target = this;
+			ctx.hitInfo = { m_fCurrentHealth * 0.05f, false, false };
+			status.duration -= deltaTime;
 		}
 
-		// bleeding effect
+		// burning effect
 		if (status.type == StatusEffectType::Burning) {
-			ApplyDamage({  1, false, false }); //apply 1 damage per tick
-			status.duration -= m_fLastStatusEffectTick;
+			ctx.source = status.source;
+			ctx.target = this;
+			ctx.hitInfo = { 1, false, false };
+			status.duration -= deltaTime;
+		}
+		// poison effect
+		if (status.type == StatusEffectType::Poisoning) {
+			ctx.source = status.source;
+			ctx.target = this;
+			ctx.hitInfo = { m_pStats->GetFinalHealth() * 0.05f, false, false };
+			status.duration -= deltaTime;
 		}
 		// burning effect
-		if (status.type == StatusEffectType::Poisoning) {
-			ApplyDamage({ m_pStats->GetFinalHealth() * 0.05f, false, false });// 5% max health damage per tick
-			status.duration -= m_fLastStatusEffectTick;
+		if (status.type == StatusEffectType::Invincible) {
+			
+			ctx.source = status.source;
+			ctx.target = this;
+			ctx.hitInfo = { 0, false, false };
+			//SetVisibliliy(Visibility::HIDDEN);
+			SetCanCollide(false);
+			status.duration -= deltaTime;
 		}
-		
+
+		// only apply damage every tick
+		if (applyTick) ApplyDamage(ctx);
 	}
-	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) { return s.duration <= 0; });
-	m_fLastStatusEffectTick = 0;
+	if (applyTick) m_fLastStatusEffectTick = 0;
+
+	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) { 
+		if (s.duration <= 0) {
+			if (s.type == StatusEffectType::Invincible) {
+				s.source->SetCanCollide(true);
+			}
+			return true;
+		}
+		return false; 
+	});
+}
+
+void Attackable::AddItem(ItemID id, int count) {
+	m_inventory->Add(id, count);
 }
 
 void Attackable::RecalculateStats() {
 	if (!m_pStats) return;
 	m_pStats->Reset();
 
-	for (auto& [itemID, stacks] : inventory->All()) {
+	for (auto& [itemID, stacks] : m_inventory->All()) {
 		ItemDef def = context.ir->Get(itemID);
 		if (def.effect) {
 			def.effect->OnModifyStats(*m_pStats, stacks);
@@ -206,17 +358,69 @@ void Attackable::LoadEntityDataFromJson(const string& section) {
     json data = json::parse(file);
 	LoadStatsFromJson(data[section]["stats"]);
 	LoadInventoryFromJson(data[section]["inventory"]);
+	LoadItemSpawnerSettingsFromJson(data[section]["spawner"]);
+	LoadAnimationsFromJson(data[section]["animations"]);
 	m_fCurrentHealth = m_pStats->GetFinalHealth();// set current health after item calculations
+}
+
+void Attackable::LoadAnimationsFromJson(json animations) {
+	//animation setup
+	if (auto path = animations["idle"]["path"]; !path.get<std::string>().empty()) {
+		SDL_Texture* idleTexture = context.txm->LoadTexture(context.renderer, path);
+		idleAnimation = new AnimatedSprite();
+		idleAnimation->Initialize(idleTexture, animations["idle"]["frameWidth"], animations["idle"]["frameHeight"], 0, 0, 500, 500, animations["idle"]["framesPerRow"], animations["idle"]["framesTotal"]);
+		idleAnimation->SetDrawLayer(RenderLayer::ENEMIES);
+		idleAnimation->SetFrameDuration(animations["idle"]["frameDuration"]);
+		idleAnimation->SetLooping(true);
+		idleAnimation->SetLeaveOnLastFrame(true);
+	}
+
+
+	if (auto path = animations["death"]["path"]; !path.get<std::string>().empty()) {
+		SDL_Texture* deathTexture = context.txm->LoadTexture(context.renderer, path);
+		deathAnimation = new AnimatedSprite();
+		deathAnimation->Initialize(deathTexture, animations["death"]["frameWidth"], animations["death"]["frameHeight"], 0, 0, 500, 500, animations["death"]["framesPerRow"], animations["death"]["framesTotal"]);
+		deathAnimation->SetDrawLayer(RenderLayer::ENEMIES);
+		deathAnimation->SetFrameDuration(animations["death"]["frameDuration"]);
+		deathAnimation->SetLooping(true);
+		deathAnimation->SetLeaveOnLastFrame(true);
+	}
+
+
+	if (auto path = animations["attacking"]["path"]; !path.get<std::string>().empty()) {
+		SDL_Texture* attackTexture = context.txm->LoadTexture(context.renderer, path);
+		attackingAnimation = new AnimatedSprite();
+		attackingAnimation->Initialize(attackTexture, animations["attacking"]["frameWidth"], animations["attacking"]["frameHeight"], 0, 0, 500, 500, animations["attacking"]["framesPerRow"], animations["attacking"]["framesTotal"]);
+		attackingAnimation->SetDrawLayer(RenderLayer::ENEMIES);
+		attackingAnimation->SetFrameDuration(animations["attacking"]["frameDuration"]);
+		attackingAnimation->SetLooping(true);
+		attackingAnimation->SetLeaveOnLastFrame(true);
+	}
+
+
+	if (auto path = animations["moving"]["path"]; !path.get<std::string>().empty()) {
+		SDL_Texture* movingTexture = context.txm->LoadTexture(context.renderer, path);
+		movingAnimation = new AnimatedSprite();
+		movingAnimation->Initialize(movingTexture, animations["moving"]["frameWidth"], animations["moving"]["frameHeight"], 0, 0, 500, 500, animations["moving"]["framesPerRow"], animations["moving"]["framesTotal"]);
+		movingAnimation->SetDrawLayer(RenderLayer::ENEMIES);
+		movingAnimation->SetFrameDuration(animations["moving"]["frameDuration"]);
+		movingAnimation->SetLooping(true);
+		movingAnimation->SetLeaveOnLastFrame(true);
+	}
 }
 
 
 void Attackable::LoadInventoryFromJson(json items) {
-	inventory->Clear();
+	m_inventory->Clear();
 	for (auto& item : items) {
 		int itemId = item["id"].get<int>();
 		int stacks = item["stacks"].get<int>();
-		inventory->Add(itemId, stacks);
+		m_inventory->Add(itemId, stacks);
 	}
+}
+
+void Attackable::LoadItemSpawnerSettingsFromJson(json config) {
+	m_itemSpawner->Initialise(config);
 }
 
 void Attackable::LoadStatsFromJson(json stats) {
@@ -232,7 +436,10 @@ void Attackable::LoadStatsFromJson(json stats) {
 		stats["bonusSpeed"].get<int>(),
 		stats["speedMult"].get<float>(),
 		stats["armor"].get<int>(),
-		stats["regeneration"].get<float>()
+		stats["regeneration"].get<float>(),
+		stats["critChance"].get<float>(),
+		stats["critMultiplyer"].get<float>(),
+		stats["hasHealCritEnabled"].get<int>()
 	);
 	m_pStats->Reset();
 }

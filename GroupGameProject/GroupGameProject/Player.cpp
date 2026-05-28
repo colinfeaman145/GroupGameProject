@@ -1,21 +1,26 @@
 #include "Player.hpp"
+#include <SDL.h>
+#include "AnimatedSprite.hpp"
+#include "GameContext.hpp"
+#include "StatSheet.hpp"
+#include "PercentageBar.hpp"
+#include "Camera.hpp"
+#include "ItemSpawner.hpp"
+#include "Inventory.hpp"
 
-void Player::Initialize(Vector2 pos, AnimatedSprite* spr) {
-	Attackable::Initialize(pos, spr);
 
+
+Player::Player() {
 	LoadEntityDataFromJson("Player");
+}
+
+void Player::Initialize(Vector2 pos) {
+	Attackable::Initialize(pos, idleAnimation);
 
 
-    SDL_Texture* playerRunning = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Soldier/soldier_walk.png");
-    moving = new AnimatedSprite();
-    moving->Initialize(playerRunning, 34, 34, 0, 0, 500, 500, 2, 4);
-    moving->SetDrawLayer(RenderLayer::PLAYER);
-    moving->SetFrameDuration(0.25);
-    moving->SetLooping(true);
-    moving->SetLeaveOnLastFrame(true);
+	collideType = CollidableType::PLAYER;
 
-	// set initial idle animation
-	idle = spr;
+	idleAnimation->Animate();
 }
 
 void Player::Process(float deltaTime) {
@@ -23,6 +28,33 @@ void Player::Process(float deltaTime) {
 
 	auto occ = GetOccupancy();
 
+
+	HandleMouseClick();
+	HandleMovement();
+	HandleAnimation();
+	healthBar->SetValues(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth);
+
+    //collision updates
+    context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
+}
+
+void Player::HandleAnimation() {
+	if (velocity.x != 0 || velocity.y != 0) {
+		if (sprite != movingAnimation) {
+			movingAnimation->Animate();
+			sprite = movingAnimation;
+		}
+	}
+	else {
+		if (sprite != idleAnimation) {
+			idleAnimation->Animate();
+			sprite = idleAnimation;
+		}
+	}
+	sprite->SetFlip(velocity.x > 0);//flip if moving left
+}
+
+void Player::HandleMouseClick() {
 	// left click actions just for testing
 	if (context.im->IsMouseButtonPressed(1)) {
 		auto mousePos = context.im->GetMouseWorldPosition(context.renderer->cam);
@@ -40,26 +72,12 @@ void Player::Process(float deltaTime) {
 		// executes all onAttack item effects from the inventory
 		FireEvent(EventType::OnAttack, event);
 	}
-
-	HandleMovement();
-	HandleAnimation();
-	healthBar->SetValues(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth);
-}
-
-void Player::HandleAnimation() {
-	if (velocity.x != 0 || velocity.y != 0) {
-		if (sprite != moving) {
-			moving->Animate();
-			sprite = moving;
-		}
+	if (context.im->IsMouseButtonPressed(3)) {
+		auto event = EventContext{ 
+			.source = this,
+		};
+		FireEvent(EventType::OnCashout, event);
 	}
-	else {
-		if (sprite != idle) {
-			idle->Animate();
-			sprite = idle;
-		}
-	}
-	sprite->SetFlip(velocity.x > 0);//flip if moving left
 }
 
 void Player::HandleMovement() {
@@ -102,9 +120,7 @@ void Player::HandleCollision(Collidable* other, Vector2 penetration) {
 	//handle collisions here
 }
 
-
-void Player::SetSprites(AnimatedSprite* move, AnimatedSprite* idle) {
-	moving = static_cast<AnimatedSprite*>(move->Clone());
-	idle = static_cast<AnimatedSprite*>(idle->Clone());
-	idle->Animate();
+int Player::GetCoinCount() {
+	return m_inventory->GetCoinCount();
 }
+

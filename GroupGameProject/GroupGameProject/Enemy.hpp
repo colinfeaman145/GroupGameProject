@@ -1,67 +1,45 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
-#include "Entity.hpp"
-#include "GridCoord.hpp"
-#include "AnimatedSprite.hpp"
 #include "Attackable.hpp"
-
-//#include "Explosion.hpp"
+#include "AI.hpp"
+#include "GridCoord.hpp"
 
 enum class EnemyType {
-	WALL_FOCUS,//GREY
-	NORMAL,//GREEN
-	PLAYER_FOCUS,//BLUE
-	FAST,//PEACH
-	ATLAS_FOCUS,//ORANGE
-	EXPLOSIVE,//RED
-	RANDOM//PINK = random
+	FLYING,//GREY
+	GROUND,//GREEN
 };
 
-class Enemy : public Attackable {
+
+class AnimatedSprite;
+class Enemy : public AI {
 public:
 	Enemy();
 	~Enemy();
 
 	// lifecycle functions
-	void Initialize(Vector2 pos, AnimatedSprite* spr, float retarget, int targetRad, float atlasTarget, float playerTarget);
-	void Draw(Renderer* renderer) override;
-	void Process(float deltaTime) override;
-	void HandleCollision(Collidable* other, Vector2 penetration) override;
+	virtual void Initialize(Vector2 pos);
+	virtual void Draw(Renderer* renderer) override;
+	virtual void Process(float deltaTime) override;
+	virtual void HandleCollision(Collidable* other, Vector2 penetration) override;
+	virtual void OnStuck() override;
 
 
 	// getter
-	bool IsDying();
-	EnemyType GetType();
-	int GetDamage();
 	float GetAttackCooldown();
-	int GetDropAmount() const;
 
 	//setter
-	void SetSprites(AnimatedSprite* move, AnimatedSprite* attack, AnimatedSprite* die);
-	void SetSpritesDrawSize(int size);
-	void SetSpriteDirection(bool b);
-	void SetType(EnemyType t);
-	void SetDamage(int d);
-	void SetDead();
 	void SetAttackCooldown(float atckCool);
-	void SetKilledByPlayer();
 
 
 
 
 private:
-	GridCoord lastCell;
-	bool killedByPlayer;
-
 	EnemyType type;
-	int damage;
+	Entity* currentTarget;
+
 	float attackCooldown;
 	float currentAttackCooldown;
-
-	AnimatedSprite* moving;
-	AnimatedSprite* attacking;
-	AnimatedSprite* death;
 };
 
 #endif

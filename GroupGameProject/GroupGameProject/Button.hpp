@@ -3,10 +3,8 @@
 
 #include <functional>
 #include "Renderer.hpp"
-#include "GameContext.hpp"
-#include "Element.hpp"
 #include "Sprite.hpp"
-#include "Text.hpp"
+
 
 //NOTE: image will always be centered. If a button requires more customization:
 //Create a container, set it to 0 alpha, add a button, add customizations to container
