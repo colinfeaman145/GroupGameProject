@@ -10,6 +10,7 @@ public:
 	void Process(float deltaTime) override;
 	void Draw(Renderer* renderer) override;
 	void HandleCollision(Collidable* other, Vector2 penetration) override;
+	int GetCoinCount();
 
 private:
 	void HandleAnimation();

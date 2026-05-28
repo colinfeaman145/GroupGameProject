@@ -145,7 +145,7 @@
       "items": [
         {
           "id": 3,
-          "dropRatePerItem": 0.5,
+          "dropRatePerItem": 1,
           "count": 5
         },
         {

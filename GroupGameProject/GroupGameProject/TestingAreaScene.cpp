@@ -4,6 +4,7 @@
 #include "FlyingDevil.hpp"
 #include "GameContext.hpp"
 #include "AnimatedSprite.hpp"
+#include "ItemShopSocket.hpp"
 
 
 bool TestingAreaScene::Initialize() {
@@ -26,13 +27,9 @@ bool TestingAreaScene::Initialize() {
 	enemy->Initialize(Vector2(2000, 1000));
     AddElement(enemy);
 
-	auto enemy2 = new FlyingDevil();
-	enemy2->Initialize(Vector2(2000, 2000));
-    AddElement(enemy2);
-
-	auto enemy3 = new FlyingDevil();
-	enemy3->Initialize(Vector2(2000, 3000));
-    AddElement(enemy3);
+    auto shopSocket = new ItemShopSocket();
+    shopSocket->Initialize(Vector2(3000, 1000), 2);
+    AddElement(shopSocket);
 
     return true;
 }

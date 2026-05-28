@@ -6,6 +6,7 @@
 #include "PercentageBar.hpp"
 #include "Camera.hpp"
 #include "ItemSpawner.hpp"
+#include "Inventory.hpp"
 
 
 
@@ -117,5 +118,9 @@ void Player::Draw(Renderer* renderer) {
 
 void Player::HandleCollision(Collidable* other, Vector2 penetration) {
 	//handle collisions here
+}
+
+int Player::GetCoinCount() {
+	return m_inventory->GetCoinCount();
 }
 

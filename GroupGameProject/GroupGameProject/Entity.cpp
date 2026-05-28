@@ -27,8 +27,6 @@ bool Entity::Initialize(Vector2 pos, Sprite* spr) {
 
     if (sprite) {
         radius = spr->GetWidth() / 2;
-        sprite->SetDrawLayer(RenderLayer::ENEMIES);
-
         collisionBound = CollisionShape::MakeCircle(radius); //default circle
     }
 

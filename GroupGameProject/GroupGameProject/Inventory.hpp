@@ -34,6 +34,13 @@ public:
 	const auto& All() const {
 		return m_stacks;
 	}
+	int GetCoinCount() {
+		auto coinCount = Count(3);
+		if (coinCount > 1) {
+			return coinCount - 1;
+		}
+		return 0;
+	}
 
 	void Print() const {
 		printf("Inventory:\n");
