@@ -9,9 +9,9 @@ Take inspiration from
 
 
 
-## How to add items
+# How to add items
 
-##### Create a new class derived from ItemEffect
+## Create a new class derived from ItemEffect
 
 1. Create a new class and put the .cpp file into the Items folder
 
@@ -80,7 +80,7 @@ For event based items, you have to check what event is called. If you don't, the
 
 
 
-##### Add item in GameSetupItemRegistry.cpp file
+## Add item in GameSetupItemRegistry.cpp file
 
 After implementing it, you add it to the Item Registry.
 It contains all items in the game and lives in the GameContext.hpp. From there any item definition can be reveived.
@@ -98,7 +98,7 @@ Add a additional entry like this:
 Change the ID to match you item and !SWAP OUT THE TEMPLATE TYPE! (the datatype in <>).
 
 
-##### Add item to items.json file
+## Add item to items.json file
 
 Last add a new entry into the items.json file.
 All values other than the ones in the params should be the same.
