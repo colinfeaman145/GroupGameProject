@@ -148,6 +148,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CashoutModule.cpp" />
+    <ClCompile Include="CashoutOverlay.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="Container.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="InventoryOverlay.cpp" />
     <ClCompile Include="InvincibleModule.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemId_6.cpp" />
     <ClCompile Include="ItemShopSocket.cpp" />
     <ClCompile Include="ItemSpawner.cpp" />
     <ClCompile Include="PlayerHUD.cpp" />
@@ -195,6 +197,7 @@
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="CashoutModule.hpp" />
+    <ClInclude Include="CashoutOverlay.hpp" />
     <ClInclude Include="Coin.hpp" />
     <ClInclude Include="Collidable.hpp" />
     <ClInclude Include="Collision.hpp" />
@@ -217,6 +220,7 @@
     <ClInclude Include="Item.hpp" />
     <ClInclude Include="Inventory.hpp" />
     <ClInclude Include="ItemEffect.hpp" />
+    <ClInclude Include="ItemId_6.hpp" />
     <ClInclude Include="ItemRegistry.hpp" />
     <ClInclude Include="ItemShopSocket.hpp" />
     <ClInclude Include="ItemSpawner.hpp" />

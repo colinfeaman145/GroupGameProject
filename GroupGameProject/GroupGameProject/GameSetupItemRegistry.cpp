@@ -11,6 +11,7 @@
 #include "Coin.hpp"
 #include "CashoutModule.hpp"
 #include "InvincibleModule.hpp"
+#include "ItemId_6.hpp"
 
 using json = nlohmann::json;
 
@@ -52,6 +53,12 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 		.tier = ItemTier::Module,
 		.effect = ItemEffect::CreateItemEffectFromJson<InvincibleModule>(data["5"]),
 		.data = data["5"]
+	});
+	context.ir->RegisterItem({
+		.id = 6,
+		.tier = ItemTier::Rare,
+		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_6>(data["6"]),
+		.data = data["6"]
 	});
 
 }

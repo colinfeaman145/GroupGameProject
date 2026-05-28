@@ -45,6 +45,7 @@ public:
     void SetBulletSprite();
     void SetWeaponTexture();
     void SetWeapoinSprite();
+    void SetCashoutHUD();
     void SetInventoryHUD();
     void SetStatSheetHUD();
 

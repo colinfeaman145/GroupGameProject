@@ -7,6 +7,7 @@
 #include "GameContext.hpp"
 #include "InventoryOverlay.hpp"
 #include "StatSheetOverlay.hpp"
+#include "CashoutOverlay.hpp"
 
 
 
@@ -48,6 +49,7 @@ bool PlayerHUD::Initialize()
 
     SetInventoryHUD();
     SetStatSheetHUD();
+    SetCashoutHUD();
 
     return true;
 }
@@ -214,6 +216,22 @@ void PlayerHUD::SetWeapoinSprite() {
 
 }
 
+void PlayerHUD::SetCashoutHUD() {
+    // place statsheet HUD
+    auto cashoutOverlay = new CashoutOverlay(
+        WIDTH * 0.25,
+        HEIGHT * 0.95,
+        WIDTH * 0.5,
+        HEIGHT * 0.05,
+        {0,0,0,0},
+        {0,0,0,0},
+        0,
+        0
+    );
+;
+    cashoutOverlay->Initialize(player->m_inventory);
+    playerHudElements.push_back(cashoutOverlay);
+}
 
 void PlayerHUD::SetStatSheetHUD() {
     // place statsheet HUD
@@ -234,9 +252,9 @@ void PlayerHUD::SetStatSheetHUD() {
 void PlayerHUD::SetInventoryHUD() {
     // place inventory HUD
     auto inventoryOverlay = new InventoryOverlay(
-        WIDTH * 0.75,
+        WIDTH * 0.80,
         0,
-        WIDTH * 0.3,
+        WIDTH * 0.20,
         HEIGHT * 0.6,
         {0,0,0,0},
         {0,0,0,0},

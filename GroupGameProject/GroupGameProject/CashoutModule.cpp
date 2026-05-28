@@ -59,9 +59,8 @@ void CashoutModule::OnEvent(EventType type, EventContext ctx, int stacks) {
 			newItem->SetBasePos(ctx.source->GetPosition());
 			context.currentScene->AddElement(newItem);
 		}
-
-
-
-
+		
+		ctx.source->RemoveItem(4, 999999); // remove all (hopefully)
+		ctx.source->AddItem(4, 1);
 	}
 }

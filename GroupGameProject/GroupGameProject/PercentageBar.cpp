@@ -14,8 +14,8 @@ PercentageBar::PercentageBar(const PercentageBar& other) {
     offsetY = other.offsetY;
 }
 
-PercentageBar::PercentageBar(float current, float max, int w, int h, Color fillColor, Color outlineColor)
-    : current(current), max(max), w(w), h(h), x(0), y(0)
+PercentageBar::PercentageBar(float current, float max, int w, int h, Color fillColor, Color outlineColor, RenderLayer renderLayer)
+    : current(current), max(max), w(w), h(h), x(0), y(0), renderLayer(renderLayer)
     , fillColor(fillColor), outlineColor(outlineColor) {
 }
 
@@ -37,6 +37,13 @@ void PercentageBar::SetOffset(int offX, int offY) {
 void PercentageBar::SetFillColor(Color c) { fillColor = c; }
 void PercentageBar::SetOutlineColor(Color c) { outlineColor = c; }
 
+int PercentageBar::GetWidth() {
+    return w;
+}
+int PercentageBar::GetHeight() {
+    return h;
+}
+
 void PercentageBar::Draw(Renderer* renderer) {
     float pct = (max > 0) ? current / max : 0.0f;
     if (pct < 0.0f) pct = 0.0f;
@@ -48,17 +55,17 @@ void PercentageBar::Draw(Renderer* renderer) {
     if (fillWidth > 0) {
 		float sections = max / 50.0f;
 
-        renderer->AddFilledRect(x + offsetX, y + offsetY, fillWidth, h, fillColor, RenderLayer::PERCENTBAR);
+        renderer->AddFilledRect(x + offsetX, y + offsetY, fillWidth, h, fillColor, renderLayer);
 
 		for (int i = 0; i < sections; ++i) {
 			float sectionPct = (i + 1) / sections;
 			if (sectionPct > pct) break;
 			int sectionX = x + offsetX + (int)(w * sectionPct);
-			renderer->AddFilledRect(sectionX, y + offsetY, 2, h, { 0, 0, 0, 150 }, RenderLayer::PERCENTBAR);
+			renderer->AddFilledRect(sectionX, y + offsetY, 2, h, { 0, 0, 0, 150 }, renderLayer);
 		}
 
     }
 
     // outline
-    renderer->AddDrawRect(x + offsetX, y + offsetY, w, h, outlineColor, RenderLayer::PERCENTBAR);
+    renderer->AddDrawRect(x + offsetX, y + offsetY, w, h, outlineColor, renderLayer);
 }

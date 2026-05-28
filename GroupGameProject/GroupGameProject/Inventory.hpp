@@ -23,7 +23,7 @@ public:
 	}
 	void Remove(ItemID itemId, int amount) {
 		m_stacks[itemId] -= amount;
-		if (m_stacks[itemId] <= 0) m_stacks.erase(itemId);
+		if (m_stacks[itemId] <= 0) m_stacks[itemId] = 0;
 
 		EmitCallbacks();
 	}
