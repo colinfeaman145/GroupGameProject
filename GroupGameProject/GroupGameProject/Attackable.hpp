@@ -67,8 +67,8 @@ private:
 
 public:
 	Inventory* m_inventory;
-protected:
 	StatSheet* m_pStats;
+protected:
 	ItemSpawner* m_itemSpawner;
 
 	float m_fLastStatusEffectTick;

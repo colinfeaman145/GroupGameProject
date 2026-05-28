@@ -13,11 +13,12 @@ public:
 
 private:
 	void HandleAnimation();
-	void HandleMouseClick();
+	void HandleMouseClick(float deltaTime);
 	void HandleMovement();
 
 
 private:
 	int coinCount;
+	float attackCooldown;
 };
 

@@ -29,13 +29,17 @@ void Player::Process(float deltaTime) {
 	auto occ = GetOccupancy();
 
 
-	HandleMouseClick();
+	HandleMouseClick(deltaTime);
 	HandleMovement();
 	HandleAnimation();
 	healthBar->SetValues(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth);
 
     //collision updates
     context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
+
+	if (attackCooldown > 0) {
+		attackCooldown -= deltaTime;
+	}
 }
 
 void Player::HandleAnimation() {
@@ -54,9 +58,11 @@ void Player::HandleAnimation() {
 	sprite->SetFlip(velocity.x > 0);//flip if moving left
 }
 
-void Player::HandleMouseClick() {
+void Player::HandleMouseClick(float deltaTime) {
 	// left click actions just for testing
-	if (context.im->IsMouseButtonPressed(1)) {
+	if (context.im->IsMouseButtonDown(1)) {
+		if (attackCooldown > 0) return;
+		attackCooldown = 1 / m_pStats->GetFinalAttackSpeed();
 		auto mousePos = context.im->GetMouseWorldPosition(context.renderer->cam);
 		auto hitInfo = HitInfo{ 
 			.damageDealt = m_pStats ? m_pStats->GetFinalDamage() : 0,

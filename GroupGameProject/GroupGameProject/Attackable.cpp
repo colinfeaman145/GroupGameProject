@@ -82,7 +82,8 @@ void Attackable::TickRegeneration(float deltaTime) {
 	if (!m_pStats) return;
 	if (m_pStats->regernation <= 0) return;
 
-	auto healAmount = m_pStats->regernation;
+	auto healTickInSeconds = 0.5f;
+	auto healAmount = m_pStats->regernation * healTickInSeconds; // because the tick is every 0.5 seconds
 
 	HitInfo info = {
 		.healAmount = healAmount,
@@ -96,7 +97,7 @@ void Attackable::TickRegeneration(float deltaTime) {
 	};
 
 	m_fLastHealTick += deltaTime;
-	if (m_fLastHealTick < 0.5) return;// tick every half a second
+	if (m_fLastHealTick < healTickInSeconds) return;// tick every half a second
 	m_fLastHealTick = 0;
 	ApplyHeal(ctx);
 
@@ -442,6 +443,9 @@ void Attackable::LoadStatsFromJson(json stats) {
 		stats["baseSpeed"].get<int>(),
 		stats["bonusSpeed"].get<int>(),
 		stats["speedMult"].get<float>(),
+		stats["baseAttackSpeed"].get<float>(),
+		stats["bonusAttackSpeed"].get<float>(),
+		stats["attackSpeedMult"].get<float>(),
 		stats["armor"].get<int>(),
 		stats["regeneration"].get<float>(),
 		stats["critChance"].get<float>(),

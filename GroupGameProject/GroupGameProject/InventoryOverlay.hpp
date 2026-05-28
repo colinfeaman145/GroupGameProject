@@ -19,11 +19,10 @@ public:
 
 	InventoryOverlay(int x, int y, int w, int h, Color fillColor, Color borderColor, int alpha, int borderThickness);
 	~InventoryOverlay();
-	bool Initialize(Inventory* player, float cellSize);
+	bool Initialize(Inventory* player, float cellSize, float foregroundAlpha);
 	void Recalculate();
 	void Draw(Renderer* renderer);
 	void Clear();
-	bool AddItem(const Sprite& sprite, int count);
 
 private:
 	void RecalculateItemPosition();
@@ -36,6 +35,7 @@ private:
 	int rows;
 	int collumns;
 	float cellSize;
+	float foregroundAlpha;
 
 	std::vector<InventoryItem> currentInventory;
 
