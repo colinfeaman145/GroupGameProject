@@ -5,7 +5,7 @@
 #include "GameContext.hpp"
 #include "AnimatedSprite.hpp"
 #include "ItemShopSocket.hpp"
-
+#include "PlayerHUD.hpp"
 
 bool TestingAreaScene::Initialize() {
 
@@ -23,6 +23,22 @@ bool TestingAreaScene::Initialize() {
 	AddElement(player);
 
 
+    //player hud?
+    playerHUD = new PlayerHUD(player);
+    playerHUD->Initialize();
+    AddElement(playerHUD);
+
+    /*
+	//animation setup
+    AnimatedSprite* enemyIdle;
+    SDL_Texture* enemyIdleTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Enemy/big_demon.png");
+    enemyIdle = new AnimatedSprite();
+    enemyIdle->Initialize(enemyIdleTexture, 34, 34, 0, 0, 500, 500, 3, 4);
+    enemyIdle->SetDrawLayer(RenderLayer::ENEMIES);
+    enemyIdle->SetFrameDuration(0.10);
+    enemyIdle->SetLooping(true);
+    enemyIdle->SetLeaveOnLastFrame(true);
+    */
 	enemy = new FlyingDevil();
 	enemy->Initialize(Vector2(2000, 1000));
     AddElement(enemy);

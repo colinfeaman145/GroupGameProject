@@ -26,6 +26,7 @@ public:
     void SetDrawLayer(RenderLayer l, int sl = 0);
     void SetIsFlashing(bool flash);
     void SetFlip(bool flipH);
+    void SetVerticalFlip(bool flipV);
 
     virtual int GetWidth() const { return dstRect.w; };
     virtual int GetHeight() const { return dstRect.h; };

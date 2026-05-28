@@ -171,6 +171,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemShopSocket.cpp" />
     <ClCompile Include="ItemSpawner.cpp" />
+    <ClCompile Include="PlayerHUD.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="TestingAreaScene.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="ItemRegistry.hpp" />
     <ClInclude Include="ItemShopSocket.hpp" />
     <ClInclude Include="ItemSpawner.hpp" />
+    <ClInclude Include="PlayerHUD.hpp" />
     <ClInclude Include="StatSheet.hpp" />
     <ClInclude Include="TestingAreaScene.hpp" />
     <ClInclude Include="Particle.hpp" />
