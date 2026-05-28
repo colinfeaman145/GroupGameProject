@@ -46,7 +46,7 @@ bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 
 	// healthbar setup
 	Vector2 size = sprite->GetDrawSize();
-	healthBar = new PercentageBar(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth, size.x * 1, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255});
+	healthBar = new PercentageBar(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth, size.x * 1, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255}, RenderLayer::PERCENTBAR);
 	healthBar->SetPosition(position.x, position.y);
 	healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.2));
 
@@ -121,7 +121,7 @@ void Attackable::SetHealth(float h) {
 	m_fCurrentHealth = clip(h, 0, m_pStats ? m_pStats->GetFinalHealth() : h);
 
 	Vector2 size = sprite->GetDrawSize();
-	healthBar = new PercentageBar(m_fCurrentHealth, maxHealth, size.x * 0.9, size.y * 0.1, { 255, 50, 50, 150 }, { 0, 0, 0, 150 });
+	healthBar = new PercentageBar(m_fCurrentHealth, maxHealth, size.x * 0.9, size.y * 0.1, { 255, 50, 50, 150 }, { 0, 0, 0, 150 }, RenderLayer::PERCENTBAR);
 	healthBar->SetPosition(position.x, position.y);
 	healthBar->SetOffset((size.x * 0.05), (size.y * 0.8));
 }

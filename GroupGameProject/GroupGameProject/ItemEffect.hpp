@@ -73,7 +73,7 @@ public:
 	static float GetLinearStackingItemValue(float itemBase, int perStack, int stacks) {
 		return itemBase + perStack * (stacks - 1);
 	}
-	static float GeHyperbolicStackingItemValue(int perStack, int stacks) {
+	static float GetHyperbolicStackingItemValue(float perStack, int stacks) {
 		return 1 - pow(1 - perStack, stacks);
 	}
 

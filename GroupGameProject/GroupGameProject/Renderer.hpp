@@ -93,7 +93,7 @@ private:
     void DrawSingleRenderCommand(const RenderCommand& cmd);
     void DrawSingleBoundingCommand(const BoundingDrawCommand& cmd);
 
-    void DrawBoundingRect(int x, int y, int w, int h);
+    void DrawBoundingRect(int x, int y, int w, int h, RenderLayer layer);
     void DrawBoundingCircle(int cx, int cy, int radius);
     void DrawBoundingCone(int cx, int cy, int radius, Vector2 direction, float halfAngle);
     void DrawFilledRect(int x, int y, int w, int h, Color c, RenderLayer layer);

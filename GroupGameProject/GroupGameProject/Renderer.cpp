@@ -147,7 +147,7 @@ void Renderer::DrawSingleRenderCommand(const RenderCommand& cmd) {
 void Renderer::DrawSingleBoundingCommand(const BoundingDrawCommand& cmd) {
     SDL_SetRenderDrawColor(renderer, cmd.c.r, cmd.c.g, cmd.c.b, cmd.c.a);
     if (cmd.type == ShapeType::Square)
-        DrawBoundingRect((int)cmd.x, (int)cmd.y, (int)cmd.w, (int)cmd.h);
+        DrawBoundingRect((int)cmd.x, (int)cmd.y, (int)cmd.w, (int)cmd.h, cmd.layer);
     else if (cmd.type == ShapeType::Circle)
         DrawBoundingCircle((int)cmd.x, (int)cmd.y, cmd.radius);
     else if (cmd.type == ShapeType::Cone)
@@ -159,9 +159,9 @@ void Renderer::DrawSingleBoundingCommand(const BoundingDrawCommand& cmd) {
 
 
 //SHAPE DRAWING
-void Renderer::DrawBoundingRect(int x, int y, int w, int h) {
+void Renderer::DrawBoundingRect(int x, int y, int w, int h, RenderLayer layer) {
     SDL_Rect world = { x, y, w, h };
-    SDL_Rect screen = cam->GetScreenRect(&world);
+    SDL_Rect screen = layer >= RenderLayer::UI_SUBLAYER ? world : cam->GetScreenRect(&world);
     SDL_RenderDrawRect(renderer, &screen);
 }
 

@@ -37,7 +37,7 @@
           "tier": 1,
           "goldCount": 5,
           "threshold": 1,
-          "randomItemCount": 2,
+          "randomItemCount": 5,
           "selectableItemCount": 1,
           "commonChance": 0.7,
           "rareChance": 0,
@@ -87,6 +87,15 @@
     "spritePath": "",
     "params": {
       "duration": 1
+    }
+  },
+ "6": {
+    "id": 6,
+    "name": "Sugar candy",
+    "description": "Get attackspeed",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item615.png",
+    "params": {
+      "increasePerStack": 0.15
     }
   }
 }

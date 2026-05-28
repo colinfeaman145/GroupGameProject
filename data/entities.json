@@ -4,7 +4,7 @@
       "baseHealth": 100,
       "bonusHealth": 0,
       "healthMult": 1,
-      "baseDamage": 15,
+      "baseDamage": 40,
       "bonusDamage": 0,
       "damageMult": 1,
       "baseSpeed": 1000,
@@ -14,7 +14,7 @@
       "bonusAttackSpeed": 0,
       "attackSpeedMult": 1,
       "armor": 20,
-      "regeneration": 1,
+      "regeneration": 5,
       "critChance": 0.5,
       "critMultiplyer": 1.5,
       "hasHealCritEnabled": 0
@@ -147,7 +147,7 @@
       }
     ],
     "spawner": {
-      "spawnRadius": 100,
+      "spawnRadius": 150,
       "items": [
         {
           "id": 3,
@@ -155,8 +155,8 @@
           "count": 5
         },
         {
-          "id": 2,
-          "dropRatePerItem": 0.2,
+          "id": 6,
+          "dropRatePerItem": 1,
           "count": 5
         }
       ]
