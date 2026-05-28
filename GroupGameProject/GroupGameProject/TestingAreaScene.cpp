@@ -22,19 +22,7 @@ bool TestingAreaScene::Initialize() {
     context.grid->UpdateOccupancy((Entity*)player, &GridCell::AddOther, &GridCell::RemoveOther);
 	AddElement(player);
 
-	//InventoryOverlay(int x, int y, int w, int h, Color fillColor, Color borderColor, int alpha, int borderThickness);
-    auto inventoryUI = new InventoryOverlay(
-        WIDTH * 0.75,
-        0,
-        WIDTH * 0.3,
-        HEIGHT * 0.6,
-        {0,0,0,50},
-        {0,0,0,0},
-        0,
-        5
-    );
-    inventoryUI->Initialize(player->m_inventory, 50);
-    UI.push_back(inventoryUI);
+
 
     //player hud?
     playerHUD = new PlayerHUD(player);

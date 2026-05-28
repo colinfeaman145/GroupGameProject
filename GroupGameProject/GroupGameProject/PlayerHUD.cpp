@@ -1,6 +1,12 @@
 #include "PlayerHUD.hpp"
-#include <SDL.h>
+
 #include <string>
+#include "Sprite.hpp"
+#include "InventoryOverlay.hpp"
+#include "Camera.hpp"
+#include "Player.hpp"
+#include "GameContext.hpp"
+
 
 
 PlayerHUD::PlayerHUD(Player* player)
@@ -18,6 +24,11 @@ PlayerHUD::PlayerHUD(Player* player)
 
 PlayerHUD::~PlayerHUD()
 {
+    for (auto& element : playerHudElements) {
+        delete element;
+        element = nullptr;
+    }
+
     //delete BulletTexture;
     //delete WeaponTexture;
 }
@@ -28,39 +39,48 @@ bool PlayerHUD::Initialize()
     weaponType = Ar_1;
 
     SetBulletTexture();
-    int bulletTextureW = 0;
-    int bulletTextureH = 0;
-    if (BulletTexture)
-    {
-        SDL_QueryTexture(BulletTexture, nullptr, nullptr, &bulletTextureW, &bulletTextureH);
-    }
-
-    bulletSprite = new Sprite();
-    bulletSprite->Initialize(BulletTexture, bulletTextureW, bulletTextureH, 0, 0, 50, 50, RenderLayer::PLAYER);
-    bulletSprite->SetDrawLayer(RenderLayer::PLAYER);
-    BulletSpriteInitialized = true;
+    SetBulletSprite();
 
     SetWeaponTexture();
-    int weaponTextureW = 0;
-    int weaponTextureH = 0;
-    if (WeaponTexture)
-    {
-        SDL_QueryTexture(WeaponTexture, nullptr, nullptr, &weaponTextureW, &weaponTextureH);
-    }
+    SetWeapoinSprite();
 
-    weaponSprite = new Sprite();
-    weaponSprite->Initialize(WeaponTexture, weaponTextureW, weaponTextureH, 0, 0, 100, 100, RenderLayer::PLAYER);
-    weaponSprite->SetDrawLayer(RenderLayer::PLAYER);
-    WeaponSpriteInitialized = true;
+
+    SetInventoryHUD();
 
     return true;
 }
 
 void PlayerHUD::Process(float deltaTime)
 {
-    SetBulletTexture();
-    SetWeaponTexture();
+    HandleGunSpriteRotation();
 
+    HandleHUDElementsProcess(deltaTime);
+}
+
+void PlayerHUD::Draw(Renderer* renderer)
+{
+    if (WeaponSpriteInitialized && weaponSprite)
+    {
+        weaponSprite->Draw(renderer);
+    }
+
+    HandleHUDElementsDraw(renderer);
+}
+
+
+void PlayerHUD::HandleHUDElementsProcess(float deltaTime) {
+    for (auto& hudElement : playerHudElements) {
+        hudElement->Process(deltaTime);
+    }
+}
+
+void PlayerHUD::HandleHUDElementsDraw(Renderer* renderer) {
+    for (auto& hudElement : playerHudElements) {
+        hudElement->Draw(renderer);
+    }
+}
+
+void PlayerHUD::HandleGunSpriteRotation() {
     if (weaponSprite)
     {
         Vector2 playerCenter = player->GetPosition();
@@ -79,21 +99,9 @@ void PlayerHUD::Process(float deltaTime)
             weaponSprite->SetVerticalFlip(true);
         }
     }
-
-
 }
 
-void PlayerHUD::Draw(Renderer* renderer)
-{
-    if (BulletSpriteInitialized && bulletSprite)
-    {
-        bulletSprite->Draw(renderer);
-    }
-    if (WeaponSpriteInitialized && weaponSprite)
-    {
-        weaponSprite->Draw(renderer);
-    }
-}
+
 
 void PlayerHUD::SetBulletTexture()
 {
@@ -115,6 +123,21 @@ void PlayerHUD::SetBulletTexture()
         BulletTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Bullets/SMG_Pistols_bullets.png");
         break;
     }
+}
+
+void PlayerHUD::SetBulletSprite() {
+    int bulletTextureW = 0;
+    int bulletTextureH = 0;
+    if (BulletTexture)
+    {
+        SDL_QueryTexture(BulletTexture, nullptr, nullptr, &bulletTextureW, &bulletTextureH);
+    }
+
+    bulletSprite = new Sprite();
+    bulletSprite->Initialize(BulletTexture, bulletTextureW, bulletTextureH, 0, 0, 50, 50, RenderLayer::PLAYER);
+    bulletSprite->SetDrawLayer(RenderLayer::PLAYER);
+    BulletSpriteInitialized = true;
+
 }
 
 void PlayerHUD::SetWeaponTexture()
@@ -172,4 +195,36 @@ void PlayerHUD::SetWeaponTexture()
         WeaponTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Weapons/Ar_10.png");
         break;
     }
+}
+
+void PlayerHUD::SetWeapoinSprite() {
+    int weaponTextureW = 0;
+    int weaponTextureH = 0;
+    if (WeaponTexture)
+    {
+        SDL_QueryTexture(WeaponTexture, nullptr, nullptr, &weaponTextureW, &weaponTextureH);
+    }
+
+    weaponSprite = new Sprite();
+    weaponSprite->Initialize(WeaponTexture, weaponTextureW, weaponTextureH, 0, 0, 100, 100, RenderLayer::PLAYER);
+    weaponSprite->SetDrawLayer(RenderLayer::PLAYER);
+    WeaponSpriteInitialized = true;
+
+}
+
+
+void PlayerHUD::SetInventoryHUD() {
+    // place inventory HUD
+    auto inventoryOverlay = new InventoryOverlay(
+        WIDTH * 0.75,
+        0,
+        WIDTH * 0.3,
+        HEIGHT * 0.6,
+        {0,0,0,50},
+        {0,0,0,0},
+        0,
+        5
+    );
+    inventoryOverlay->Initialize(player->m_inventory, 50);
+    playerHudElements.push_back(inventoryOverlay);
 }

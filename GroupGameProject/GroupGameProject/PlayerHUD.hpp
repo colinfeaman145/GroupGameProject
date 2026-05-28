@@ -1,13 +1,13 @@
 #ifndef PLAYERHUD_HPP
 #define PLAYERHUD_HPP
 
+#include <SDL.h>
+#include <vector>
 #include "Element.hpp"
-#include "Player.hpp"
-#include "Attackable.hpp"
 
-#include "Sprite.hpp"
-#include "GameContext.hpp"
-
+class Sprite;
+class InventoryOverlay;
+class Player;
 class PlayerHUD : public Element
 {
 
@@ -37,8 +37,15 @@ public:
     void Process(float deltaTime);
     void Draw(Renderer* renderer);
 
+    void HandleHUDElementsProcess(float deltaTime);
+    void HandleHUDElementsDraw(Renderer* renderer);
+    void HandleGunSpriteRotation();
+
     void SetBulletTexture();
+    void SetBulletSprite();
     void SetWeaponTexture();
+    void SetWeapoinSprite();
+    void SetInventoryHUD();
 
 private:
     Player* player;
@@ -52,5 +59,7 @@ private:
 
     Sprite* bulletSprite;
     Sprite* weaponSprite;
+
+    std::vector<Sprite*> playerHudElements;
 };
 #endif // PLAYERHUD_HPP
