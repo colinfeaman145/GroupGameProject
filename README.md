@@ -17,7 +17,6 @@ Take inspiration from
 
 2. Override the 4 functions from ItemEffect 
 ```c++
-<ItemId_?>
 class ItemId_? : public ItemEffect {
 	void OnPickup(Attackable* owner, int stacks) override;
 	void OnRemove(Attackable* owner, int stacks) override;
