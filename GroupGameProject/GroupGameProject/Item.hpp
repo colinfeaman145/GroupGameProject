@@ -15,8 +15,9 @@ public:
 	void HandleCollision(Collidable* other, Vector2 penetration) override;
 	void SetBasePos(Vector2 pos);
 
-private:
+public:
 	ItemID id;
+private:
 
 	// wobble stats
 	float m_fAmplitude = 10;

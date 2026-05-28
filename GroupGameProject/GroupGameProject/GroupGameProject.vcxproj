@@ -169,6 +169,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="InvincibleModule.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemShopSocket.cpp" />
     <ClCompile Include="ItemSpawner.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="TestingAreaScene.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="Inventory.hpp" />
     <ClInclude Include="ItemEffect.hpp" />
     <ClInclude Include="ItemRegistry.hpp" />
+    <ClInclude Include="ItemShopSocket.hpp" />
     <ClInclude Include="ItemSpawner.hpp" />
     <ClInclude Include="StatSheet.hpp" />
     <ClInclude Include="TestingAreaScene.hpp" />
