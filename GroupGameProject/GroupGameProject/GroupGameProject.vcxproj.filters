@@ -153,6 +153,9 @@
     <ClCompile Include="ItemShopSocket.cpp">
       <Filter>Source Files\Items</Filter>
     </ClCompile>
+    <ClCompile Include="InventoryOverlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.hpp">
@@ -285,6 +288,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ItemShopSocket.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryOverlay.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

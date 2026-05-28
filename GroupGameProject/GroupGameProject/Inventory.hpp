@@ -1,5 +1,6 @@
 #pragma once
 #include <unordered_map>
+#include <functional>
 
 
 // the item ID refers to the item ID in the ItemRegistry.
@@ -9,22 +10,22 @@ using ItemID = uint32_t;
 // a simple inventory system that tracks items and stacks by their ID. 
 class Inventory {
 public:
-	Inventory(std::function<void()> onChangeCallback) {
-		this->onChangeCallback = onChangeCallback;
+	Inventory() {}
+
+	void RegisterCallback(std::function<void()> func) {
+		onChangeCallbacks.push_back(func);
 	}
 
 	void Add(ItemID itemId, int amount) {
 		m_stacks[itemId] += amount;
 
-		onChangeCallback();
-		Print();
+		EmitCallbacks();
 	}
 	void Remove(ItemID itemId, int amount) {
 		m_stacks[itemId] -= amount;
 		if (m_stacks[itemId] <= 0) m_stacks.erase(itemId);
 
-		onChangeCallback();
-		Print();
+		EmitCallbacks();
 	}
 	int Count(ItemID itemId) const {
 		auto it = m_stacks.find(itemId);
@@ -33,13 +34,6 @@ public:
 	}
 	const auto& All() const {
 		return m_stacks;
-	}
-	int GetCoinCount() {
-		auto coinCount = Count(3);
-		if (coinCount > 1) {
-			return coinCount - 1;
-		}
-		return 0;
 	}
 
 	void Print() const {
@@ -50,11 +44,16 @@ public:
 	}
 	void Clear() {
 		m_stacks.clear();
-		onChangeCallback();
+		EmitCallbacks();
+	}
+	void EmitCallbacks() {
+		for (auto callback : onChangeCallbacks) {
+			callback();
+		}
 	}
 
 private:
 	std::unordered_map<ItemID, int> m_stacks;
-	std::function<void()> onChangeCallback;
+	std::vector<std::function<void()>> onChangeCallbacks;
 };
 

@@ -1,11 +1,12 @@
 #include "Scene.hpp"
-
 #include "Entity.hpp"
 #include "Text.hpp"
 #include "Sprite.hpp"
 #include "AnimatedSprite.hpp"
 #include "ParticleEmitter.hpp"
 #include "GameContext.hpp"
+#include "Player.hpp"
+#include "Container.hpp"
 
 Scene::Scene() {}
 Scene::~Scene() {
@@ -19,7 +20,8 @@ Scene::~Scene() {
 	UI.clear();
 }
 
-bool Scene::Initialize() { return true; } //makes and saves sprites and entities
+bool Scene::Initialize() { return true; }
+
 void Scene::Process(float deltaTime) {
 	// fill in elements to add from last frame
 	if (!elementsToAdd.empty()) {
@@ -64,3 +66,4 @@ void Scene::ReadInputs(float deltaTime) {};
 void Scene::AddElement(Element* e) { 
 	elementsToAdd.push_back(e);
 }
+

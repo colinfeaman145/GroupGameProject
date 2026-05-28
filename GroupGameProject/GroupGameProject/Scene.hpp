@@ -8,7 +8,6 @@
 class Renderer;
 class Element;
 class Sprite;
-
 using namespace std;
 class Scene {
 
@@ -30,7 +29,6 @@ protected:
     // add/remove new items to this instead of elements during runtime
     vector<Element*> elementsToAdd;
     vector<Element*> elementsToDelete;
-
 };
 
 

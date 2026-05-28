@@ -37,7 +37,7 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 	});
 	context.ir->RegisterItem({
 		.id = 3,
-		.tier = ItemTier::Module,
+		.tier = ItemTier::Common,
 		.effect = ItemEffect::CreateItemEffectFromJson<Coin>(data["3"]),
 		.data = data["3"]
 	});

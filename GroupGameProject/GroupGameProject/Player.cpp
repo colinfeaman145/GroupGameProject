@@ -120,7 +120,4 @@ void Player::HandleCollision(Collidable* other, Vector2 penetration) {
 	//handle collisions here
 }
 
-int Player::GetCoinCount() {
-	return m_inventory->GetCoinCount();
-}
 
