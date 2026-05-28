@@ -46,6 +46,7 @@ public:
     void SetWeaponTexture();
     void SetWeapoinSprite();
     void SetInventoryHUD();
+    void SetStatSheetHUD();
 
 private:
     Player* player;

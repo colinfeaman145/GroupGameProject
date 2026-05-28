@@ -46,7 +46,7 @@ void PercentageBar::Draw(Renderer* renderer) {
 
     // fill
     if (fillWidth > 0) {
-		float sections = max / 20.0f;
+		float sections = max / 50.0f;
 
         renderer->AddFilledRect(x + offsetX, y + offsetY, fillWidth, h, fillColor, RenderLayer::PERCENTBAR);
 

@@ -156,6 +156,12 @@
     <ClCompile Include="InventoryOverlay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerHUD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StatSheetOverlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.hpp">
@@ -291,6 +297,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InventoryOverlay.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerHUD.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StatSheetOverlay.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

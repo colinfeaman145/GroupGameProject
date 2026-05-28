@@ -12,6 +12,9 @@ public:
 		int baseSpeed = 1000,
 		int bonusSpeed = 0,
 		float speedMult = 1,
+		float baseAttackSpeed = 0.5,
+		float bonusAttackSpeed = 0,
+		float attackSpeedMult = 1,
 		int armor = 0,
 		float regernation = 0,
 		float critChance = 0,
@@ -28,6 +31,9 @@ public:
 		defaultBaseSpeed = baseSpeed;
 		defaultBonusDamage = bonusSpeed;
 		defaultSpeedMult = speedMult;
+		defaultBaseAttackSpeed = baseAttackSpeed;
+		defaultBonusAttackSpeed = bonusAttackSpeed;
+		defaultAttackSpeedMult = attackSpeedMult;
 		defaultArmor = armor;
 		defaultRegernation = regernation;
 		defaultCritChance = critChance;
@@ -45,6 +51,9 @@ public:
 	float GetFinalSpeed() const {
 		return (baseSpeed + bonusSpeed) * speedMult;
 	}
+	float GetFinalAttackSpeed() const {
+		return (baseAttackSpeed + bonusAttackSpeed) * attackSpeedMult;
+	}
 	float CalculateDamageReceived(float incomingDamage) const {
 		// simple armor calculation, can be improved
 		return incomingDamage * (100.f / (100 + armor));
@@ -54,12 +63,19 @@ public:
 		baseHealth = defaultBaseHealth;
 		bonusHealth = defaultBonusHealth;
 		healthMult = defaultHealthMult;
+
 		baseDamage = defaultBaseDamage;
 		bonusDamage = defaultBonusDamage;
 		damageMult = defaultDamageMult;
+
 		baseSpeed = defaultBaseSpeed;
 		bonusSpeed = defaultBonusSpeed;
-		speedMult = defaultHealthMult;
+		speedMult = defaultSpeedMult;
+
+		baseAttackSpeed = defaultBaseAttackSpeed;
+		bonusAttackSpeed = defaultBonusAttackSpeed;
+		attackSpeedMult = defaultAttackSpeedMult;
+
 		armor = defaultArmor;
 		critChance = defaultCritChance;
 		critMultiplyer = defaultCritMultiplyer;
@@ -81,6 +97,10 @@ public:
 	int bonusSpeed;
 	float speedMult;
 
+	float baseAttackSpeed;
+	float bonusAttackSpeed;
+	float attackSpeedMult;
+
 	int armor;
 	float critChance;
 	float critMultiplyer;
@@ -98,9 +118,13 @@ private:
 	int defaultBonusDamage;
 	float defaultDamageMult;
 
-	int defaultBaseSpeed;
-	int defaultBonusSpeed;
+	float defaultBaseSpeed;
+	float defaultBonusSpeed;
 	float defaultSpeedMult;
+
+	int defaultBaseAttackSpeed;
+	int defaultBonusAttackSpeed;
+	float defaultAttackSpeedMult;
 
 	int defaultArmor;
 	float defaultCritChance;

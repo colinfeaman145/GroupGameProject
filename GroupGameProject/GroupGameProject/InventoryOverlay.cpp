@@ -13,10 +13,11 @@ InventoryOverlay::~InventoryOverlay() {
     Clear();
 }
 
-bool InventoryOverlay::Initialize(Inventory* i, float cellSize)
+bool InventoryOverlay::Initialize(Inventory* i, float cellSize, float foregroundAlpha)
 {
 
     inventory = i;
+    this->foregroundAlpha = foregroundAlpha;
     inventory->RegisterCallback([this]() { this->Recalculate();});
     rows = size.y / cellSize;
     collumns = size.x / cellSize;
@@ -58,11 +59,13 @@ void InventoryOverlay::RecalculateInventory() {
 
         auto countText = new Text();
         countText->Initialize(std::to_string(count), "../../assets/fonts/pixelpurl/PixelPurl.ttf", cellSize/2);
+        countText->SetColor({ 255,255,255,foregroundAlpha });
 
 		SDL_Texture* itemTexture = context.txm->LoadTexture(context.renderer, item.data["spritePath"]);
 		auto itemSprite = new Sprite();
 		itemSprite->Initialize(itemTexture, 16, 16, 0, 0, cellSize, cellSize);
 		itemSprite->SetDrawLayer(RenderLayer::PLAYER);
+        itemSprite->SetColor({ 255,255,255,foregroundAlpha });
 
         InventoryItem uiItem = {
             .sprite = itemSprite,

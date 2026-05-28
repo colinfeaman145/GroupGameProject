@@ -2,10 +2,11 @@
 
 #include <string>
 #include "Sprite.hpp"
-#include "InventoryOverlay.hpp"
 #include "Camera.hpp"
 #include "Player.hpp"
 #include "GameContext.hpp"
+#include "InventoryOverlay.hpp"
+#include "StatSheetOverlay.hpp"
 
 
 
@@ -46,6 +47,7 @@ bool PlayerHUD::Initialize()
 
 
     SetInventoryHUD();
+    SetStatSheetHUD();
 
     return true;
 }
@@ -213,6 +215,22 @@ void PlayerHUD::SetWeapoinSprite() {
 }
 
 
+void PlayerHUD::SetStatSheetHUD() {
+    // place statsheet HUD
+    auto statSheetOverlay = new StatSheetOverlay(
+        0,
+        0,
+        WIDTH * 0.2,
+        HEIGHT * 0.5,
+        {0,0,0,0},
+        {0,0,0,0},
+        0,
+        0
+    );
+    statSheetOverlay->Initialize(player->m_pStats, player->m_inventory, 50, 150);
+    playerHudElements.push_back(statSheetOverlay);
+}
+
 void PlayerHUD::SetInventoryHUD() {
     // place inventory HUD
     auto inventoryOverlay = new InventoryOverlay(
@@ -220,11 +238,11 @@ void PlayerHUD::SetInventoryHUD() {
         0,
         WIDTH * 0.3,
         HEIGHT * 0.6,
-        {0,0,0,50},
+        {0,0,0,0},
         {0,0,0,0},
         0,
-        5
+        0
     );
-    inventoryOverlay->Initialize(player->m_inventory, 50);
+    inventoryOverlay->Initialize(player->m_inventory, 50, 150);
     playerHudElements.push_back(inventoryOverlay);
 }
