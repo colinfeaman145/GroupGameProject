@@ -58,19 +58,20 @@ public:
 	void TickStatusEffect(float deltaTime);
 	void TickRegeneration(float deltaTime);
 
-	void LoadEntityDataFromJson(const string& section);
+	void LoadEntityDataFromJson(json section);
 private:
 	void LoadInventoryFromJson(json inventory);
 	void LoadItemSpawnerSettingsFromJson(json spawner);
 	void LoadStatsFromJson(json stats);
 	void LoadAnimationsFromJson(json animations);
 
+
+
 public:
 	Inventory* m_inventory;
 	StatSheet* m_pStats;
 protected:
 	ItemSpawner* m_itemSpawner;
-	json params;
 
 	float m_fLastStatusEffectTick;
 	float m_fLastHealTick;

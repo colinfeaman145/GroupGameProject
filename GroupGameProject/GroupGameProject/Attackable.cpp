@@ -25,6 +25,7 @@ Attackable::Attackable() {
 	m_pStats = new StatSheet();
 	m_pStats->SetDefaultValues();
 	m_pStats->Reset();
+
 }
 
 Attackable::~Attackable() {
@@ -356,20 +357,13 @@ void Attackable::RecalculateStats() {
 	}
 }
 
-void Attackable::LoadEntityDataFromJson(const string& section) {
-	auto filepath = "../../data/entities.json";
-    ifstream file(filepath);
-    if (!file.is_open()) {
-        cerr << "Failed to open stats file: " << filepath << endl;
-        return;
-    }
-    json data = json::parse(file);
-	LoadStatsFromJson(data[section]["stats"]);
-	LoadInventoryFromJson(data[section]["inventory"]);
-	LoadItemSpawnerSettingsFromJson(data[section]["spawner"]);
-	LoadAnimationsFromJson(data[section]["animations"]);
+void Attackable::LoadEntityDataFromJson(json data) {
+	this->data = data;
+	LoadStatsFromJson(data["stats"]);
+	LoadInventoryFromJson(data["inventory"]);
+	LoadItemSpawnerSettingsFromJson(data["spawner"]);
+	LoadAnimationsFromJson(data["animations"]);
 	m_fCurrentHealth = m_pStats->GetFinalHealth();// set current health after item calculations
-	params = data[section]["params"];
 }
 
 void Attackable::LoadAnimationsFromJson(json animations) {

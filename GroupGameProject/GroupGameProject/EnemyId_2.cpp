@@ -1,20 +1,20 @@
-#include "FlyingDevil.hpp"
+#include "EnemyId_2.hpp"
 #include <math.h>
 #include "InlineHelper.hpp"
 #include "AnimatedSprite.hpp"
+#include "GameContext.hpp"
 
 
-void FlyingDevil::Initialize(Vector2 pos) {
-	LoadEntityDataFromJson("FlyingDevil");
+void EnemyId_2::Initialize(Vector2 pos) {
 	Enemy::Initialize(pos);
 	ChangeState(EnemyState::IDLE);
-	acceleration = params["acceleration"];
-	deceleration = params["deceleration"];
-	maxSpeed = params["maxSpeed"];
+	acceleration = data["params"]["acceleration"];
+	deceleration = data["params"]["deceleration"];
+	maxSpeed = data["params"]["maxSpeed"];
 }
 
 
-void FlyingDevil::Process(float deltaTime) {
+void EnemyId_2::Process(float deltaTime) {
 	Enemy::Process(deltaTime);
 	if (currentState == EnemyState::IDLE) {
 		RecalculateDirection();
@@ -39,14 +39,14 @@ void FlyingDevil::Process(float deltaTime) {
 
 
 // attack player while in a specific animation
-void FlyingDevil::Approach(float deltaTime) {
+void EnemyId_2::Approach(float deltaTime) {
 	if (currentState != EnemyState::APPROACHING) return;
 	velocity.x *= 1 + (acceleration * deltaTime);
 	velocity.y *= 1 + (acceleration * deltaTime);
 	HandleAttackAnimation();
 }
 
-void FlyingDevil::HandleAttackAnimation() {
+void EnemyId_2::HandleAttackAnimation() {
 	if (!attackingAnimation->IsAnimating()) {
 		sprite = attackingAnimation;
 		attackingAnimation->Animate();
@@ -58,7 +58,7 @@ void FlyingDevil::HandleAttackAnimation() {
 
 }
 
-void FlyingDevil::HandleCollision(Collidable* other, Vector2 penetration) {
+void EnemyId_2::HandleCollision(Collidable* other, Vector2 penetration) {
 	Enemy::HandleCollision(other, penetration);
 	if (other->GetCollidableType() != CollidableType::PLAYER) return;
 	if (auto player = dynamic_cast<Attackable*>(other)) {
@@ -67,14 +67,14 @@ void FlyingDevil::HandleCollision(Collidable* other, Vector2 penetration) {
 }
 
 // if not hit the player
-void FlyingDevil::Recover(float deltaTime) {
+void EnemyId_2::Recover(float deltaTime) {
 	if (currentState != EnemyState::RECOVERING) return;
 	velocity.x /= 1 + (deceleration * deltaTime);
 	velocity.y /= 1 + (deceleration * deltaTime);
 	HandleRecoverAnimation();
 }
 
-void FlyingDevil::HandleRecoverAnimation() {
+void EnemyId_2::HandleRecoverAnimation() {
 	if (!idleAnimation->IsAnimating()) {
 		sprite = idleAnimation;
 		idleAnimation->Animate();
@@ -86,7 +86,7 @@ void FlyingDevil::HandleRecoverAnimation() {
 	}
 }
 
-void FlyingDevil::RecalculateDirection() {
+void EnemyId_2::RecalculateDirection() {
 	currentTargetPosition = target->GetPosition();
 	velocity = (currentTargetPosition - GetPosition()).Normalized();
 }

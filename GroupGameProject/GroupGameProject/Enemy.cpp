@@ -10,6 +10,7 @@ Enemy::~Enemy() = default;
 
 void Enemy::Initialize(Vector2 pos) {
 
+	LoadEntityDataFromJson(data);
     // the idle animation is always the base animation
     Attackable::Initialize(pos, idleAnimation);
     collideType = CollidableType::ENEMY;

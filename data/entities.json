@@ -1,5 +1,5 @@
 {
-  "Player": {
+  "1": {
     "stats": {
       "baseHealth": 100,
       "bonusHealth": 0,
@@ -56,7 +56,7 @@
     "inventory": [
       {
         "id": 1,
-        "stacks": 1
+        "stacks": 50
       },
       {
         "id": 2,
@@ -87,7 +87,7 @@
     },
     "params": {}
   },
-  "FlyingDevil": {
+  "2": {
     "stats": {
       "baseHealth": 100,
       "bonusHealth": 0,
@@ -167,5 +167,77 @@
       "deceleration": 2.0,
       "maxSpeed": 1500
     }
+  },
+  "3": {
+    "stats": {
+      "baseHealth": 100,
+      "bonusHealth": 0,
+      "healthMult": 1,
+      "baseDamage": 20,
+      "bonusDamage": 0,
+      "damageMult": 1,
+      "baseSpeed": 1000,
+      "bonusSpeed": 0,
+      "baseAttackSpeed": 0.2,
+      "bonusAttackSpeed": 0,
+      "attackSpeedMult": 1,
+      "speedMult": 1,
+      "armor": 0,
+      "regeneration": 0,
+      "critChance": 0,
+      "critMultiplyer": 1.5,
+      "hasHealCritEnabled": 0
+    },
+    "animations": {
+      "idle": {
+        "path": "../../assets/sprites/Enemy/Monsters_Creatures_Fantasy/Mushroom/Idle.png",
+        "frameWidth": 150,
+        "frameHeight": 150,
+        "framesPerRow": 4,
+        "framesTotal": 4,
+        "frameDuration": 0.1
+      },
+      "moving": {
+        "path": "../../assets/sprites/Enemy/Monsters_Creatures_Fantasy/Mushroom/Run.png",
+        "frameWidth": 150,
+        "frameHeight": 150,
+        "framesPerRow": 8,
+        "framesTotal": 8,
+        "frameDuration": 0.1
+      },
+      "death": {
+        "path": "../../assets/sprites/Enemy/Monsters_Creatures_Fantasy/Mushroom/Death.png",
+        "frameWidth": 150,
+        "frameHeight": 150,
+        "framesPerRow": 4,
+        "framesTotal": 4,
+        "frameDuration": 0.1
+      },
+      "attacking": {
+       "path": "../../assets/sprites/Enemy/Monsters_Creatures_Fantasy/Mushroom/Attack3.png",
+        "frameWidth": 150,
+        "frameHeight": 150,
+        "framesPerRow": 11,
+        "framesTotal": 11,
+        "frameDuration": 0.1
+      }
+    },
+    "inventory": [
+      {
+        "id": 1,
+        "stacks": 1
+      }
+    ],
+    "spawner": {
+      "spawnRadius": 150,
+      "items": [
+        {
+          "id": 3,
+          "dropRatePerItem": 0.5,
+          "count": 3
+        }        
+      ]
+    },
+    "params": {}
   }
 }

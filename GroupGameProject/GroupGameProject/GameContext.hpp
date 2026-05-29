@@ -9,6 +9,7 @@
 #include "AudioManager.hpp"
 #include "InputManager.hpp"
 #include "ItemRegistry.hpp"
+#include "EntityRegistry.hpp"
 #include "Grid.hpp"
 #include "Scene.hpp"
 
@@ -23,6 +24,7 @@ struct GameContext {
     AudioManager* am;
     InputManager* im;
 	ItemRegistry* ir;
+    EntityRegistry* er;
 	Scene* currentScene;
     Grid* grid;
     function<void(int)> changeScene;

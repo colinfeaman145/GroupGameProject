@@ -1,7 +1,7 @@
 #pragma once
 #include "ItemEffect.hpp"
 
-class Coin : public ItemEffect {
+class ItemId_3 : public ItemEffect {
 	void OnPickup(Attackable* owner, int stacks) override {}
 	void OnRemove(Attackable* owner, int stacks) override {}
 	void OnModifyStats(StatSheet& stats, int stacks)  override {}

@@ -1,24 +1,24 @@
-#include "BisonSteak.hpp"
+#include "ItemId_2.hpp"
 
 #include "ItemEffect.hpp"
 #include "Attackable.hpp"
 #include "StatSheet.hpp"
 
 
-void BisonSteak::OnPickup(Attackable* owner, int stacks) {
+void ItemId_2::OnPickup(Attackable* owner, int stacks) {
 }
 
-void BisonSteak::OnRemove(Attackable* owner, int stacks) {
+void ItemId_2::OnRemove(Attackable* owner, int stacks) {
 }
 
 // adds base health per stack
-void BisonSteak::OnModifyStats(StatSheet& stats, int stacks) {
+void ItemId_2::OnModifyStats(StatSheet& stats, int stacks) {
 	auto baseHealth = data["params"]["baseHealth"].get<float>();
 	auto increasePerStack = data["params"]["increasePerStack"].get<float>();
 
 	stats.bonusHealth = ItemEffect::GetLinearStackingItemValue(baseHealth, increasePerStack, stacks);
 }
 
-void BisonSteak::OnEvent(EventType type, EventContext ctx, int stacks) {
+void ItemId_2::OnEvent(EventType type, EventContext ctx, int stacks) {
 
 }

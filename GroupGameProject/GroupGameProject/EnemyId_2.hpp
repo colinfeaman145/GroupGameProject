@@ -4,7 +4,7 @@
 
 
 
-class FlyingDevil : public Enemy {
+class EnemyId_2 : public Enemy {
 public:
 	virtual void Initialize(Vector2 pos) override;
 	void Process(float deltaTime) override;

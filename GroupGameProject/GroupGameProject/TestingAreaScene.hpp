@@ -5,8 +5,8 @@ class Player;
 class Enemy;
 class PlayerHUD;
 
-#define GRID_WIDTH 15000
-#define GRID_HEIGHT 15000
+#define GRID_WIDTH 6000
+#define GRID_HEIGHT 6000
 #define CELL_SIZE 500
 
 class TestingAreaScene : public Scene {
@@ -20,8 +20,6 @@ public:
 
 protected:
     Sprite* levelBackground;
-	Player* player;
-	Enemy* enemy;
     PlayerHUD* playerHUD;
 };
 
