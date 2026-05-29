@@ -70,6 +70,7 @@ public:
 	StatSheet* m_pStats;
 protected:
 	ItemSpawner* m_itemSpawner;
+	json params;
 
 	float m_fLastStatusEffectTick;
 	float m_fLastHealTick;

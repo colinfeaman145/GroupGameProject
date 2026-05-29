@@ -30,18 +30,16 @@ void Enemy::Process(float deltaTime) {
 
 void Enemy::HandleCollision(Collidable* other, Vector2 penetration) {
     if (!IsAlive()) return;
-    if (other->GetCollidableType() == CollidableType::ENEMY) return;//dont attack own kind
+    if (other->GetCollidableType() != CollidableType::PLAYER) return;//only damage player
 
-    if (auto contact = dynamic_cast<Attackable*>(other)) {
-        if (contact->GetCollidableType() == CollidableType::PLAYER) {
+	if (auto contact = dynamic_cast<Attackable*>(other)) {
 
-            auto damage = m_pStats->GetFinalDamage();
-            HitInfo info = {
-                .damageDealt = damage,
-            };
-            DealDamageTo(contact, info);
-        }
-    }
+		auto damage = m_pStats->GetFinalDamage();
+		HitInfo info = {
+			.damageDealt = damage,
+		};
+		DealDamageTo(contact, info);
+	}
 
 }
 
@@ -51,6 +49,10 @@ void Enemy::OnStuck() {
 void Enemy::SetAttackCooldown(float atckCool) {
     attackCooldown = atckCool;
     currentAttackCooldown = attackCooldown;
+}
+
+void Enemy::ChangeState(EnemyState newState) {
+    currentState = newState;
 }
 
 

@@ -32,6 +32,7 @@ public:
     inline float LengthSquared() const { return ((x * x) + (y * y)); }
     inline float Length() const { return sqrtf(LengthSquared()); }
     inline string toString() const;
+    inline bool IsNear(Vector2 v2, float delta);
 };
 
 inline Vector2::Vector2() {
@@ -83,6 +84,12 @@ inline string Vector2::toString() const {
     ostringstream s;
     s << "[" << x << ", " << y << "]";
     return s.str();
+}
+
+// for comparison of float values
+inline bool Vector2::IsNear(Vector2 v2, float delta) {
+    return std::fabs(x - v2.x) <= delta &&
+        std::fabs(y - v2.y) <= delta;
 }
 
 inline Vector2 operator+(const Vector2& v1, const Vector2& v2) {

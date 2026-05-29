@@ -315,7 +315,6 @@ void Attackable::TickStatusEffect(float deltaTime) {
 			ctx.source = status.source;
 			ctx.target = this;
 			ctx.hitInfo = { 0, false, false };
-			//SetVisibliliy(Visibility::HIDDEN);
 			SetCanCollide(false);
 			status.duration -= deltaTime;
 		}
@@ -327,6 +326,7 @@ void Attackable::TickStatusEffect(float deltaTime) {
 
 	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) { 
 		if (s.duration <= 0) {
+			// OnExit logic
 			if (s.type == StatusEffectType::Invincible) {
 				s.source->SetCanCollide(true);
 			}
@@ -369,6 +369,7 @@ void Attackable::LoadEntityDataFromJson(const string& section) {
 	LoadItemSpawnerSettingsFromJson(data[section]["spawner"]);
 	LoadAnimationsFromJson(data[section]["animations"]);
 	m_fCurrentHealth = m_pStats->GetFinalHealth();// set current health after item calculations
+	params = data[section]["params"];
 }
 
 void Attackable::LoadAnimationsFromJson(json animations) {

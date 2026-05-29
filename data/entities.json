@@ -84,7 +84,8 @@
           "count": 4
         }
       ]
-    }
+    },
+    "params": {}
   },
   "FlyingDevil": {
     "stats": {
@@ -160,6 +161,11 @@
           "count": 5
         }
       ]
+    },
+    "params": {
+      "acceleration": 10.0,
+      "deceleration": 2.0,
+      "maxSpeed": 1500
     }
   }
 }
