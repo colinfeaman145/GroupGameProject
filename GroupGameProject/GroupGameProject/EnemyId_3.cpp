@@ -20,7 +20,8 @@ void EnemyId_3::Process(float deltaTime) {
 	HandleAttack();
 
 
-	
+	sprite->SetFlip(velocity.x < 0);
+
 
 	if (GetPosition().IsNear(currentTargetPos, GetRadius())) {
 		RecalculateTargetLocation();
