@@ -1,17 +1,17 @@
-#include "CashoutModule.hpp"
+#include "ItemId_4.hpp"
 #include "Attackable.hpp";
 #include "GameContext.hpp"
 
-void CashoutModule::OnPickup(Attackable* owner, int stacks) {
+void ItemId_4::OnPickup(Attackable* owner, int stacks) {
 }
 
-void CashoutModule::OnRemove(Attackable* owner, int stacks) {
+void ItemId_4::OnRemove(Attackable* owner, int stacks) {
 }
 
-void CashoutModule::OnModifyStats(StatSheet& stats, int stacks) {
+void ItemId_4::OnModifyStats(StatSheet& stats, int stacks) {
 }
 
-void CashoutModule::OnEvent(EventType type, EventContext ctx, int stacks) {
+void ItemId_4::OnEvent(EventType type, EventContext ctx, int stacks) {
 	if (type == EventType::OnKill) {
 		ctx.source->AddItem(data["id"], 1);
 	}

@@ -122,8 +122,8 @@ private:
 	float defaultBonusSpeed;
 	float defaultSpeedMult;
 
-	int defaultBaseAttackSpeed;
-	int defaultBonusAttackSpeed;
+	float defaultBaseAttackSpeed;
+	float defaultBonusAttackSpeed;
 	float defaultAttackSpeedMult;
 
 	int defaultArmor;

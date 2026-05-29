@@ -7,14 +7,12 @@
 #include "Camera.hpp"
 #include "ItemSpawner.hpp"
 #include "Inventory.hpp"
+#include "GameContext.hpp"
 
 
-
-Player::Player() {
-	LoadEntityDataFromJson("Player");
-}
 
 void Player::Initialize(Vector2 pos) {
+	LoadEntityDataFromJson(data);
 	Attackable::Initialize(pos, idleAnimation);
 
 

@@ -7,7 +7,9 @@
     "params": {
       "pierceCount": 1,
       "ttl": 5,
-      "bulletSpeed": 5000
+      "bulletSpeed": 1000,
+      "bulletSpeedPerStack": 100,
+      "bulletSprite": "../../assets/sprites/Bullets/SMG_Pistols_bullets.png"
     }
   },
   "2": {

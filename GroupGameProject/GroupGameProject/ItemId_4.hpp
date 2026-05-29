@@ -1,7 +1,7 @@
 #pragma once
 #include "ItemEffect.hpp"
 
-class CashoutModule : public ItemEffect {
+class ItemId_4 : public ItemEffect {
 	virtual void OnPickup(Attackable* owner, int stacks) override;
 	virtual void OnRemove(Attackable* owner, int stacks) override;
 	virtual void OnModifyStats(StatSheet& stats, int stacks) override;

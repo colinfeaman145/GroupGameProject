@@ -5,7 +5,6 @@ class AnimatedSprite;
 class Player : public Attackable {
 
 public:
-	Player();
 	void Initialize(Vector2 pos);
 	void Process(float deltaTime) override;
 	void Draw(Renderer* renderer) override;

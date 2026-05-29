@@ -25,10 +25,12 @@ Game::Game() {
     context.im = new InputManager();
     context.am = new AudioManager();
 	context.ir = new ItemRegistry();
+    context.er = new EntityRegistry();
     context.im->Initialize("../../data/inputs.json");
     context.changeScene = [this](int i) { this->ChangeScene(i); };
 
     SetupItemRegistry("../../data/items.json");
+    SetupEntityRegistry("../../data/entities.json");
 
     currentScene = 0;
     running = true;

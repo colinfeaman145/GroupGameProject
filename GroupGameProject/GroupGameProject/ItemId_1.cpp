@@ -1,4 +1,4 @@
-#include "Gun.hpp"
+#include "ItemId_1.hpp"
 #include "Grid.hpp"
 #include "Player.hpp"
 #include "ItemEffect.hpp"
@@ -52,8 +52,8 @@ public:
 		}
 	}
 	void HandleCollision(Collidable* other, Vector2 penetration) override {
-		if (dynamic_cast<Player*>(other)) {
-			return;//dont hit player
+		if (dynamic_cast<Attackable*>(other) == source) {
+			return;//dont hit shooting entity
 		}
 		if (std::find(collisions.begin(), collisions.end(), other) != collisions.end()) {
 			return;//already collided with this target
@@ -80,17 +80,17 @@ private:
 
 
 
-void Gun::OnPickup(Attackable* owner, int stacks) {
+void ItemId_1::OnPickup(Attackable* owner, int stacks) {
 }
 
-void Gun::OnRemove(Attackable* owner, int stacks) {
+void ItemId_1::OnRemove(Attackable* owner, int stacks) {
 }
 
-void Gun::OnModifyStats(StatSheet& stats, int stacks) {
+void ItemId_1::OnModifyStats(StatSheet& stats, int stacks) {
 
 }
 
-void Gun::OnEvent(EventType type, EventContext ctx, int stacks) {
+void ItemId_1::OnEvent(EventType type, EventContext ctx, int stacks) {
 
 
 	if (type == EventType::OnCrit) {
@@ -102,7 +102,7 @@ void Gun::OnEvent(EventType type, EventContext ctx, int stacks) {
 		return;
 	}
 
-	SDL_Texture* playerRunning = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Bullets/SMG_Pistols_bullets.png");
+	SDL_Texture* playerRunning = context.txm->LoadTexture(context.renderer, data["params"]["bulletSprite"]);
 	auto bulletSprite = new AnimatedSprite();
 	bulletSprite->Initialize(playerRunning, 6, 6, 0, 0, 50, 50, 2, 2);
 	bulletSprite->SetDrawLayer(RenderLayer::PLAYER);
@@ -115,7 +115,7 @@ void Gun::OnEvent(EventType type, EventContext ctx, int stacks) {
 	auto newBullet = new Bullet();
 	auto pierceCount = data["params"]["pierceCount"].get<float>();
 	auto ttl = data["params"]["ttl"].get<float>();
-	auto bulletSpeed = data["params"]["bulletSpeed"].get<float>();
+	auto bulletSpeed = ItemEffect::GetLinearStackingItemValue(data["params"]["bulletSpeed"].get<float>(), data["params"]["bulletSpeedPerStack"].get<float>(), stacks);
 
 	newBullet->Initialize(ctx, pierceCount, ttl, bulletSpeed, bulletSprite);
 
