@@ -5,7 +5,6 @@
 #include "GridCoord.hpp"
 #include "Direction.hpp"
 #include "Collidable.hpp"
-#include "GameContext.hpp"
 
 class Sprite;
 class Enemy;

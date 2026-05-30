@@ -5,6 +5,7 @@
 #include "Sprite.hpp"
 #include "Enemy.hpp"
 #include "Grid.hpp"
+#include "GameContext.hpp"
 
 GridCell::GridCell(Sprite* spr) {
     coords = { -1, -1 };

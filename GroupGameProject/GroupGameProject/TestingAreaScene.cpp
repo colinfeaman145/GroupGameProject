@@ -34,9 +34,9 @@ bool TestingAreaScene::Initialize() {
     AddElement(playerHUD);
 
 
-	enemy = new FlyingDevil();
-	enemy->Initialize(Vector2(2000, 1000));
-    AddElement(enemy);
+    //auto enemy = Entity::CreateEntityFromJson<EnemyId_2>(context.er->Get(1).data);
+	//enemy->Initialize(Vector2(2000, 1000));
+    //AddElement(enemy);
 
 //    auto shopSocket = new ItemShopSocket();
     //shopSocket->Initialize(Vector2(3000, 1000), 2);

@@ -1,5 +1,5 @@
 #include "DungeonGenerator.hpp"
-#include "FlyingDevil.hpp"
+#include "EnemyId_2.hpp"
 #include "ItemShopSocket.hpp"
 #include <fstream>
 #include <sstream>
@@ -200,7 +200,7 @@ void DungeonGenerator::ApplyToGrid() {
                     }
                     case('B'): {
                         AddDungeonTileFloor(cell);
-                        Enemy* enemy = new FlyingDevil();
+                        Enemy* enemy = Entity::CreateEntityFromJson<EnemyId_2>(context.er->Get(2).data);
                         enemy->Initialize(cell->GetCenter() - enemy->GetRadius());
                         cell->AddEnemy(enemy);
                         break;
