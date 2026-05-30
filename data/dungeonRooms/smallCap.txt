@@ -1,0 +1,11 @@
+@minDepth=1
+@maxDepth=100
+@weight=10
+@rotatable=true
+@limit=unlimited
+
+X X N X X
+X F F F X
+X F F F X
+X F F F X
+X X X X X

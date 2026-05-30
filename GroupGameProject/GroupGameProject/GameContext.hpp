@@ -14,8 +14,10 @@
 #include "Grid.hpp"
 #include "Scene.hpp"
 #include "GameTimer.hpp"
+class Grid;
 
-#define DEBUGMODE true
+
+#define DEBUGMODE false
 #define GOD_MODE true
 
 

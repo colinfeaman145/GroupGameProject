@@ -7,8 +7,7 @@
 #include "Camera.hpp"
 #include "ItemSpawner.hpp"
 #include "Inventory.hpp"
-#include "GameContext.hpp"
-
+#include "Grid.hpp"
 
 
 void Player::Initialize(Vector2 pos) {
