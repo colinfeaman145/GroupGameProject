@@ -9,10 +9,11 @@
 #include "AudioManager.hpp"
 #include "InputManager.hpp"
 #include "ItemRegistry.hpp"
-#include "Grid.hpp"
 #include "Scene.hpp"
 
-#define DEBUGMODE false
+class Grid;
+
+#define DEBUGMODE true
 #define GOD_MODE true
 
 

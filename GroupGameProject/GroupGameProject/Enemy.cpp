@@ -3,7 +3,7 @@
 #include "GameContext.hpp"
 #include "StatSheet.hpp"
 #include "InlineHelper.hpp"
-
+#include "Grid.hpp"
 
 Enemy::Enemy() = default;
 Enemy::~Enemy() = default;

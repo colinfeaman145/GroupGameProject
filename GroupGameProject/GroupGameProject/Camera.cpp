@@ -4,7 +4,7 @@
 
 Camera::Camera() {
     x = y = 0;
-    zoom = .5;
+    zoom = .25;
 }
 
 void Camera::Move(float dx, float dy, float deltaTime) {

@@ -152,6 +152,9 @@
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="Container.cpp" />
+    <ClCompile Include="DungeonGenerator.cpp" />
+    <ClCompile Include="DungeonGeneratorHelper.cpp" />
+    <ClCompile Include="DungeonGeneratorPlacement.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EnumTypes.hpp" />
@@ -202,6 +205,8 @@
     <ClInclude Include="Collidable.hpp" />
     <ClInclude Include="Collision.hpp" />
     <ClInclude Include="Container.hpp" />
+    <ClInclude Include="Direction.hpp" />
+    <ClInclude Include="DungeonGenerator.hpp" />
     <ClInclude Include="Element.hpp" />
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="Entity.hpp" />

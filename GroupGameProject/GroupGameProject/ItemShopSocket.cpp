@@ -1,6 +1,7 @@
 #include "ItemShopSocket.hpp"
 #include "Player.hpp"
 #include "GameContext.hpp"
+#include "Grid.hpp"
 #include "Text.hpp"
 #include "Item.hpp"
 #include <string>

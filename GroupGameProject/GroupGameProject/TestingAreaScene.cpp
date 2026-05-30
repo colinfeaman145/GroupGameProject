@@ -6,19 +6,24 @@
 #include "AnimatedSprite.hpp"
 #include "ItemShopSocket.hpp"
 #include "PlayerHUD.hpp"
+#include "DungeonGenerator.hpp"
 
 bool TestingAreaScene::Initialize() {
 
     // grid setup
     context.grid = new Grid(GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
-    SDL_Texture* grassTex = context.txm->LoadTexture(context.renderer, "../../assets/sprites/DungeonTextures/dungeon_floor_with_moss.png");
-    context.grid->Initialize(grassTex);
+    context.grid->Initialize();
     AddElement(context.grid);
+
+    //make dungeon
+    DungeonGenerator* dg = new DungeonGenerator();
+    dg->LoadRooms("../../data/dungeonRooms/");
+    dg->Generate();
 
 
     // player setup
     player = new Player();
-    player->Initialize(Vector2(1000,1000));
+    player->Initialize(Vector2(GRID_WIDTH / 2, GRID_HEIGHT / 2));
     context.grid->UpdateOccupancy((Entity*)player, &GridCell::AddOther, &GridCell::RemoveOther);
 	AddElement(player);
 
@@ -40,13 +45,13 @@ bool TestingAreaScene::Initialize() {
     enemyIdle->SetLooping(true);
     enemyIdle->SetLeaveOnLastFrame(true);
     */
-	enemy = new FlyingDevil();
-	enemy->Initialize(Vector2(2000, 1000));
-    AddElement(enemy);
+	//enemy = new FlyingDevil();
+	//enemy->Initialize(Vector2(2000, 1000));
+ //   AddElement(enemy);
 
-    auto shopSocket = new ItemShopSocket();
-    shopSocket->Initialize(Vector2(3000, 1000), 2);
-    AddElement(shopSocket);
+ //   auto shopSocket = new ItemShopSocket();
+ //   shopSocket->Initialize(Vector2(3000, 1000), 2);
+ //   AddElement(shopSocket);
 
     return true;
 }

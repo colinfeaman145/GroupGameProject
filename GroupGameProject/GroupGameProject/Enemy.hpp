@@ -32,8 +32,6 @@ public:
 	void SetAttackCooldown(float atckCool);
 
 
-
-
 private:
 	EnemyType type;
 	Entity* currentTarget;

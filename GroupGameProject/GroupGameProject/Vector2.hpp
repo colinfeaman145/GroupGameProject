@@ -25,6 +25,8 @@ public:
     inline Vector2& operator-=(const Vector2& v2);
     inline Vector2& operator*=(const Vector2& v2);
     inline Vector2& operator/=(const Vector2& v2);
+    inline Vector2& operator+=(const float t);
+    inline Vector2& operator-=(const float t);
     inline Vector2& operator*=(const float t);
     inline Vector2& operator/=(const float t);
 
@@ -67,6 +69,18 @@ inline Vector2& Vector2::operator/=(const Vector2& v) {
     return *this;
 }
 
+inline Vector2& Vector2::operator+=(const float t) {
+    x += t;
+    y += t;
+    return *this;
+}
+
+inline Vector2& Vector2::operator-=(const float t) {
+    x -= t;
+    y -= t;
+    return *this;
+}
+
 inline Vector2& Vector2::operator*=(const float t) {
     x *= t;
     y *= t;
@@ -98,6 +112,15 @@ inline Vector2 operator/(const Vector2& v1, const Vector2& v2) {
     return Vector2(v1.x / v2.x, v1.y / v2.y);
 }
 
+inline Vector2 operator+(const Vector2 v1, float t) {
+    return Vector2(v1.x + t, v1.y + t);
+}
+inline Vector2 operator+(float t, const Vector2 v1) {
+    return Vector2(v1.x + t, v1.y + t);
+}
+inline Vector2 operator-(const Vector2 v1, float t) {
+    return Vector2(v1.x - t, v1.y - t);
+}
 inline Vector2 operator*(const Vector2 v1, float t) {
     return Vector2(v1.x * t, v1.y * t);
 }
