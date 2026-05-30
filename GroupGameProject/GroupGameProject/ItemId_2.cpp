@@ -16,7 +16,8 @@ void ItemId_2::OnModifyStats(StatSheet& stats, int stacks) {
 	auto baseHealth = data["params"]["baseHealth"].get<float>();
 	auto increasePerStack = data["params"]["increasePerStack"].get<float>();
 
-	stats.bonusHealth = ItemEffect::GetLinearStackingItemValue(baseHealth, increasePerStack, stacks);
+	stats.currentHealth += (stacks == 1 ? baseHealth : increasePerStack);
+	stats.bonusHealth += ItemEffect::GetLinearStackingItemValue(baseHealth, increasePerStack, stacks);
 }
 
 void ItemId_2::OnEvent(EventType type, EventContext ctx, int stacks) {

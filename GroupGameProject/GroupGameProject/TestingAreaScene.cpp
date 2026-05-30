@@ -18,7 +18,6 @@ bool TestingAreaScene::Initialize() {
 
 
     // player setup
-    ;
     auto player = Entity::CreateEntityFromJson<Player>(context.er->Get(1).data);
     player->Initialize(Vector2(1000,1000));
     context.grid->UpdateOccupancy((Entity*)player, &GridCell::AddOther, &GridCell::RemoveOther);
@@ -58,6 +57,8 @@ bool TestingAreaScene::Initialize() {
     shopSocket3->Initialize(Vector2(4000, 1000), 3);
     AddElement(shopSocket3);
 
+
+    context.timer->Reset();
     return true;
 }
 

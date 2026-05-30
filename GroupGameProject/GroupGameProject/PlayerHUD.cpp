@@ -1,6 +1,7 @@
 #include "PlayerHUD.hpp"
 
 #include <string>
+#include "Text.hpp"
 #include "Sprite.hpp"
 #include "Camera.hpp"
 #include "Player.hpp"
@@ -8,6 +9,7 @@
 #include "InventoryOverlay.hpp"
 #include "StatSheetOverlay.hpp"
 #include "CashoutOverlay.hpp"
+#include "DifficultyOverlay.hpp"
 
 
 
@@ -49,6 +51,8 @@ bool PlayerHUD::Initialize()
 
     SetInventoryHUD();
     SetStatSheetHUD();
+    SetDifficultyHUD();
+
     SetCashoutHUD();
 
     return true;
@@ -57,8 +61,8 @@ bool PlayerHUD::Initialize()
 void PlayerHUD::Process(float deltaTime)
 {
     HandleGunSpriteRotation();
-
     HandleHUDElementsProcess(deltaTime);
+    HandleTimerUpdate();
 }
 
 void PlayerHUD::Draw(Renderer* renderer)
@@ -263,4 +267,24 @@ void PlayerHUD::SetInventoryHUD() {
     );
     inventoryOverlay->Initialize(player->m_inventory, 50, 150);
     playerHudElements.push_back(inventoryOverlay);
+}
+
+void PlayerHUD::HandleTimerUpdate() {
+
+}
+
+void PlayerHUD::SetDifficultyHUD() {
+    // place inventory HUD
+    auto difficultyOverlay = new DifficultyOverlay(
+        WIDTH * 0.33,
+        0,
+        WIDTH * 0.33,
+        HEIGHT * 0.1,
+        {0,0,0,0},
+        {0,0,0,0},
+        0,
+        0
+    );
+    difficultyOverlay->Initialize();
+    playerHudElements.push_back(difficultyOverlay);
 }

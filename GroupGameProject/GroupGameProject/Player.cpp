@@ -30,7 +30,6 @@ void Player::Process(float deltaTime) {
 	HandleMouseClick(deltaTime);
 	HandleMovement();
 	HandleAnimation();
-	healthBar->SetValues(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth);
 
     //collision updates
     context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);

@@ -11,11 +11,6 @@ using ItemID = uint32_t;
 class Inventory {
 public:
 	Inventory() {}
-
-	void RegisterCallback(std::function<void()> func) {
-		onChangeCallbacks.push_back(func);
-	}
-
 	void Add(ItemID itemId, int amount) {
 		m_stacks[itemId] += amount;
 
@@ -50,6 +45,9 @@ public:
 		for (auto callback : onChangeCallbacks) {
 			callback();
 		}
+	}
+	void RegisterCallback(std::function<void()> func) {
+		onChangeCallbacks.push_back(func);
 	}
 
 private:

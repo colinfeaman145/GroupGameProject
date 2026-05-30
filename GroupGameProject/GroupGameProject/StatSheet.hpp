@@ -1,4 +1,5 @@
 #pragma once
+
 class StatSheet {
 
 public:
@@ -54,6 +55,12 @@ public:
 	float GetFinalAttackSpeed() const {
 		return (baseAttackSpeed + bonusAttackSpeed) * attackSpeedMult;
 	}
+	float GetCurrentHealth() const {
+		return currentHealth;
+	}
+	void SetCurrentHealth(float health) {
+		currentHealth = clip(health, 0, GetFinalHealth());
+	}
 	float CalculateDamageReceived(float incomingDamage) const {
 		// simple armor calculation, can be improved
 		return incomingDamage * (100.f / (100 + armor));
@@ -81,10 +88,20 @@ public:
 		critMultiplyer = defaultCritMultiplyer;
 		regernation = defaultRegernation;
 		hasHealCritEnabled = defaultHasHealCritEnabled;
+
+		currentHealth = GetFinalHealth();
+	}
+private:
+	inline float clip(float value, float min, float max) {
+		if (value < min) return min;
+		else if (value > max) return max;
+		else return value;
 	}
 
+public:
 
 	// character stats that can be modified by items and other effects.
+	float currentHealth;
 	int baseHealth;
 	int bonusHealth;
 	float healthMult;
@@ -108,7 +125,6 @@ public:
 	bool hasHealCritEnabled;
 
 
-private:
 	// base stats used to reset the statsheet to default values
 	int defaultBaseHealth;
 	int defaultBonusHealth;
@@ -132,4 +148,5 @@ private:
 	float defaultRegernation;
 	bool defaultHasHealCritEnabled;
 };
+
 

@@ -12,6 +12,7 @@
 #include "ItemId_4.hpp"
 #include "ItemId_5.hpp"
 #include "ItemId_6.hpp"
+#include "ItemId_7.hpp"
 
 using json = nlohmann::json;
 
@@ -59,6 +60,12 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 		.tier = ItemTier::Rare,
 		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_6>(data["6"]),
 		.data = data["6"]
+	});
+	context.ir->RegisterItem({
+		.id = 7,
+		.tier = ItemTier::Module,
+		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_7>(data["7"]),
+		.data = data["7"]
 	});
 
 }
