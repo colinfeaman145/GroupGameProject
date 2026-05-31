@@ -24,23 +24,13 @@ bool TestingAreaScene::Initialize() {
     // player setup
     auto player = Entity::CreateEntityFromJson<Player>(context.er->Get(1).data);
     player->Initialize(Vector2(GRID_WIDTH / 2, GRID_HEIGHT  / 2));
-    context.grid->UpdateOccupancy((Entity*)player, &GridCell::AddOther, &GridCell::RemoveOther);
-	AddElement(player);
-
+    //context.grid->UpdateOccupancy((Entity*)player, &GridCell::AddOther, &GridCell::RemoveOther);
+	//AddElement(player);
 
     //player hud?
     playerHUD = new PlayerHUD(player);
     playerHUD->Initialize();
     AddElement(playerHUD);
-
-
-    //auto enemy = Entity::CreateEntityFromJson<EnemyId_2>(context.er->Get(1).data);
-	//enemy->Initialize(Vector2(2000, 1000));
-    //AddElement(enemy);
-
-//    auto shopSocket = new ItemShopSocket();
-    //shopSocket->Initialize(Vector2(3000, 1000), 2);
-    //AddElement(shopSocket);
 
     context.timer->Reset();
     return true;

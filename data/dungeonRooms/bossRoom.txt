@@ -1,17 +1,17 @@
-@minDepth=2
+@minDepth=3
 @maxDepth=5
 @weight=100
-@rotatable=false
+@rotatable=true
 @limit=unique
 X X X X X X X X X X X X 
 X F F F F F F F F F F X
 X F F F F F F F F F F X
-W F F F F B F F F F F X
+X F F F F B F F F F F X
 X F F F F F F F F F F X
 X F F F F F F F F F F X
 X F F F F F F F F F F X
 X F F F F F F F F F F X
-X F F F F F F F F F F E
 X F F F F F F F F F F X
 X F F F F F F F F F F X
-X X S X X X X S X X X X
+X F F F F F F F F F F X
+X X X X X S X X X X X X

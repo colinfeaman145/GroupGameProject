@@ -1,6 +1,6 @@
 @minDepth=2
 @maxDepth=4
-@weight=5
+@weight=50
 @rotatable=true
 @limit=2
 

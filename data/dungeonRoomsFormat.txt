@@ -14,8 +14,16 @@ F F F
 key
 
 F = Floor
-W = wall
+X = wall
 . = nothing
+B = Boss
+
+N = North entrance
+E = East entrance
+S = South entrance
+W = West entrance
+
+T = Treasure
 
 
 

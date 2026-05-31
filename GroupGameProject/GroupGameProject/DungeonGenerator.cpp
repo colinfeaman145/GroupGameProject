@@ -1,11 +1,13 @@
 #include "DungeonGenerator.hpp"
-#include "EnemyId_2.hpp"
-#include "ItemShopSocket.hpp"
 #include <fstream>
 #include <sstream>
 #include <filesystem>
 #include <algorithm>
 #include <cassert>
+
+#include "ItemShopSocket.hpp"
+#include "Player.hpp"
+#include "EnemyId_2.hpp"
 
 namespace fs = filesystem;
 
@@ -196,6 +198,7 @@ void DungeonGenerator::ApplyToGrid() {
                         AddDungeonTileFloor(cell);
                         auto shopSocket = new ItemShopSocket();
                         shopSocket->Initialize(cell->GetCenter() - shopSocket->GetRadius(), 2);
+                        cell->AddOther(shopSocket);
                         break;
                     }
                     case('B'): {
@@ -203,6 +206,13 @@ void DungeonGenerator::ApplyToGrid() {
                         Enemy* enemy = Entity::CreateEntityFromJson<EnemyId_2>(context.er->Get(2).data);
                         enemy->Initialize(cell->GetCenter() - enemy->GetRadius());
                         cell->AddEnemy(enemy);
+                        break;
+                    }
+                    case('P'): {
+                        AddDungeonTileFloor(cell);
+                        auto player = Entity::CreateEntityFromJson<Player>(context.er->Get(1).data);
+                        player->Initialize(Vector2(context.grid->GetGridWidth() / 2, context.grid->GetGridHeight()  / 2));
+                        cell->AddOther(player);
                         break;
                     }
                     case('N'):
