@@ -3,6 +3,7 @@
 @weight=10
 @rotatable=true
 @limit=unlimited
+@required=false
 
 X X N X X
 X F F F X

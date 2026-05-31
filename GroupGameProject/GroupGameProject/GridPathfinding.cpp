@@ -1,6 +1,3 @@
-
-
-/*
 #include "Grid.hpp"
 #include <queue>
 #include <cfloat>
@@ -11,51 +8,18 @@ static const float DIR_COST[8] = { 1.f, 1.f, 1.f, 1.f, 1.414f, 1.414f, 1.414f, 1
 
 #define index(col, row) ((row * gridWidth) + col)
 
-Structure* Grid::GetWallBetween(GridCoord from, GridCoord to) const {
-    int dirC = to.col - from.col;
-    int dirR = to.row - from.row;
-
-    if (dirC == 0 && dirR == -1) return GetCell(from)->GetWall(WallDirection::NORTH); //moving north
-    if (dirC == 0 && dirR == +1) return GetCell(to)->GetWall(WallDirection::NORTH); //moving south
-    if (dirC == +1 && dirR == 0) return GetCell(to)->GetWall(WallDirection::WEST);  //moving east
-    if (dirC == -1 && dirR == 0) return GetCell(from)->GetWall(WallDirection::WEST);  //moving west
-
-    return nullptr;
-}
-
 float Grid::GetEdgeCost(GridCoord from, GridCoord to, int dirIndex) const {
     GridCell* toCell = GetCell(to);
     if (!toCell) return FLT_MAX;
+    if (toCell->IsWall()) return FLT_MAX;
 
-    float cost = DIR_COST[dirIndex];
-
-    if (dirIndex < 4) {//one edge
-        Structure* wall = GetWallBetween(from, to);
-        if (wall) {
-            float wallCost = wall->GetTraversalCost();
-            if (wallCost >= FLT_MAX) return FLT_MAX;
-            cost += wallCost;
-        }
-    }
-    else {//diagonal, two edges
-        GridCoord vertStep = { from.col, to.row };
-        GridCoord horzStep = { to.col, from.row };
-        GridCoord diagonalStep = { to.col, to.row };
-
-        Structure* w1 = GetWallBetween(to, vertStep);
-        Structure* w2 = GetWallBetween(to, horzStep);
-        Structure* w3 = GetWallBetween(from, vertStep);
-        Structure* w4 = GetWallBetween(from, horzStep);
-
-        for (Structure* w : { w1, w2, w3, w4 }) {
-            if (!w) continue;
-            float wc = w->GetTraversalCost();
-            if (wc >= FLT_MAX) return FLT_MAX;
-            cost += wc;
-        }
+    if (dirIndex >= 4) { //diagonal — prevent corner cutting through wall cells
+        GridCell* c1 = GetCell({ to.col, from.row });
+        GridCell* c2 = GetCell({ from.col, to.row });
+        if ((c1 && c1->IsWall()) || (c2 && c2->IsWall())) return FLT_MAX;
     }
 
-    return cost;
+    return DIR_COST[dirIndex];
 }
 
 //called when wall placed/removed near coord
@@ -108,7 +72,6 @@ void Grid::ComputeFlowField(GridCoord target, int radius) {
     else {
         field.ResetRadius(target, radius, gridWidth, gridHeight); //only reset within radius
     }
-
 
     RunDijkstra(target, field, radius);
     SmoothFlowField(field);
@@ -201,32 +164,23 @@ void Grid::SmoothFlowField(FlowField& field) {
             //smoothed, combined vector between two cells
             Vector2 blended = (myVec + fieldVectorCopyScratch[next1DIndex]).Normalized();
 
-            //check if the blended direction would cross a wall from this cell.
-            //sample one step in the blended direction and test that edge.
+            //check if the blended direction would cross a wall cell from this cell.
+            //sample one step in the blended direction and test that cell.
             int blendedCol = col + (int)roundf(blended.x);
             int blendedRow = row + (int)roundf(blended.y);
 
             if (blendedCol < 0 || blendedCol >= gridWidth ||
                 blendedRow < 0 || blendedRow >= gridHeight) continue;
 
-            bool wallBlocked = false;
-            int dc = blendedCol - col;
-            int dr = blendedRow - row;
+            // Check if blended destination is a wall
+            GridCell* blendedCell = GetCell({ blendedCol, blendedRow });
+            bool wallBlocked = blendedCell && blendedCell->IsWall();
 
-            if (dc == 0 || dr == 0) {
-                wallBlocked = GetWallBetween({ col, row }, { blendedCol, blendedRow }) != nullptr;
-            }
-            else {
-                //diagonal blend — check all 4 walls at the shared corner
-                GridCoord from = { col, row };
-                GridCoord to = { blendedCol, blendedRow };
-                GridCoord vertStep = { col, blendedRow };
-                GridCoord horzStep = { blendedCol, row };
-
-                wallBlocked = GetWallBetween(to, vertStep) != nullptr //WEST wall of to
-                    || GetWallBetween(to, horzStep) != nullptr //NORTH wall of horzStep
-                    || GetWallBetween(from, vertStep) != nullptr //NORTH wall of from
-                    || GetWallBetween(from, horzStep) != nullptr; //WEST wall of horzStep
+            // For diagonal blends also check the two intermediate cardinal cells (corner cutting)
+            if (!wallBlocked && blendedCol != col && blendedRow != row) {
+                GridCell* c1 = GetCell({ blendedCol, row });
+                GridCell* c2 = GetCell({ col, blendedRow });
+                wallBlocked = (c1 && c1->IsWall()) || (c2 && c2->IsWall());
             }
 
             if (!wallBlocked) {
@@ -251,28 +205,22 @@ void Grid::DebugDumpFlowField(GridCoord target, int centerCol, int centerRow, in
             if (!IsValidCoord({ col, row })) continue;
             int flat = index(col, row);
 
+            GridCell* cell = GetCell({ col, row });
+
+            if (cell && cell->IsWall()) {
+                fprintf(f, "(%d,%d): WALL\n", col, row);
+                continue;
+            }
+
             if (!field.reached[flat]) {
                 fprintf(f, "(%d,%d): UNREACHED\n", col, row);
                 continue;
             }
 
             Vector2 v = field.vectors[flat];
-            fprintf(f, "(%d,%d): (%.2f, %.2f)", col, row, v.x, v.y);
-
-            // Check for walls on all 4 edges of this cell
-            GridCell* cell = GetCell({ col, row });
-            if (cell->GetWall(WallDirection::NORTH)) fprintf(f, " [WALL N]");
-            if (cell->GetWall(WallDirection::WEST))  fprintf(f, " [WALL W]");
-            // South = north of cell below, East = west of cell to the right
-            GridCell* south = GetCell({ col, row + 1 });
-            GridCell* east = GetCell({ col + 1, row });
-            if (south && south->GetWall(WallDirection::NORTH)) fprintf(f, " [WALL S]");
-            if (east && east->GetWall(WallDirection::WEST))   fprintf(f, " [WALL E]");
-
-            fprintf(f, "\n");
+            fprintf(f, "(%d,%d): (%.2f, %.2f)\n", col, row, v.x, v.y);
         }
     }
     fclose(f);
     printf("Flow field dumped around (%d,%d)\n", centerCol, centerRow);
 }
-*/

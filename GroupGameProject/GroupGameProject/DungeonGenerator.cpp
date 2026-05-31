@@ -41,6 +41,12 @@ bool DungeonGenerator::LoadRooms(const string& folderPath) {
         }
     }
 
+    //organize required rooms
+    for (RoomTemplate& room : rooms) {
+        if (room.required)
+            requiredRooms.push_back(&room);
+    }
+
     //organize rooms by directions they can connect to
     for (RoomTemplate& room : rooms) {//for each room
         for (int d = 0; d < DIR_COUNT; ++d) { //for each direction
@@ -103,12 +109,16 @@ bool DungeonGenerator::ParseRoomFile(const string& filepath, RoomTemplate& out) 
         }
     }
 
+    getline(file, line); //@required=
+    val = line.substr(10);
+    out.required = (val == "true" && val != "0");
+
     int row = 0;
 
     //read tiles
     while (getline(file, line)) {
 
-        if (line.empty()) continue;
+        if (line.find_first_not_of(" \t\r\n") == string::npos) continue;
 
         vector<vector<char>> tileRow;
         int col = 0;
@@ -180,6 +190,15 @@ vector<char> DungeonGenerator::ParseTile(const string& token) {
 }
 
 void DungeonGenerator::ApplyToGrid() {
+
+    //if any needed room not here, restart
+    for (RoomTemplate* r : requiredRooms) {
+        if (spawnCounts[r->name] != r->spawnMax) {
+            Generate();
+            return;
+        }
+    }
+
     for (int row = 0; row < context.grid->GetGridHeight(); ++row) {
         for (int col = 0; col < context.grid->GetGridWidth(); ++col) {
             GridCell* cell = context.grid->GetCell(col, row);
@@ -198,7 +217,7 @@ void DungeonGenerator::ApplyToGrid() {
                         AddDungeonTileFloor(cell);
                         auto shopSocket = new ItemShopSocket();
                         shopSocket->Initialize(cell->GetCenter() - shopSocket->GetRadius(), 2);
-                        cell->AddOther(shopSocket);
+                        cell->AddOther(shopSocket);//does nothing because other does not get drawn by gridCell
                         break;
                     }
                     case('B'): {

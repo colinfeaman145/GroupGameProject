@@ -104,7 +104,7 @@ bool GridCell::RemoveWall(Direction dir) {
     return isWall;
 }
 
-bool GridCell::HasWall(Direction dir) const {
+bool GridCell::IsWall() const {
     return isWall;
 }
 

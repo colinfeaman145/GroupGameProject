@@ -39,15 +39,17 @@ struct RoomTemplate {
     bool rotatable;
     SpawnLimit spawnLimit = SpawnLimit::Unlimited;
     int spawnMax; //used only when spawnLimit == Count
+    bool required;
 };
 
 class DungeonGenerator {
     public:
-        static constexpr int HALLWAY_THRESHOLD = 3;
+        static constexpr int HALLWAY_THRESHOLD = 5;
 
         DungeonGenerator();
         bool LoadRooms(const string& folderPath);
         void Generate(const string& startRoomName = "");
+        void PrintDungeon() const;
 
     private:
         vector<vector<vector<char>>> dungeon;//grid
@@ -55,6 +57,7 @@ class DungeonGenerator {
         vector<RoomTemplate> rooms; //all rooms
         array<vector<RoomTemplate*>, DIR_COUNT> dirRooms; //rooms with atleast 1 connector facing in DIR
         unordered_map<string, int> spawnCounts; //number of times room spawned
+        vector<RoomTemplate*> requiredRooms; //list of rooms required. if not in dungeon, start over
 
 
         bool ParseRoomFile(const string& filepath, RoomTemplate& out);

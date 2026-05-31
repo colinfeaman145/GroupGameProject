@@ -45,11 +45,10 @@ public:
     bool HasCollision(Entity* entity);
 
     //pathfinding
-    //Vector2 GetFlowVector(GridCoord from, GridCoord target);
-    //void InvalidateFlowFieldsNear(GridCoord changedAt, int radius);
-    //void InvalidateAllFlowFields();
-    //Structure* GetWallBetween(GridCoord from, GridCoord to) const;
-    //void DebugDumpFlowField(GridCoord target, int centerCol, int centerRow, int radius);
+    Vector2 GetFlowVector(GridCoord from, GridCoord target);
+    void InvalidateFlowFieldsNear(GridCoord changedAt, int radius);
+    void InvalidateAllFlowFields();
+    void DebugDumpFlowField(GridCoord target, int centerCol, int centerRow, int radius);
 
     //Enemies
     void AddEnemy(Enemy* enemy);
