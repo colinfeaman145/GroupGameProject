@@ -4,7 +4,6 @@
 Dungeon Generator code that actually places things to dungeon array
 */
 
-
 void DungeonGenerator::Generate(const string& startRoomName) {
 
     //reset
@@ -74,7 +73,6 @@ void DungeonGenerator::PlaceRoom(const RoomTemplate& room, GridCoord origin, int
         int available = GetAvailableDepth(connectorWorld, dir);
 
         if (available < HALLWAY_THRESHOLD) {
-            printf("AVAILABLE %d\n", available);
             PlaceHallway(connectorWorld, dir, available);
             continue;
         }
@@ -156,6 +154,7 @@ const RoomTemplate* DungeonGenerator::SelectRoom(int availableDepth, int depth, 
 
 //places room in dungeon(grid)
 void DungeonGenerator::StampRoom(const RoomTemplate& room, GridCoord origin) {
+    //PrintDungeon();
     for (int r = 0; r < room.height; ++r) {
         for (int c = 0; c < room.width; ++c) {
             GridCoord world = { origin.col + c, origin.row + r };
@@ -177,7 +176,13 @@ void DungeonGenerator::PlaceHallway(GridCoord fromCoord, Direction dir, int leng
 
     GridCoord current = { fromCoord.col + step.col, fromCoord.row + step.row };
 
+    //printf("[PlaceHallway] from (%d,%d) dir=%d length=%d\n",
+        //fromCoord.col, fromCoord.row, (int)dir, length);
+    // and inside the loop:
+
     for (int i = 0; i < length + 1; ++i) {
+        //printf("  step(%d,%d) HasFloor=%d HasWall=%d IsEmpty=%d\n",
+            //current.col, current.row, HasFloor(current), HasWall(current), IsEmpty(current));
         if (!IsValidCoord(current)) break;
 
         if (HasFloor(current)) break; //reached another room's floor

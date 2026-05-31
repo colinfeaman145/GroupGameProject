@@ -38,6 +38,7 @@ void GridCell::Draw(Renderer* renderer) {
     for (Enemy* e : enemies) {
         e->Draw(renderer);
     }
+
     Color c = CanCollide() ? Color(255, 50, 50, 255) : Color(50, 255, 50, 255);
     Collidable::Draw(renderer, c);
 }
@@ -96,7 +97,7 @@ bool GridCell::RemoveWall(Direction dir) {
     return isWall;
 }
 
-bool GridCell::HasWall(Direction dir) const {
+bool GridCell::IsWall() const {
     return isWall;
 }
 

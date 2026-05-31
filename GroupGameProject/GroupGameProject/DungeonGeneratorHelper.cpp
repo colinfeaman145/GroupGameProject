@@ -55,6 +55,7 @@ GridCoord DungeonGenerator::AlignConnectors(const RoomTemplate& room, GridCoord 
             break;
         }
     }
+    //printf("[AlignConnectors] Matched local(%d,%d)\n", localMatch.col, localMatch.row);
 
     return { connectorWorld.col - localMatch.col, connectorWorld.row - localMatch.row };
 }
@@ -123,4 +124,49 @@ void DungeonGenerator::AddDungeonTileFloor(GridCell* cell) {
     spr->SetColor({ 220, 255, 220, 255 });
     spr->SetDrawLayer(RenderLayer::GROUND);
     cell->SetSprite(spr);
+}
+
+//AI GENERATED
+void DungeonGenerator::PrintDungeon() const {
+    int rows = (int)dungeon.size();
+    int cols = rows > 0 ? (int)dungeon[0].size() : 0;
+
+    // Find bounding box of non-empty tiles
+    int minRow = rows, maxRow = -1;
+    int minCol = cols, maxCol = -1;
+
+    for (int r = 0; r < rows; ++r) {
+        for (int c = 0; c < cols; ++c) {
+            if (!dungeon[r][c].empty()) {
+                minRow = min(minRow, r);
+                maxRow = max(maxRow, r);
+                minCol = min(minCol, c);
+                maxCol = max(maxCol, c);
+            }
+        }
+    }
+
+    if (maxRow == -1) {
+        printf("[DungeonGenerator] Dungeon is empty.\n");
+        return;
+    }
+
+    printf("[DungeonGenerator] Dungeon (%d-%d, %d-%d):\n", minCol, maxCol, minRow, maxRow);
+
+    for (int r = minRow; r <= maxRow; ++r) {
+        for (int c = minCol; c <= maxCol; ++c) {
+            const auto& cell = dungeon[r][c];
+            if (cell.empty()) {
+                printf("  "); // Empty space within bounds
+            }
+            else if (cell.size() == 1) {
+                printf("%c ", cell[0]);
+            }
+            else {
+                // Multiple tiles: print first char, flag with '*'
+                printf("%c*", cell[0]);
+            }
+        }
+        printf("\n");
+    }
 }

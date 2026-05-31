@@ -40,7 +40,7 @@ public:
     //walls
     bool PlaceWall(Direction dir);
     bool RemoveWall(Direction dir);
-    bool HasWall(Direction dir) const;
+    bool IsWall() const;
 
     ////drops
     //void AddDrop(Resource* drop);
