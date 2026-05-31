@@ -5,8 +5,8 @@ class Player;
 class Enemy;
 class PlayerHUD;
 
-#define GRID_WIDTH 10000
-#define GRID_HEIGHT 10000
+#define GRID_WIDTH 100000
+#define GRID_HEIGHT 100000
 #define CELL_SIZE 500
 
 class TestingAreaScene : public Scene {
