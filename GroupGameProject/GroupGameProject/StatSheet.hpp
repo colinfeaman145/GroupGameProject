@@ -88,8 +88,6 @@ public:
 		critMultiplyer = defaultCritMultiplyer;
 		regernation = defaultRegernation;
 		hasHealCritEnabled = defaultHasHealCritEnabled;
-
-		currentHealth = GetFinalHealth();
 	}
 private:
 	inline float clip(float value, float min, float max) {
