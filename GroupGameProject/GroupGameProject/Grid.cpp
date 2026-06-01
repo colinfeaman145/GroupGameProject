@@ -77,7 +77,6 @@ void Grid::Draw(Renderer* renderer) {
     for (int row = minRow; row <= maxRow; ++row)
         for (int col = minCol; col <= maxCol; ++col)
             cells[row][col]->Draw(renderer);
-
 }
 
 void Grid::Process(float deltaTime) {

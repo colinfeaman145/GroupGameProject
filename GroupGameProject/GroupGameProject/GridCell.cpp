@@ -39,6 +39,9 @@ void GridCell::Draw(Renderer* renderer) {
     for (Enemy* e : enemies) {
         e->Draw(renderer);
     }
+    for (Entity* e : entities) {
+        e->Draw(renderer);
+    }
 
     Color c = CanCollide() ? Color(255, 50, 50, 255) : Color(50, 255, 50, 255);
     Collidable::Draw(renderer, c);
@@ -50,8 +53,10 @@ void GridCell::Process(float deltaTime, bool isRendered) {
         e->Process(deltaTime);
         context.grid->UpdateEnemyOccupancy(e);
     }
-
-
+    for (Entity* e : entities) {
+        e->Process(deltaTime);
+        context.grid->UpdateOccupancy(e, &GridCell::AddOther, &GridCell::RemoveOther);
+    }
 }
 
 vector<Collidable*> GridCell::GetCollidables() const {

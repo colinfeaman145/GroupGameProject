@@ -38,7 +38,7 @@ bool DifficultyOverlay::Initialize() {
     difficultyBar->SetOffset(0, 0);
 
     currentTimeText = new Text();
-    currentTimeText->Initialize("00.00", "../../assets/fonts/pixelpurl/PixelPurl.ttf", 50);
+    currentTimeText->Initialize("00:00", "../../assets/fonts/pixelpurl/PixelPurl.ttf", 50);
     currentTimeText->SetDrawLayer(RenderLayer::UI);
     AddSprite(currentTimeText, size.x / 2 - currentTimeText->GetWidth() / 2, difficultyBar->GetHeight());
 
@@ -54,8 +54,12 @@ void DifficultyOverlay::Process(float deltaTime) {
     Container::Process(deltaTime);
 
     // update displayed time
-    auto updatedTime = std::format("{:.2f}", context.timer->ElapsedSeconds());
-    currentTimeText->SetText(updatedTime);
+    auto updatedMinutes = context.timer->ElapsedMinutes();
+    auto updatedSeconds = (int)context.timer->ElapsedSeconds() % 60;
+
+    auto minutesString = updatedMinutes < 10 ? "0" + std::to_string(updatedMinutes) : std::to_string(updatedMinutes);
+    auto secondsString = updatedSeconds < 10 ? "0" + std::to_string(updatedSeconds) : std::to_string(updatedSeconds);
+    currentTimeText->SetText(minutesString + ":" + secondsString);
 
     // update difficulty
     currentLevelValue = context.dc->CurrentLevel() / SECIONS_PER_DIFFICULTY;

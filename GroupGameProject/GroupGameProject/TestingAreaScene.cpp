@@ -20,18 +20,6 @@ bool TestingAreaScene::Initialize() {
     dg->LoadRooms("../../data/dungeonRooms/");
     dg->Generate();
 
-
-    // player setup
-    auto player = Entity::CreateEntityFromJson<Player>(context.er->Get(1).data);
-    player->Initialize(Vector2(GRID_WIDTH / 2, GRID_HEIGHT  / 2));
-    context.grid->UpdateOccupancy((Entity*)player, &GridCell::AddOther, &GridCell::RemoveOther);
-	AddElement(player);
-
-    //player hud
-    playerHUD = new PlayerHUD(player);
-    playerHUD->Initialize();
-    AddElement(playerHUD);
-
     context.timer->Reset();
     return true;
 }

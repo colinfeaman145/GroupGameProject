@@ -26,7 +26,7 @@ void Enemy::Process(float deltaTime) {
 
     //standard process
     Attackable::Process(deltaTime);
-    context.grid->UpdateEnemyOccupancy(this);
+    context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
 }
 
 void Enemy::HandleCollision(Collidable* other, Vector2 penetration) {
