@@ -57,7 +57,7 @@ void ItemId_4::OnEvent(EventType type, EventContext ctx, int stacks) {
 			if (item.id == 0) continue;
 			auto newItem = new Item(item.data);
 			newItem->SetBasePos(ctx.source->GetPosition());
-			context.currentScene->AddElement(newItem);
+			context.grid->UpdateOccupancy((Entity*)newItem, &GridCell::AddOther, &GridCell::RemoveOther);
 		}
 		
 		ctx.source->RemoveItem(4, 999999); // remove all (hopefully)

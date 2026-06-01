@@ -18,7 +18,6 @@ public:
 	virtual bool Initialize();  
 	virtual void Process(float deltaTime);
 	virtual void Draw(Renderer* renderer);
-	virtual void ReadInputs(float deltaTime);
 	virtual void AddElement(Element* e);
 
 protected:

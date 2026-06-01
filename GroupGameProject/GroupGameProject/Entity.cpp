@@ -17,8 +17,10 @@ Entity::Entity() {
 }
 
 Entity::~Entity() {
-    delete sprite;
-    sprite = nullptr;
+    if (sprite != nullptr) {
+        delete sprite;
+        sprite = nullptr;
+    }
 }
 
 bool Entity::Initialize(Vector2 pos, Sprite* spr) {

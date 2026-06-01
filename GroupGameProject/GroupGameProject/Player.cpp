@@ -11,15 +11,21 @@
 #include "PlayerHUD.hpp"
 
 
+Player::~Player() {
+	delete playerHud;
+	playerHud = nullptr;
+}
+
 void Player::Initialize(Vector2 pos) {
 	LoadEntityDataFromJson(data);
 	initPos = pos;
 	Attackable::Initialize({0,0}, idleAnimation);
 
     //player hud
-    playerHud = new PlayerHUD(this);
-    playerHud->Initialize();
-
+	if (playerHud == nullptr) {
+		playerHud = new PlayerHUD(this);
+		playerHud->Initialize();
+	}
 
 	collideType = CollidableType::PLAYER;
 
@@ -132,10 +138,9 @@ void Player::HandleMovement() {
 
 }
 
-
-
 void Player::HandleCollision(Collidable* other, Vector2 penetration) {
 	//handle collisions here
 }
+
 
 

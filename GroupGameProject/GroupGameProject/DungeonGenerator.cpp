@@ -11,9 +11,10 @@
 
 namespace fs = filesystem;
 
-DungeonGenerator::DungeonGenerator(){
+DungeonGenerator::DungeonGenerator(Player* player){
     int rows = context.grid->GetGridHeight();
     int cols = context.grid->GetGridWidth();
+    this->player = player;
     dungeon.assign(rows, vector<vector<char>>(cols));
 }
 
@@ -229,7 +230,6 @@ void DungeonGenerator::ApplyToGrid() {
                     }
                     case('P'): {
                         AddDungeonTileFloor(cell);
-                        auto player = Entity::CreateEntityFromJson<Player>(context.er->Get(1).data);
                         player->Initialize(cell->GetCenter());
                         cell->AddOther(player);
                         break;

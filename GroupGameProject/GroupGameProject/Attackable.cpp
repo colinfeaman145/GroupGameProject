@@ -44,9 +44,12 @@ bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 	
 	// healthbar setup
 	Vector2 size = sprite->GetDrawSize();
-	healthBar = new PercentageBar(m_pStats->GetCurrentHealth(), m_pStats ? m_pStats->GetFinalHealth() : m_pStats->GetCurrentHealth(), size.x * 1, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255}, RenderLayer::PERCENTBAR);
-	healthBar->SetPosition(position.x, position.y);
-	healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.2));
+	if (healthBar == nullptr) {
+		healthBar = new PercentageBar(m_pStats->GetCurrentHealth(), m_pStats ? m_pStats->GetFinalHealth() : m_pStats->GetCurrentHealth(), size.x * 1, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255}, RenderLayer::PERCENTBAR);
+		healthBar->SetPosition(position.x, position.y);
+		healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.2));
+	}
+
 
 	isAlive = true;
 	return true;

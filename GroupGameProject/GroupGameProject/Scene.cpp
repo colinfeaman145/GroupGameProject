@@ -61,8 +61,6 @@ void Scene::Draw(Renderer* renderer) {
 	}
 }
 
-void Scene::ReadInputs(float deltaTime) {};
-
 void Scene::AddElement(Element* e) { 
 	elementsToAdd.push_back(e);
 }

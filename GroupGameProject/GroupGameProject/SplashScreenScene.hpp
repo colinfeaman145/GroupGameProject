@@ -12,8 +12,7 @@ public:
     bool Initialize() override;
     void Process(float deltaTime) override;
     void Draw(Renderer* renderer) override;
-
-    void ReadInputs(float deltaTime) override;
+    void ReadInputs(float deltaTime);
 
     bool IsDone();
 
