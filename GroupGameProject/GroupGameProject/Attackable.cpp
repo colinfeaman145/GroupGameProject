@@ -67,7 +67,6 @@ void Attackable::Process(float deltaTime) {
 	TickRegeneration(deltaTime);
 	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats ? m_pStats->GetFinalHealth() : m_pStats->GetCurrentHealth());
 
-
 }
 
 void Attackable::Draw(Renderer* renderer) {
