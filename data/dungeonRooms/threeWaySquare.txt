@@ -1,0 +1,16 @@
+@minDepth=0
+@maxDepth=5
+@weight=5
+@rotatable=true
+@limit=unlimited
+@required=false
+
+X X X X N X X X X
+X F F F F F F F X
+X F F F F F F F X
+X F F F F F F F X
+W F F F F F F F E
+X F F F F F F F X
+X F F F F F F F X
+X F F F F F F F X
+X X X X X X X X X

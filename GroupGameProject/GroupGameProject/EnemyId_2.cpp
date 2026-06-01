@@ -16,6 +16,7 @@ void EnemyId_2::Initialize(Vector2 pos) {
 
 void EnemyId_2::Process(float deltaTime) {
 	Enemy::Process(deltaTime);
+	if (target == nullptr) return;
 	if (currentState == EnemyState::IDLE) {
 		RecalculateDirection();
 		ChangeState(EnemyState::APPROACHING);
@@ -81,9 +82,9 @@ void EnemyId_2::HandleRecoverAnimation() {
 		attackingAnimation->Restart();
 		attackingAnimation->Pause();
 
-		if (target->GetPosition().x < GetPosition().x) sprite->SetFlip(true);
-		else sprite->SetFlip(false);
 	}
+	if (target->GetPosition().x < GetPosition().x) sprite->SetFlip(true);
+	else sprite->SetFlip(false);
 }
 
 void EnemyId_2::RecalculateDirection() {

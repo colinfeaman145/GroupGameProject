@@ -76,7 +76,6 @@ protected:
 	float m_fLastStatusEffectTick;
 	float m_fLastHealTick;
 	std::vector<StatusEffect> m_activeStatusEffects;
-	float m_fCurrentHealth;
 
 	PercentageBar* healthBar;
 	bool isAlive;

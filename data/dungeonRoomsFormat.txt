@@ -1,0 +1,33 @@
+@minDepth=2 //room cannot appear until this depth from starting room is reached
+@maxDepth=8 //room cannot appear if the depth from starting room is higher than this
+@weight=5 //among other rooms that can be selected, weight towards this specific room
+@rotatable=false //can 4 rotated versions of this room be added to the pool
+@limit=unique or @limit=unlimited, or @limit=<some number> //number of times this room can be pulled from the pool
+@required=false //if this room is not placed somewhere, restart generation until it is placed
+
+F F [F, N]
+F [F, G] F
+F F F
+
+//each tile seperated by a space
+//each tile can have multiple 'things' if inside braces [] seperated with commas
+/*
+key
+
+F = Floor
+X = wall
+. = nothing
+B = Boss
+
+N = North entrance
+E = East entrance
+S = South entrance
+W = West entrance
+
+T = Treasure
+
+
+
+
+
+*/

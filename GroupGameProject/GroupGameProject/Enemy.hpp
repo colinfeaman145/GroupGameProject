@@ -41,6 +41,7 @@ public:
 
 
 
+
 protected:
 	EnemyType type;
 	EnemyState currentState;

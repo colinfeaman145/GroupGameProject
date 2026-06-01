@@ -20,7 +20,7 @@ class Grid : public Element {
 public:
     Grid(int worldWidth, int worldHeight, int cellSize);
     ~Grid();
-    bool Initialize(SDL_Texture* cellSprite);
+    bool Initialize(SDL_Texture* cellSprite = nullptr);
     void Draw(Renderer* renderer) override;
     void Process(float deltaTime) override;
 
@@ -45,11 +45,10 @@ public:
     bool HasCollision(Entity* entity);
 
     //pathfinding
-    //Vector2 GetFlowVector(GridCoord from, GridCoord target);
-    //void InvalidateFlowFieldsNear(GridCoord changedAt, int radius);
-    //void InvalidateAllFlowFields();
-    //Structure* GetWallBetween(GridCoord from, GridCoord to) const;
-    //void DebugDumpFlowField(GridCoord target, int centerCol, int centerRow, int radius);
+    Vector2 GetFlowVector(GridCoord from, GridCoord target);
+    void InvalidateFlowFieldsNear(GridCoord changedAt, int radius);
+    void InvalidateAllFlowFields();
+    void DebugDumpFlowField(GridCoord target, int centerCol, int centerRow, int radius);
 
     //Enemies
     void AddEnemy(Enemy* enemy);
@@ -91,6 +90,7 @@ private:
 //OCCUPANCY MANAGEMENT
 template<typename T>
 //updates Entities value occupancy
+//NOTE: if compiler is throwing an error, ignore it.
 void Grid::UpdateOccupancy(T* entity, void (GridCell::* addFunc)(T*), void (GridCell::* removeFunc)(T*)) {
 
     static_assert(std::is_base_of_v<Entity, T>, "T must be a subclass of Entity");

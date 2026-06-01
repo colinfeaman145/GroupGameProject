@@ -34,27 +34,30 @@ Grid::~Grid() {
     cells = nullptr;
 }
 
-//TODO accept file path and construct grid accordingly
 bool Grid::Initialize(SDL_Texture* cellTexture) {
 
     context.grid = this;
     itemPickupRadius = 1;
 
     cells = new GridCell * *[gridHeight];
-    uniform_int_distribution<int> startNatureGen(1, 10);
 
     printf("MAKING WORLD GRID\n");
     for (int row = 0; row < gridHeight; ++row) {
         cells[row] = new GridCell * [gridWidth];
         for (int col = 0; col < gridWidth; ++col) {
-            Sprite* spr = new Sprite();
-            spr->Initialize(cellTexture, 750, 750, 0, 0, cellSize, cellSize);
-            spr->SetColor({ 220, 255, 220, 255 });
+            GridCell* cell;
+            if (cellTexture) {
+                Sprite* spr = new Sprite();
+                spr->Initialize(cellTexture, 750, 750, 0, 0, cellSize, cellSize);
+                spr->SetColor({ 220, 255, 220, 255 });
+                spr->SetDrawLayer(RenderLayer::GROUND);
+                cell = new GridCell(spr);
+            }
+            else
+                cell = new GridCell();
 
-            GridCell* cell = new GridCell(spr);
             cell->SetCoords(GridCoord(col, row));
             cell->SetPosition(GridToWorld({ col, row }));
-            cell->GetSprite()->SetDrawLayer(RenderLayer::GROUND);
             cells[row][col] = cell;
         }
     }
@@ -74,7 +77,6 @@ void Grid::Draw(Renderer* renderer) {
     for (int row = minRow; row <= maxRow; ++row)
         for (int col = minCol; col <= maxCol; ++col)
             cells[row][col]->Draw(renderer);
-
 }
 
 void Grid::Process(float deltaTime) {

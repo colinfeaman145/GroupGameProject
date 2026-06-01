@@ -1,6 +1,7 @@
 #include "ItemShopSocket.hpp"
 #include "Player.hpp"
 #include "GameContext.hpp"
+#include "Grid.hpp"
 #include "Text.hpp"
 #include "Item.hpp"
 #include <string>
@@ -74,7 +75,6 @@ void ItemShopSocket::HandleCollision(Collidable* other, Vector2 penetration) {
 void ItemShopSocket::Process(float deltaTime) {
     //collision updates
     Entity::Process(deltaTime);
-    context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
     item->Process(deltaTime);
     text->Process(deltaTime);
 }

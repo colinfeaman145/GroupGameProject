@@ -5,6 +5,7 @@
 #include <vector>
 #include "Element.hpp"
 
+class Text;
 class Sprite;
 class InventoryOverlay;
 class Player;
@@ -47,6 +48,8 @@ public:
     void SetWeapoinSprite();
     void SetCashoutHUD();
     void SetInventoryHUD();
+    void HandleTimerUpdate();
+    void SetDifficultyHUD();
     void SetStatSheetHUD();
 
 private:
@@ -62,6 +65,7 @@ private:
     Sprite* bulletSprite;
     Sprite* weaponSprite;
 
+    Text* timerText;
     std::vector<Sprite*> playerHudElements;
 };
 #endif // PLAYERHUD_HPP

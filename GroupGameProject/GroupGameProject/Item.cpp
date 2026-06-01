@@ -3,6 +3,7 @@
 #include "GameContext.hpp"
 #include "Attackable.hpp"
 #include "AnimatedSprite.hpp"
+#include "Grid.hpp"
 #include <limits>
 
 Item::Item(json itemData) {

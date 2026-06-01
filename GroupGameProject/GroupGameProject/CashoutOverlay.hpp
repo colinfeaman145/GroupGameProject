@@ -17,7 +17,5 @@ public:
 private:
 	Inventory* inventory;
 	PercentageBar* cashoutBar;
-	json itemData;
-
 };
 

@@ -34,6 +34,11 @@ bool Entity::Initialize(Vector2 pos, Sprite* spr) {
 }
 
 void Entity::Process(float deltaTime) {
+    if (hasBeenProcessed) return;
+    hasBeenProcessed = true;
+    hasBeenDrawn = false;
+
+
     position = position + (velocity * deltaTime);
 
     //stay inside grid
@@ -56,6 +61,10 @@ void Entity::Process(float deltaTime) {
 }
 
 void Entity::Draw(Renderer* renderer) {
+    if (hasBeenDrawn) return;
+    hasBeenDrawn = true;
+    hasBeenProcessed = false;
+
     if (sprite && visibility == Visibility::VISIBLE) {
         sprite->Draw(renderer);
     }

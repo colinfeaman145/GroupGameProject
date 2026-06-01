@@ -10,8 +10,12 @@
 #include "InputManager.hpp"
 #include "ItemRegistry.hpp"
 #include "EntityRegistry.hpp"
+#include "DifficultyCalculator.hpp"
 #include "Grid.hpp"
 #include "Scene.hpp"
+#include "GameTimer.hpp"
+class Grid;
+
 
 #define DEBUGMODE false
 #define GOD_MODE true
@@ -25,8 +29,11 @@ struct GameContext {
     InputManager* im;
 	ItemRegistry* ir;
     EntityRegistry* er;
+    GameTimer* timer;
+    DifficultyCalculator* dc;
 	Scene* currentScene;
     Grid* grid;
+
     function<void(int)> changeScene;
 };
 

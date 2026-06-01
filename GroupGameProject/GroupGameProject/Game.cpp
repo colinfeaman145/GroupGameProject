@@ -5,6 +5,7 @@
 #include "TestingAreaScene.hpp"
 #include "ItemRegistry.hpp"
 #include "GameContext.hpp"
+#include "DifficultyCalculator.hpp"
 #include "Camera.hpp"
 
 /*
@@ -25,6 +26,8 @@ Game::Game() {
     context.im = new InputManager();
     context.am = new AudioManager();
 	context.ir = new ItemRegistry();
+    context.timer = new GameTimer();
+    context.dc = new DifficultyCalculator();
     context.er = new EntityRegistry();
     context.im->Initialize("../../data/inputs.json");
     context.changeScene = [this](int i) { this->ChangeScene(i); };

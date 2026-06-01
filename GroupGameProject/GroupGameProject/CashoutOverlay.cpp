@@ -21,15 +21,6 @@ CashoutOverlay::~CashoutOverlay() {
 
 bool CashoutOverlay::Initialize(Inventory* inventory)
 {
-
-    auto filepath = "../../data/items.json";
-    ifstream file(filepath);
-    if (!file.is_open()) {
-        cerr << "Failed to open bindings file: " << filepath << endl;
-        return false;
-    }
-    itemData = json::parse(file);
-
 	cashoutBar = new PercentageBar(0, 0, size.x, size.y, {252, 194, 0, 255}, {150, 50, 50, 255}, RenderLayer::UI);
     cashoutBar->SetOffset(0, 0);
 

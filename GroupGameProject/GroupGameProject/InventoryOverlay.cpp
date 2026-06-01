@@ -15,7 +15,6 @@ InventoryOverlay::~InventoryOverlay() {
 
 bool InventoryOverlay::Initialize(Inventory* i, float cellSize, float foregroundAlpha)
 {
-
     inventory = i;
     this->foregroundAlpha = foregroundAlpha;
     inventory->RegisterCallback([this]() { this->Recalculate();});

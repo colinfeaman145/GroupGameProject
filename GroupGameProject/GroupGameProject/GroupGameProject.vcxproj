@@ -143,7 +143,10 @@
     <ClCompile Include="AnimatedSprite.cpp" />
     <ClCompile Include="Attackable.cpp" />
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="DifficultyCalculator.cpp" />
+    <ClCompile Include="DifficultyOverlay.cpp" />
     <ClCompile Include="EnemyId_3.cpp" />
+    <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="ItemId_2.cpp" />
     <ClCompile Include="ItemId_2.hpp" />
     <ClCompile Include="Button.cpp" />
@@ -153,6 +156,9 @@
     <ClCompile Include="ItemId_3.cpp" />
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="Container.cpp" />
+    <ClCompile Include="DungeonGenerator.cpp" />
+    <ClCompile Include="DungeonGeneratorHelper.cpp" />
+    <ClCompile Include="DungeonGeneratorPlacement.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EnumTypes.hpp" />
@@ -174,6 +180,7 @@
     <ClCompile Include="ItemId_5.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemId_6.cpp" />
+    <ClCompile Include="ItemId_7.cpp" />
     <ClCompile Include="ItemShopSocket.cpp" />
     <ClCompile Include="ItemSpawner.cpp" />
     <ClCompile Include="PlayerHUD.cpp" />
@@ -198,13 +205,18 @@
     <ClInclude Include="AudioManager.hpp" />
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="DifficultyCalculator.hpp" />
+    <ClInclude Include="DifficultyOverlay.hpp" />
     <ClInclude Include="EnemyId_3.hpp" />
+    <ClInclude Include="GameTimer.hpp" />
     <ClInclude Include="ItemId_4.hpp" />
     <ClInclude Include="CashoutOverlay.hpp" />
     <ClInclude Include="ItemId_3.hpp" />
     <ClInclude Include="Collidable.hpp" />
     <ClInclude Include="Collision.hpp" />
     <ClInclude Include="Container.hpp" />
+    <ClInclude Include="Direction.hpp" />
+    <ClInclude Include="DungeonGenerator.hpp" />
     <ClInclude Include="Element.hpp" />
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="EntityRegistry.hpp" />
@@ -225,6 +237,7 @@
     <ClInclude Include="Inventory.hpp" />
     <ClInclude Include="ItemEffect.hpp" />
     <ClInclude Include="ItemId_6.hpp" />
+    <ClInclude Include="ItemId_7.hpp" />
     <ClInclude Include="ItemRegistry.hpp" />
     <ClInclude Include="ItemShopSocket.hpp" />
     <ClInclude Include="ItemSpawner.hpp" />

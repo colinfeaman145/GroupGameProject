@@ -80,6 +80,10 @@ protected:
 	GridOccupancy occupancy;//what gridCells the entity is in(used for collision detection)
 	json data;
 
+private:
+	bool hasBeenProcessed;
+	bool hasBeenDrawn;
+
 };
 
 #endif

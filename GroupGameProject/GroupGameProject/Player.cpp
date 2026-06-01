@@ -7,13 +7,18 @@
 #include "Camera.hpp"
 #include "ItemSpawner.hpp"
 #include "Inventory.hpp"
-#include "GameContext.hpp"
-
+#include "Grid.hpp"
+#include "PlayerHUD.hpp"
 
 
 void Player::Initialize(Vector2 pos) {
 	LoadEntityDataFromJson(data);
-	Attackable::Initialize(pos, idleAnimation);
+	initPos = pos;
+	Attackable::Initialize({0,0}, idleAnimation);
+
+    //player hud
+    playerHud = new PlayerHUD(this);
+    playerHud->Initialize();
 
 
 	collideType = CollidableType::PLAYER;
@@ -24,20 +29,33 @@ void Player::Initialize(Vector2 pos) {
 void Player::Process(float deltaTime) {
 	Attackable::Process(deltaTime);
 
+	playerHud->Process(deltaTime);
+
 	auto occ = GetOccupancy();
 
 
 	HandleMouseClick(deltaTime);
 	HandleMovement();
 	HandleAnimation();
-	healthBar->SetValues(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth);
-
-    //collision updates
-    context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
 
 	if (attackCooldown > 0) {
 		attackCooldown -= deltaTime;
 	}
+	context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
+}
+
+void Player::Draw(Renderer* renderer) {
+ 	Attackable::Draw(renderer);
+	// workaround for initial camera position
+	// only the entities that are inside the camera frame are drawn
+	// if the player gets spawned outside the frame, the camera is never position correctly
+	// the player draw method never gets called
+	if (GetPosition().x - radius == 0 && GetPosition().y - radius == 0) {
+		SetPosition(initPos);
+	}
+
+	playerHud->Draw(renderer);
+	renderer->cam->Follow(GetPosition());
 }
 
 void Player::HandleAnimation() {
@@ -114,11 +132,7 @@ void Player::HandleMovement() {
 
 }
 
-void Player::Draw(Renderer* renderer) {
- 	Attackable::Draw(renderer);
-	renderer->cam->Follow(GetPosition());
-	healthBar->Draw(renderer);
-}
+
 
 void Player::HandleCollision(Collidable* other, Vector2 penetration) {
 	//handle collisions here

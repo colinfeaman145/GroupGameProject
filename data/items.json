@@ -99,5 +99,15 @@
     "params": {
       "increasePerStack": 0.15
     }
+  },
+  "7": {
+    "id": 7,
+    "name": "ScalingItem",
+    "description": "Applies time scaling effects to owner",
+    "spritePath": "",
+    "params": {
+      "healthIncreasePerLevel": 0.3,
+      "damageIncreasePerLevel": 0.2
+    }
   }
 }

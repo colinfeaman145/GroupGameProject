@@ -1,6 +1,7 @@
 #pragma once
 #include "Attackable.hpp"
 
+class PlayerHUD;
 class AnimatedSprite;
 class Player : public Attackable {
 
@@ -19,5 +20,7 @@ private:
 private:
 	int coinCount;
 	float attackCooldown;
+	PlayerHUD* playerHud;
+	Vector2 initPos;
 };
 

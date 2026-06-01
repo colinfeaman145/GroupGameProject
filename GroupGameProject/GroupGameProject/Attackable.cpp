@@ -14,6 +14,7 @@
 
 
 Attackable::Attackable() {
+	context.dc->RegisterOnLevelUp([this] {this->AddItem(7,1);});
 
 	m_itemSpawner = new ItemSpawner();
 
@@ -25,7 +26,6 @@ Attackable::Attackable() {
 	m_pStats = new StatSheet();
 	m_pStats->SetDefaultValues();
 	m_pStats->Reset();
-
 }
 
 Attackable::~Attackable() {
@@ -42,12 +42,9 @@ Attackable::~Attackable() {
 bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 	Entity::Initialize(pos, spr);
 	
-
-	m_fCurrentHealth = m_pStats->GetFinalHealth();
-
 	// healthbar setup
 	Vector2 size = sprite->GetDrawSize();
-	healthBar = new PercentageBar(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth, size.x * 1, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255}, RenderLayer::PERCENTBAR);
+	healthBar = new PercentageBar(m_pStats->GetCurrentHealth(), m_pStats ? m_pStats->GetFinalHealth() : m_pStats->GetCurrentHealth(), size.x * 1, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255}, RenderLayer::PERCENTBAR);
 	healthBar->SetPosition(position.x, position.y);
 	healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.2));
 
@@ -68,7 +65,7 @@ void Attackable::Process(float deltaTime) {
 
 	TickStatusEffect(deltaTime);
 	TickRegeneration(deltaTime);
-
+	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats ? m_pStats->GetFinalHealth() : m_pStats->GetCurrentHealth());
 
 }
 
@@ -105,7 +102,7 @@ void Attackable::TickRegeneration(float deltaTime) {
 }
 
 int Attackable::GetHealth() {
-	return m_fCurrentHealth;
+	return m_pStats->GetCurrentHealth();
 }
 
 int Attackable::GetMaxHealth() {
@@ -119,32 +116,30 @@ void Attackable::SetHealth(float h) {
 
 	// clip health to 0 and max health
 	int maxHealth = m_pStats ? m_pStats->GetFinalHealth() : h;
-	m_fCurrentHealth = clip(h, 0, m_pStats ? m_pStats->GetFinalHealth() : h);
-
+	m_pStats->SetCurrentHealth(h);
 	Vector2 size = sprite->GetDrawSize();
-	healthBar = new PercentageBar(m_fCurrentHealth, maxHealth, size.x * 0.9, size.y * 0.1, { 255, 50, 50, 150 }, { 0, 0, 0, 150 }, RenderLayer::PERCENTBAR);
+	healthBar = new PercentageBar(m_pStats->GetCurrentHealth(), maxHealth, size.x * 0.9, size.y * 0.1, {255, 50, 50, 150}, {0, 0, 0, 150}, RenderLayer::PERCENTBAR);
 	healthBar->SetPosition(position.x, position.y);
 	healthBar->SetOffset((size.x * 0.05), (size.y * 0.8));
 }
 
 // returns the actual damage received after armor calculations
 void Attackable::ApplyDamage(EventContext& ctx) {
-	float maxHealth = m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth;
 	float damageReceived = m_pStats ? m_pStats->CalculateDamageReceived(ctx.hitInfo.damageDealt) : ctx.hitInfo.damageDealt;
 	ctx.hitInfo.damageDealt = damageReceived;
 
 	if (ctx.hitInfo.damageDealt == -1) {//full kill
-		m_fCurrentHealth = 0;
+		m_pStats->SetCurrentHealth(0);
 	}
 	if (ctx.hitInfo.damageDealt == 0) { // should not proc event if 0 damage is done
 		return;
 	}
 
-	m_fCurrentHealth = clip(m_fCurrentHealth - damageReceived, 0, maxHealth);
+	m_pStats->SetCurrentHealth(m_pStats->GetCurrentHealth() - damageReceived);
 	SetFlash(true);
-	healthBar->SetValues(m_fCurrentHealth, maxHealth);
+	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats->GetFinalHealth());
 
-	if (m_fCurrentHealth <= 0 && IsAlive()) {
+	if (m_pStats->GetCurrentHealth() <= 0 && IsAlive()) {
 		FireEvent(EventType::OnDeath, ctx);
 		ctx.source->FireEvent(EventType::OnKill, ctx);
 		SetDead();
@@ -154,11 +149,10 @@ void Attackable::ApplyDamage(EventContext& ctx) {
 }
 
 void Attackable::ApplyHeal(EventContext& ctx) {
-	float maxHealth = m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth;
 	auto isHealCrit = HasHitChance(m_pStats->critChance) && (m_pStats->hasHealCritEnabled);
 
 	if (ctx.hitInfo.healAmount == -1) {//full heal
-		m_fCurrentHealth = maxHealth;
+		m_pStats->SetCurrentHealth(m_pStats->GetFinalHealth());
 		return;
 	}
 	if (isHealCrit) {
@@ -166,8 +160,8 @@ void Attackable::ApplyHeal(EventContext& ctx) {
 		ctx.hitInfo.isCritical = true;
 	}
 
-	m_fCurrentHealth = clip(m_fCurrentHealth + ctx.hitInfo.healAmount, 0, maxHealth);
-	healthBar->SetValues(m_fCurrentHealth, maxHealth);
+	m_pStats->SetCurrentHealth(m_pStats->GetCurrentHealth() + ctx.hitInfo.healAmount);
+	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats->GetFinalHealth());
 
 	FireEvent(EventType::OnHeal, ctx);
 }
@@ -292,7 +286,7 @@ void Attackable::TickStatusEffect(float deltaTime) {
 
 			ctx.source = status.source;
 			ctx.target = this;
-			ctx.hitInfo = { m_fCurrentHealth * 0.05f, false, false };
+			ctx.hitInfo = { m_pStats->GetCurrentHealth() * 0.05f, false, false };
 			status.duration -= deltaTime;
 		}
 
@@ -339,10 +333,22 @@ void Attackable::TickStatusEffect(float deltaTime) {
 
 void Attackable::AddItem(ItemID id, int count) {
 	m_inventory->Add(id, count);
+	for (auto& [itemID, stacks] : m_inventory->All()) {
+		ItemDef def = context.ir->Get(itemID);
+		if (def.effect) {
+			def.effect->OnPickup(this, stacks);
+		}
+	}
 }
 
 void Attackable::RemoveItem(ItemID id, int count) {
 	m_inventory->Remove(id, count);
+	for (auto& [itemID, stacks] : m_inventory->All()) {
+		ItemDef def = context.ir->Get(itemID);
+		if (def.effect) {
+			def.effect->OnRemove(this, stacks);
+		}
+	}
 }
 
 void Attackable::RecalculateStats() {
@@ -363,7 +369,7 @@ void Attackable::LoadEntityDataFromJson(json data) {
 	LoadInventoryFromJson(data["inventory"]);
 	LoadItemSpawnerSettingsFromJson(data["spawner"]);
 	LoadAnimationsFromJson(data["animations"]);
-	m_fCurrentHealth = m_pStats->GetFinalHealth();// set current health after item calculations
+	m_pStats->SetCurrentHealth(m_pStats->GetFinalHealth());// set current health after item calculations
 }
 
 void Attackable::LoadAnimationsFromJson(json animations) {
