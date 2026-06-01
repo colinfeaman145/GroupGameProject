@@ -53,6 +53,7 @@ bool AnimatedSprite::Initialize(SDL_Texture* tex, int srcWidth, int srcHeight, i
 }
 
 void AnimatedSprite::Process(float deltaTime) {
+    Sprite::Process(deltaTime);
     if (!isAnimating) return;
 
     timeElapsed += deltaTime;

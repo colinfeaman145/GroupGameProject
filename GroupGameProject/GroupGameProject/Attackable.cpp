@@ -309,7 +309,7 @@ void Attackable::TickStatusEffect(float deltaTime) {
 			ctx.hitInfo = { m_pStats->GetFinalHealth() * 0.05f, false, false };
 			status.duration -= deltaTime;
 		}
-		// burning effect
+		// invincible effect
 		if (status.type == StatusEffectType::Invincible) {
 			
 			ctx.source = status.source;
