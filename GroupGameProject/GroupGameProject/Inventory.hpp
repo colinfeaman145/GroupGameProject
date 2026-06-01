@@ -11,6 +11,10 @@ using ItemID = uint32_t;
 class Inventory {
 public:
 	Inventory() {}
+	~Inventory() {
+		m_stacks.clear();
+		onChangeCallbacks.clear();
+	}
 	void Add(ItemID itemId, int amount) {
 		m_stacks[itemId] += amount;
 

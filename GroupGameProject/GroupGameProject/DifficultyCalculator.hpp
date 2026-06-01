@@ -26,6 +26,7 @@ public:
 	void EmitOnStageCompleted();
 	void StageCompleted();
 
+	void ResetCallbacks();
 
 	int GetStagesCompleted();
 

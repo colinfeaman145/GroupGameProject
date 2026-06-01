@@ -14,13 +14,11 @@
 
 
 Attackable::Attackable() {
-	context.dc->RegisterOnLevelUp([this] {this->AddItem(7,1);});
 
 	m_itemSpawner = new ItemSpawner();
 
 	// register callback to automatically recalculate stats when inventory changes
 	m_inventory = new Inventory();
-	m_inventory->RegisterCallback([this]() { this->RecalculateStats();});
 
 	// default statsheet values
 	m_pStats = new StatSheet();
@@ -29,6 +27,17 @@ Attackable::Attackable() {
 }
 
 Attackable::~Attackable() {
+	context.dc->ResetCallbacks();
+
+	delete m_inventory;
+	m_inventory = nullptr;
+
+	delete m_pStats;
+	m_pStats = nullptr;
+
+	delete m_itemSpawner;
+	m_itemSpawner = nullptr;
+
 	delete idleAnimation;
 	idleAnimation = nullptr;
 	delete movingAnimation;
@@ -37,10 +46,14 @@ Attackable::~Attackable() {
 	deathAnimation = nullptr;
 	delete attackingAnimation;
 	attackingAnimation = nullptr;
+
+	sprite = nullptr;
 }
 
 bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 	Entity::Initialize(pos, spr);
+	context.dc->RegisterOnLevelUp([this] {this->AddItem(7,1);});
+	m_inventory->RegisterCallback([this]() { this->RecalculateStats();});
 	
 	// healthbar setup
 	Vector2 size = sprite->GetDrawSize();
