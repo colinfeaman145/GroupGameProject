@@ -230,7 +230,7 @@ void DungeonGenerator::ApplyToGrid() {
                     case('P'): {
                         AddDungeonTileFloor(cell);
                         auto player = Entity::CreateEntityFromJson<Player>(context.er->Get(1).data);
-                        player->Initialize(Vector2(context.grid->GetGridWidth() / 2, context.grid->GetGridHeight()  / 2));
+                        player->Initialize(cell->GetCenter());
                         cell->AddOther(player);
                         break;
                     }

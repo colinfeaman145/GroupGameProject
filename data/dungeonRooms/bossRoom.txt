@@ -3,8 +3,6 @@
 @weight=100
 @rotatable=true
 @limit=unique
-@required=true
-
 X X X X X X X X X X X X 
 X F F F F F F F F F F X
 X F F F F F F F F F F X

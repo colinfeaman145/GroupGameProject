@@ -7,7 +7,7 @@
       "baseDamage": 40,
       "bonusDamage": 0,
       "damageMult": 1,
-      "baseSpeed": 1000,
+      "baseSpeed": 10000,
       "bonusSpeed": 0,
       "speedMult": 1,
       "baseAttackSpeed": 1,
@@ -53,14 +53,22 @@
         "frameDuration": 0
       }
     },
-    "inventory": [     
+    "inventory": [
+      {
+        "id": 1,
+        "stacks": 50
+      },
       {
         "id": 2,
-        "stacks": 10
+        "stacks": 20
       },
       {
         "id": 5,
         "stacks": 1
+      },
+      {
+        "id": 6,
+        "stacks": 5
       }
     ],
     "spawner": {
@@ -73,7 +81,9 @@
         }
       ]
     },
-    "params": {}
+    "params": {
+      
+    }
   },
   "2": {
     "stats": {
@@ -199,7 +209,7 @@
         "frameDuration": 0.1
       },
       "attacking": {
-       "path": "../../assets/sprites/Enemy/Monsters_Creatures_Fantasy/Mushroom/Attack3.png",
+        "path": "../../assets/sprites/Enemy/Monsters_Creatures_Fantasy/Mushroom/Attack3.png",
         "frameWidth": 150,
         "frameHeight": 150,
         "framesPerRow": 11,
@@ -208,7 +218,7 @@
       }
     },
     "inventory": [
-           
+      
     ],
     "spawner": {
       "spawnRadius": 150,
@@ -217,9 +227,11 @@
           "id": 3,
           "dropRatePerItem": 0.5,
           "count": 3
-        }        
+        }
       ]
     },
-    "params": {}
+    "params": {
+      
+    }
   }
 }

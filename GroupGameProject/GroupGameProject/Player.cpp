@@ -30,12 +30,14 @@ void Player::Process(float deltaTime) {
 	HandleMovement();
 	HandleAnimation();
 
-    //collision updates
-    context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
-
 	if (attackCooldown > 0) {
 		attackCooldown -= deltaTime;
 	}
+}
+
+void Player::Draw(Renderer* renderer) {
+ 	Attackable::Draw(renderer);
+	renderer->cam->Follow(GetPosition());
 }
 
 void Player::HandleAnimation() {
@@ -112,11 +114,7 @@ void Player::HandleMovement() {
 
 }
 
-void Player::Draw(Renderer* renderer) {
- 	Attackable::Draw(renderer);
-	renderer->cam->Follow(GetPosition());
-	healthBar->Draw(renderer);
-}
+
 
 void Player::HandleCollision(Collidable* other, Vector2 penetration) {
 	//handle collisions here

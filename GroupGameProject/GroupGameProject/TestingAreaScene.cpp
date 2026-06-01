@@ -24,10 +24,10 @@ bool TestingAreaScene::Initialize() {
     // player setup
     auto player = Entity::CreateEntityFromJson<Player>(context.er->Get(1).data);
     player->Initialize(Vector2(GRID_WIDTH / 2, GRID_HEIGHT  / 2));
-    //context.grid->UpdateOccupancy((Entity*)player, &GridCell::AddOther, &GridCell::RemoveOther);
-	//AddElement(player);
+    context.grid->UpdateOccupancy((Entity*)player, &GridCell::AddOther, &GridCell::RemoveOther);
+	AddElement(player);
 
-    //player hud?
+    //player hud
     playerHUD = new PlayerHUD(player);
     playerHUD->Initialize();
     AddElement(playerHUD);
