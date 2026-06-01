@@ -35,7 +35,8 @@ void ItemSpawner::SpawnItems(Vector2 basePos) {
 
 			Vector2 randomPosInRadius = { basePos.x + radius * std::cos(theta), basePos.y + radius * std::sin(theta) };
 			newItem->SetBasePos(randomPosInRadius);
-			context.currentScene->AddElement(newItem);
+			context.grid->UpdateOccupancy((Entity*)newItem, &GridCell::AddOther, &GridCell::RemoveOther);
+			//context.currentScene->AddElement(newItem);
 		}
 	}
 }
