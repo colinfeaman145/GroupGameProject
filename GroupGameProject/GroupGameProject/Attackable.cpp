@@ -129,8 +129,11 @@ int Attackable::GetMaxHealth() {
 }
 
 void Attackable::SetHealth(float h) {
-
-	// clip health to 0 and max health
+	if (m_pStats == nullptr) {
+		m_pStats = new StatSheet();
+		m_pStats->SetDefaultValues();
+		m_pStats->Reset();
+	}
 	int maxHealth = m_pStats ? m_pStats->GetFinalHealth() : h;
 	m_pStats->SetCurrentHealth(h);
 	Vector2 size = sprite->GetDrawSize();
@@ -139,29 +142,36 @@ void Attackable::SetHealth(float h) {
 	healthBar->SetOffset((size.x * 0.05), (size.y * 0.8));
 }
 
-// returns the actual damage received after armor calculations
 void Attackable::ApplyDamage(EventContext& ctx) {
 	float damageReceived = m_pStats ? m_pStats->CalculateDamageReceived(ctx.hitInfo.damageDealt) : ctx.hitInfo.damageDealt;
 	ctx.hitInfo.damageDealt = damageReceived;
 
-	if (ctx.hitInfo.damageDealt == -1) {//full kill
-		m_pStats->SetCurrentHealth(0);
-	}
-	if (ctx.hitInfo.damageDealt == 0) { // should not proc event if 0 damage is done
-		return;
+	auto deathMarkStacks = m_inventory->Count(20);
+	if (deathMarkStacks > 0) {
+		ctx.hitInfo.damageDealt *= (5 + (0.5f * deathMarkStacks));
 	}
 
-	m_pStats->SetCurrentHealth(m_pStats->GetCurrentHealth() - damageReceived);
+
+	if ((int)ctx.hitInfo.damageDealt < 0) {//full kill
+		m_pStats->SetCurrentHealth(-1);
+	}
+	else if ((int)ctx.hitInfo.damageDealt == 0) { // should not proc event if 0 damage is done
+		return;
+	}
+	else {
+		m_pStats->SetCurrentHealth(m_pStats->GetCurrentHealth() - damageReceived);
+	}
+
 	SetFlash(true);
 	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats->GetFinalHealth());
 
-	if (m_pStats->GetCurrentHealth() <= 0 && IsAlive()) {
+	if ((int)m_pStats->GetCurrentHealth() <= 0 && IsAlive()) {
 		FireEvent(EventType::OnDeath, ctx);
 		ctx.source->FireEvent(EventType::OnKill, ctx);
 		SetDead();
 	}
 
-	FireEvent(EventType::OnGettigHit, ctx);
+	FireEvent(EventType::OnGettingHit, ctx);
 }
 
 void Attackable::ApplyHeal(EventContext& ctx) {
@@ -180,6 +190,17 @@ void Attackable::ApplyHeal(EventContext& ctx) {
 	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats->GetFinalHealth());
 
 	FireEvent(EventType::OnHeal, ctx);
+}
+
+float Attackable::GetHealthPercent() const {
+	return m_pStats ? m_pStats->GetCurrentHealth() / m_pStats->GetFinalHealth() : 1.0f;
+}
+
+int Attackable::GetUniqueStatusEffectCount() {
+	std::unordered_set<StatusEffectType> unique;
+	for (auto& effect : m_activeStatusEffects)
+		unique.insert(effect.type);
+	return unique.size();
 }
 
 void Attackable::SetPosition(Vector2 pos) {
@@ -208,7 +229,9 @@ void Attackable::DealDamageTo(Attackable* target, HitInfo info) {
 
 	target->ApplyDamage(ctx);
 
-	FireEvent(EventType::OnHit, ctx);
+	if (ctx.hitInfo.appliesOnHitEffects) {
+		 FireEvent(EventType::OnHit, ctx);
+	}
 	if (info.isCritical) {
 		FireEvent(EventType::OnCrit, ctx);
 	}
@@ -284,8 +307,8 @@ std::unordered_map<ItemID, int> Attackable::GetItems() {
 	return m_inventory->All();
 }
 
-void Attackable::ApplyStatusEffect(StatusEffectType status, float duration, Attackable* source) {
-	m_activeStatusEffects.push_back({status, duration, source});
+void Attackable::ApplyStatusEffect(StatusEffect effect) {
+	m_activeStatusEffects.push_back(effect);
 }
 
 void Attackable::TickStatusEffect(float deltaTime) {
@@ -329,6 +352,26 @@ void Attackable::TickStatusEffect(float deltaTime) {
 			SetCanCollide(false);
 			status.duration -= deltaTime;
 		}
+		// damage boost effect
+		if (status.type == StatusEffectType::DamageBoost) {
+			
+			ctx.source = status.source;
+			ctx.target = this;
+			ctx.hitInfo = { 0, false, false };
+			m_pStats->bonusDamage += m_pStats->GetFinalDamage() * status.currentValue;
+			status.currentValue = 0; // only apply at first tick - lasts for whole duration
+			status.duration -= deltaTime;
+		}
+		// attackspeed boost effect
+		if (status.type == StatusEffectType::AttackSpeedBoost) {
+			
+			ctx.source = status.source;
+			ctx.target = this;
+			ctx.hitInfo = { 0, false, false };
+			m_pStats->bonusAttackSpeed += m_pStats->baseAttackSpeed * status.currentValue; 
+			status.currentValue = 0;
+			status.duration -= deltaTime;
+		}
 
 		// only apply damage every tick
 		if (applyTick) ApplyDamage(ctx);
@@ -338,6 +381,12 @@ void Attackable::TickStatusEffect(float deltaTime) {
 	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) { 
 		if (s.duration <= 0) {
 			// OnExit logic
+			if (s.type == StatusEffectType::AttackSpeedBoost) {
+				s.source->m_pStats->bonusAttackSpeed -= s.source->m_pStats->baseAttackSpeed * s.originalValue;
+			}
+			if (s.type == StatusEffectType::DamageBoost) {
+				s.source->m_pStats->bonusDamage -= s.source->m_pStats->baseDamage * s.originalValue;
+			}
 			if (s.type == StatusEffectType::Invincible) {
 				s.source->SetCanCollide(true);
 			}

@@ -4,18 +4,18 @@
       "baseHealth": 100,
       "bonusHealth": 0,
       "healthMult": 1,
-      "baseDamage": 40,
+      "baseDamage": 5,
       "bonusDamage": 0,
       "damageMult": 1,
-      "baseSpeed": 10000,
+      "baseSpeed": 5000,
       "bonusSpeed": 0,
       "speedMult": 1,
-      "baseAttackSpeed": 1,
+      "baseAttackSpeed": 5,
       "bonusAttackSpeed": 0,
       "attackSpeedMult": 1,
       "armor": 20,
-      "regeneration": 5,
-      "critChance": 0.5,
+      "regeneration": 0,
+      "critChance": 1,
       "critMultiplyer": 1.5,
       "hasHealCritEnabled": 0
     },
@@ -59,17 +59,13 @@
         "stacks": 50
       },
       {
-        "id": 2,
-        "stacks": 20
+        "id": 3,
+        "stacks": 2000
       },
       {
         "id": 5,
         "stacks": 1
-      },
-      {
-        "id": 6,
-        "stacks": 5
-      }
+      }      
     ],
     "spawner": {
       "spawnRadius": 200,

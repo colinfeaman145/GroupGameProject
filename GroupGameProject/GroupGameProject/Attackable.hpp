@@ -28,6 +28,8 @@ public:
 	void DealDamageTo(Attackable* target, HitInfo info);
 	void ApplyDamage(EventContext& ctx);
 	void ApplyHeal(EventContext& ctx);
+	float GetHealthPercent() const;
+	int GetUniqueStatusEffectCount();
 
 	// getter
 	bool IsAlive() const { return isAlive; };
@@ -54,7 +56,7 @@ public:
 	void RemoveItem(ItemID id, int count);
 	void RecalculateStats();
 	void FireEvent(EventType type, EventContext ctx);
-	void ApplyStatusEffect(StatusEffectType status, float duration, Attackable* source);
+	void ApplyStatusEffect(StatusEffect effect);
 	void TickStatusEffect(float deltaTime);
 	void TickRegeneration(float deltaTime);
 

@@ -126,7 +126,10 @@ void Player::HandleMovement() {
 		velocity.y = 0;
 	}
 
-
+	// dodge
+	if (context.im->IsKeyPressed("dodge")) {
+		FireEvent(EventType::OnDodge, { .source = this, .target = this });
+	}
 }
 
 void Player::HandleCollision(Collidable* other, Vector2 penetration) {

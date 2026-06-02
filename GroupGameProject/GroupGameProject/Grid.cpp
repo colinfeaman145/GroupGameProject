@@ -9,6 +9,7 @@
 #include "Sprite.hpp"
 #include "Camera.hpp"
 #include "Collision.hpp"
+#include "Enemy.hpp"
 
 Grid::Grid(int worldWidth, int worldHeight, int cellSize)
     : cellSize(cellSize)
@@ -234,4 +235,18 @@ bool Grid::HasCollision(Entity* entity) {
         }
     }
     return false;
+}
+
+Attackable* Grid::GetRandomEnemyInRange(Entity* entity, int searchRadius) {
+	if (!entity) return nullptr;
+	vector<Attackable*> targetsInRange;
+	const GridOccupancy& occ = entity->GetOccupancy();
+	GridCoord center = { (occ.minCol + occ.maxCol) / 2, (occ.minRow + occ.maxRow) / 2 };
+	for (Collidable* other : GetNearbyCollidables(center, searchRadius)) {
+		if (!other || other == entity) continue;
+		if (Attackable* attackable = dynamic_cast<Enemy*>(other)) {
+			targetsInRange.push_back(attackable);
+		}
+	}
+	return targetsInRange.empty() ? nullptr : targetsInRange[rand() % targetsInRange.size()];
 }

@@ -8,5 +8,6 @@
     "testing_room": ["f2"],
     "ctrl":	    ["left ctrl"],
     "r":	    ["r"],
-    "shift":	    ["left shift"]
+    "shift":	    ["left shift"],
+    "dodge":	    ["space"]
 }

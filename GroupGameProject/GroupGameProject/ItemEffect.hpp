@@ -9,6 +9,9 @@ class Attackable;
 class StatSheet;
 
 enum StatusEffectType {
+	DeathMark,
+	DamageBoost,
+	AttackSpeedBoost,
 	Invincible,
 	Bleeding,
 	Burning,
@@ -19,13 +22,15 @@ enum StatusEffectType {
 struct StatusEffect {
 	StatusEffectType type;
 	float duration;
+	float currentValue;
+	float originalValue; // used for temporary boosts to know how much to remove on expiration
 	Attackable* source;
 };
 
 enum EventType {
 	OnCashout,
 	OnHit,
-	OnGettigHit,
+	OnGettingHit,
 	OnKill,
 	OnCrit,
 	OnAttack,
@@ -40,6 +45,7 @@ struct HitInfo {
 	float healAmount;
 	bool isCritical;
 	bool isDodged;
+	bool appliesOnHitEffects;
 };
 
 struct EventContext {
