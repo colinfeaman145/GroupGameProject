@@ -31,7 +31,6 @@ struct GameContext {
     EntityRegistry* er;
     GameTimer* timer;
     DifficultyCalculator* dc;
-	Scene* currentScene;
     Grid* grid;
 
     function<void(int)> changeScene;

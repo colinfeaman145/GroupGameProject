@@ -14,13 +14,11 @@
 
 
 Attackable::Attackable() {
-	context.dc->RegisterOnLevelUp([this] {this->AddItem(7,1);});
 
 	m_itemSpawner = new ItemSpawner();
 
 	// register callback to automatically recalculate stats when inventory changes
 	m_inventory = new Inventory();
-	m_inventory->RegisterCallback([this]() { this->RecalculateStats();});
 
 	// default statsheet values
 	m_pStats = new StatSheet();
@@ -29,6 +27,17 @@ Attackable::Attackable() {
 }
 
 Attackable::~Attackable() {
+	context.dc->ResetCallbacks();
+
+	delete m_inventory;
+	m_inventory = nullptr;
+
+	delete m_pStats;
+	m_pStats = nullptr;
+
+	delete m_itemSpawner;
+	m_itemSpawner = nullptr;
+
 	delete idleAnimation;
 	idleAnimation = nullptr;
 	delete movingAnimation;
@@ -37,16 +46,23 @@ Attackable::~Attackable() {
 	deathAnimation = nullptr;
 	delete attackingAnimation;
 	attackingAnimation = nullptr;
+
+	sprite = nullptr;
 }
 
 bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 	Entity::Initialize(pos, spr);
+	context.dc->RegisterOnLevelUp([this] {this->AddItem(7,1);});
+	m_inventory->RegisterCallback([this]() { this->RecalculateStats();});
 	
 	// healthbar setup
 	Vector2 size = sprite->GetDrawSize();
-	healthBar = new PercentageBar(m_pStats->GetCurrentHealth(), m_pStats ? m_pStats->GetFinalHealth() : m_pStats->GetCurrentHealth(), size.x * 1, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255}, RenderLayer::PERCENTBAR);
-	healthBar->SetPosition(position.x, position.y);
-	healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.2));
+	if (healthBar == nullptr) {
+		healthBar = new PercentageBar(m_pStats->GetCurrentHealth(), m_pStats ? m_pStats->GetFinalHealth() : m_pStats->GetCurrentHealth(), size.x * 1, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255}, RenderLayer::PERCENTBAR);
+		healthBar->SetPosition(position.x, position.y);
+		healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.2));
+	}
+
 
 	isAlive = true;
 	return true;
@@ -304,7 +320,7 @@ void Attackable::TickStatusEffect(float deltaTime) {
 			ctx.hitInfo = { m_pStats->GetFinalHealth() * 0.05f, false, false };
 			status.duration -= deltaTime;
 		}
-		// burning effect
+		// invincible effect
 		if (status.type == StatusEffectType::Invincible) {
 			
 			ctx.source = status.source;

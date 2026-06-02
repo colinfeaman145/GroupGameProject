@@ -49,3 +49,8 @@ void DifficultyCalculator::StageCompleted() {
 	EmitOnStageCompleted();
 	stagesCompleted++;
 }
+
+void DifficultyCalculator::ResetCallbacks() {
+	onLevelUpCallbacks.clear();
+	onStageCompletedCallbacks.clear();
+}

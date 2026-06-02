@@ -13,6 +13,7 @@
 #include "ItemId_5.hpp"
 #include "ItemId_6.hpp"
 #include "ItemId_7.hpp"
+#include "ItemId_8.hpp"
 
 using json = nlohmann::json;
 
@@ -39,7 +40,7 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 	});
 	context.ir->RegisterItem({
 		.id = 3,
-		.tier = ItemTier::Common,
+		.tier = ItemTier::Utility,
 		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_3>(data["3"]),
 		.data = data["3"]
 	});
@@ -66,6 +67,12 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 		.tier = ItemTier::Module,
 		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_7>(data["7"]),
 		.data = data["7"]
+	});
+	context.ir->RegisterItem({
+		.id = 8,
+		.tier = ItemTier::Utility,
+		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_8>(data["8"]),
+		.data = data["8"]
 	});
 
 }

@@ -118,8 +118,7 @@ void ItemId_1::OnEvent(EventType type, EventContext ctx, int stacks) {
 	auto bulletSpeed = ItemEffect::GetLinearStackingItemValue(data["params"]["bulletSpeed"].get<float>(), data["params"]["bulletSpeedPerStack"].get<float>(), stacks);
 
 	newBullet->Initialize(ctx, pierceCount, ttl, bulletSpeed, bulletSprite);
-
-	context.currentScene->AddElement(newBullet);
+	context.grid->UpdateOccupancy((Entity*)newBullet, &GridCell::AddOther, &GridCell::RemoveOther);
 }
 
 

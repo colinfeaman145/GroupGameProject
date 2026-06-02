@@ -8,18 +8,24 @@
 #include "ItemSpawner.hpp"
 #include "Inventory.hpp"
 #include "Grid.hpp"
+#include "Prop.hpp"
 #include "PlayerHUD.hpp"
 
 
+Player::~Player() {
+	delete playerHud;
+	playerHud = nullptr;
+}
+
 void Player::Initialize(Vector2 pos) {
 	LoadEntityDataFromJson(data);
-	initPos = pos;
-	Attackable::Initialize({0,0}, idleAnimation);
+	Attackable::Initialize(pos, idleAnimation);
 
     //player hud
-    playerHud = new PlayerHUD(this);
-    playerHud->Initialize();
-
+	if (playerHud == nullptr) {
+		playerHud = new PlayerHUD(this);
+		playerHud->Initialize();
+	}
 
 	collideType = CollidableType::PLAYER;
 
@@ -46,16 +52,7 @@ void Player::Process(float deltaTime) {
 
 void Player::Draw(Renderer* renderer) {
  	Attackable::Draw(renderer);
-	// workaround for initial camera position
-	// only the entities that are inside the camera frame are drawn
-	// if the player gets spawned outside the frame, the camera is never position correctly
-	// the player draw method never gets called
-	if (GetPosition().x - radius == 0 && GetPosition().y - radius == 0) {
-		SetPosition(initPos);
-	}
-
 	playerHud->Draw(renderer);
-	renderer->cam->Follow(GetPosition());
 }
 
 void Player::HandleAnimation() {
@@ -132,10 +129,15 @@ void Player::HandleMovement() {
 
 }
 
-
-
 void Player::HandleCollision(Collidable* other, Vector2 penetration) {
 	//handle collisions here
+	auto prop = dynamic_cast<Prop*>(other);
+	if (prop != nullptr && prop->name == "Door") {
+		if (m_inventory->Count(8) == 0) return;//need at least 1 key to open door
+		context.dc->StageCompleted();
+		m_inventory->Remove(8, 1);//remove 1 key
+	}
 }
+
 
 

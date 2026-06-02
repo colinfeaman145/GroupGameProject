@@ -1,40 +1,64 @@
 #include "TestingAreaScene.hpp"
-#include "Grid.hpp"
 #include "GameContext.hpp"
-#include "AnimatedSprite.hpp"
-#include "ItemShopSocket.hpp"
-#include "PlayerHUD.hpp"
 #include "Player.hpp"
-#include "EnemyId_2.hpp"
-#include "EnemyId_3.hpp"
 #include "DungeonGenerator.hpp"
-bool TestingAreaScene::Initialize() {
+#include "Camera.hpp"
 
+bool TestingAreaScene::Initialize() {
+    context.dc->RegisterOnStageCompleted([this] {
+		this->hasStageCompleted = true;
+ });
+    ResetGameState();
+    return true;
+}
+
+void TestingAreaScene::Process(float deltaTime) {
+	Scene::Process(deltaTime);
+    ReadInputs(deltaTime);
+
+	if (hasStageCompleted) {
+		GenerateNewMap(player);
+		hasStageCompleted = false;
+	}
+}
+
+void TestingAreaScene::Draw(Renderer* renderer) {
+	Scene::Draw(renderer);
+	renderer->cam->Follow(player->GetPosition());
+}
+
+void TestingAreaScene::ResetGameState() {
+    if (player != nullptr) {
+        delete player;
+        player = nullptr;
+	}
+	player = Entity::CreateEntityFromJson<Player>(context.er->Get(1).data);
+	player->Initialize({ 0,0 });
+	GenerateNewMap(player);
+
+    context.timer->Reset();
+}
+
+
+void TestingAreaScene::GenerateNewMap(Player* player) {
+    if (context.grid != nullptr) {
+        delete context.grid;
+        context.grid = nullptr;
+    }
     // grid setup
     context.grid = new Grid(GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
     context.grid->Initialize();
     AddElement(context.grid);
 
     //make dungeon
-    DungeonGenerator* dg = new DungeonGenerator();
+    DungeonGenerator* dg = new DungeonGenerator(player);
     dg->LoadRooms("../../data/dungeonRooms/");
     dg->Generate();
-
-    context.timer->Reset();
-    return true;
-}
-
-void TestingAreaScene::Process(float deltaTime) {
-	Scene::Process(deltaTime);
-
-
-
-}
-
-void TestingAreaScene::Draw(Renderer* renderer) {
-	Scene::Draw(renderer);
 }
 
 void TestingAreaScene::ReadInputs(float deltaTime) {
-    //needs to be implemented 
+    // reload map layout
+    if (context.im->IsKeyDown("ctrl") && context.im->IsKeyDown("shift") && context.im->IsKeyDown("r")) {
+        ResetGameState();
+    }
 }

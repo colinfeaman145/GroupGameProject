@@ -78,7 +78,7 @@ void DungeonGenerator::PlaceRoom(const RoomTemplate& room, GridCoord origin, int
         }
 
         int placementTries = 5;
-        while (placementTries > 0) { //try place 5 times beore giving up
+        while (placementTries > 0) { //try place 5 times before giving up
             const RoomTemplate* selected = SelectRoom(available, depth + 1, dir);
             if (!selected) {
                 placementTries--;

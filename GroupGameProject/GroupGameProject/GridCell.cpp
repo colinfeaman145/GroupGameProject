@@ -37,9 +37,11 @@ Vector2 GridCell::GetCenter() const {
 void GridCell::Draw(Renderer* renderer) {
     if (sprite) sprite->Draw(renderer);
     for (Enemy* e : enemies) {
+        if (e->hasBeenDrawn) continue;
         e->Draw(renderer);
     }
     for (Entity* e : entities) {
+        if (e->hasBeenDrawn) continue;
         e->Draw(renderer);
     }
 
@@ -50,10 +52,12 @@ void GridCell::Draw(Renderer* renderer) {
 void GridCell::Process(float deltaTime, bool isRendered) {
     if (sprite) sprite->Process(deltaTime);
     for (Enemy* e : enemies) {
+        if (e->hasBeenProcessed) continue;
         e->Process(deltaTime);
         context.grid->UpdateEnemyOccupancy(e);
     }
     for (Entity* e : entities) {
+        if (e->hasBeenProcessed) continue;
         e->Process(deltaTime);
         context.grid->UpdateOccupancy(e, &GridCell::AddOther, &GridCell::RemoveOther);
     }

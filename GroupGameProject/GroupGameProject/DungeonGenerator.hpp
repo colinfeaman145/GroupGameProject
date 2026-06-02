@@ -42,16 +42,18 @@ struct RoomTemplate {
     bool required;
 };
 
+class Player;
 class DungeonGenerator {
     public:
         static constexpr int HALLWAY_THRESHOLD = 5;
 
-        DungeonGenerator();
+        DungeonGenerator(Player* player);
         bool LoadRooms(const string& folderPath);
         void Generate(const string& startRoomName = "");
         void PrintDungeon() const;
 
     private:
+        Player* player;
         vector<vector<vector<char>>> dungeon;//grid
 
         vector<RoomTemplate> rooms; //all rooms

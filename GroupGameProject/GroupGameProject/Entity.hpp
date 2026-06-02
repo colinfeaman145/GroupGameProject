@@ -71,6 +71,9 @@ public:
 		return newItem;
 	}
 
+public:
+	bool hasBeenProcessed;
+	bool hasBeenDrawn;
 protected:
 	Sprite* sprite;
 	Visibility visibility;
@@ -80,9 +83,7 @@ protected:
 	GridOccupancy occupancy;//what gridCells the entity is in(used for collision detection)
 	json data;
 
-private:
-	bool hasBeenProcessed;
-	bool hasBeenDrawn;
+
 
 };
 

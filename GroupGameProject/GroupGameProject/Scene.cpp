@@ -41,9 +41,11 @@ void Scene::Process(float deltaTime) {
 		elementsToDelete.clear();
 	}
 	for (Element* e : elements) {
-		e->Process(deltaTime);
 		if (e->isToBeDeleted) {
 			elementsToDelete.push_back(e);
+		}
+		else {
+			e->Process(deltaTime);
 		}
 	}
 
@@ -54,14 +56,13 @@ void Scene::Process(float deltaTime) {
 }
 void Scene::Draw(Renderer* renderer) {
 	for (Element* e : elements) {
+		if (e->isToBeDeleted) continue;
 		e->Draw(renderer);
 	}
 	for (Sprite* s : UI) {
 		s->Draw(renderer);
 	}
 }
-
-void Scene::ReadInputs(float deltaTime) {};
 
 void Scene::AddElement(Element* e) { 
 	elementsToAdd.push_back(e);

@@ -124,7 +124,6 @@ void Game::ChangeScene(int s) {
 
     if (s < 0 || s >= (int)scenes.size()) return;
     currentScene = s;
-	context.currentScene = scenes[currentScene];
 }
 
 void Game::Quit() {

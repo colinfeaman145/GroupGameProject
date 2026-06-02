@@ -109,5 +109,12 @@
       "healthIncreasePerLevel": 0.3,
       "damageIncreasePerLevel": 0.2
     }
+  },
+  "8": {
+    "id": 8,
+    "name": "BossKey",
+    "description": "Enables the player to access the next stage",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item691.png",
+    "params": {}
   }
 }
