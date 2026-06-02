@@ -22,7 +22,7 @@ bool StatSheetOverlay::Initialize(StatSheet* statSheet, Inventory* inventory, fl
     this->inventory = inventory;
 	this->rowHeight = rowHeight;
 	this->foregroundAlpha = foregroundAlpha;
-    inventory->RegisterCallback([this]() { this->RecalculateStatSheet();});
+    //inventory->RegisterCallback([this]() { this->RecalculateStatSheet();});
     RecalculateStatSheet();
 	return true;
 }
@@ -69,6 +69,12 @@ void StatSheetOverlay::CreateStatRow(const std::string& statIconPath, std::strin
 
 void StatSheetOverlay::Draw(Renderer* renderer) {
 	Container::Draw(renderer);
+}
+
+void StatSheetOverlay::Process(float deltaTime) {
+	Container::Process(deltaTime);
+	RecalculateStatSheet();
+
 }
 
 void StatSheetOverlay::Clear() {

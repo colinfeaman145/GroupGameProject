@@ -141,9 +141,6 @@
     <ClCompile Include="StatSheetOverlay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ItemId_2.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="CashoutOverlay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -171,32 +168,17 @@
     <ClCompile Include="Prop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ItemId_1.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemId_2.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemId_3.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemId_4.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemId_5.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemId_6.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemId_7.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyId_2.cpp">
       <Filter>Source Files\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="EnemyId_3.cpp">
       <Filter>Source Files\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -329,28 +311,13 @@
     <ClInclude Include="EnemyId_3.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ItemId_4.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CashoutOverlay.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemId_3.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EntityRegistry.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EnemyId_2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemId_1.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemId_5.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemId_6.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameTimer.hpp">
@@ -362,9 +329,6 @@
     <ClInclude Include="DifficultyCalculator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ItemId_7.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Direction.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -374,7 +338,13 @@
     <ClInclude Include="Prop.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ItemId_8.hpp">
+    <ClInclude Include="Items.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

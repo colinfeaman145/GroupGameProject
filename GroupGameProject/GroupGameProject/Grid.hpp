@@ -15,7 +15,7 @@
 class GridCoord;
 class GridCoordHash;
 class GridCoordEqual;
-
+class Attackable;
 class Grid : public Element {
 public:
     Grid(int worldWidth, int worldHeight, int cellSize);
@@ -43,6 +43,7 @@ public:
     void UpdateOccupancy(T* entity, void (GridCell::* addFunc)(T*), void (GridCell::* removeFunc)(T*));
     bool ResolveCollisions(Entity* entity);
     bool HasCollision(Entity* entity);
+    Attackable* GetRandomEnemyInRange(Entity* entity, int searchRadius);
 
     //pathfinding
     Vector2 GetFlowVector(GridCoord from, GridCoord target);

@@ -218,7 +218,8 @@ void DungeonGenerator::ApplyToGrid() {
                     case('T'): {
                         AddDungeonTileFloor(cell);
                         auto shopSocket = new ItemShopSocket();
-                        shopSocket->Initialize(cell->GetCenter() - shopSocket->GetRadius(), 2);
+                        auto itemToSpawn = context.ir->GetRandomItemOfTier(ItemTier::Common);
+                        shopSocket->Initialize(cell->GetCenter() - shopSocket->GetRadius(), itemToSpawn.id);
                         cell->AddOther(shopSocket);//does nothing because other does not get drawn by gridCell
                         break;
                     }

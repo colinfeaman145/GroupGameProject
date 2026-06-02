@@ -9,7 +9,8 @@ public:
 	StatSheetOverlay(int x, int y, int w, int h, Color fillColor, Color borderColor, int alpha, int borderThickness);
 	~StatSheetOverlay();
 	bool Initialize(StatSheet* statSheet, Inventory* inventory, float rowHeight, float foregroundAlpha);
-	void Draw(Renderer* renderer);
+	void Draw(Renderer* renderer) override;
+	void Process(float deltaTime) override;
 	void Clear();
 
 private:
