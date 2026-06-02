@@ -5,7 +5,7 @@
 
 
 float DifficultyCalculator::TimeFactor() {
-    return 0.0506 * pow(1, 0.2);
+    return 10.0506 * pow(1, 0.2);
 }
 
 float DifficultyCalculator::StageFactor() {

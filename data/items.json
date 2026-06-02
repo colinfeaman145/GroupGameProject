@@ -143,8 +143,8 @@
     "description": "Killing an enemy heals you for a flat amount. More stacks, more healing.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item1189.png",
     "params": {
-      "baseHeal": 4.0,
-      "healPerStack": 2.0
+      "baseHeal": 10,
+      "healPerStack": 5
     }
   },
   "12": {
@@ -219,7 +219,7 @@
     "id": 18,
     "name": "PhantomCloak",
     "description": "Dodging grants brief invincibility and a damage bonus. Stacks extend both.",
-    "spritePath": "..\\..\\assets\\sprites\\Items\\item204.png",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item877.png",
     "params": {
       "baseInvincibleDuration": 0.5,
       "invincibleDurationPerStack": 0.3,
@@ -231,7 +231,7 @@
     "id": 19,
     "name": "DemonsHeart",
     "description": "Permanently gain max HP on every kill. Snowballs hard.",
-    "spritePath": "..\\..\\assets\\sprites\\Items\\1179.png",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item1179.png",
     "params": {
       "hpPerKillPerStack": 2.0
     }

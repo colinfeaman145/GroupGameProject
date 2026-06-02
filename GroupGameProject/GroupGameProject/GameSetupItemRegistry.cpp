@@ -27,12 +27,6 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 		.data = data["1"]
 		});
 	context.ir->RegisterItem({
-		.id = 2,
-		.tier = ItemTier::Common,
-		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_2>(data["2"]),
-		.data = data["2"]
-		});
-	context.ir->RegisterItem({
 		.id = 3,
 		.tier = ItemTier::Utility,
 		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_3>(data["3"]),
