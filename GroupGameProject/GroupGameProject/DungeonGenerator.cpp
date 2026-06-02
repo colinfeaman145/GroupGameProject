@@ -8,6 +8,7 @@
 #include "ItemShopSocket.hpp"
 #include "Player.hpp"
 #include "EnemyId_2.hpp"
+#include "Prop.hpp"
 
 namespace fs = filesystem;
 
@@ -230,8 +231,20 @@ void DungeonGenerator::ApplyToGrid() {
                     }
                     case('P'): {
                         AddDungeonTileFloor(cell);
-                        player->Initialize(cell->GetCenter());
+                        player->SetPosition(cell->GetCenter());
                         cell->AddOther(player);
+                        break;
+                    }
+                    case('D'): {
+                        AddDungeonTileFloor(cell);
+						SDL_Texture* groundTex = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Props/doors_leaf_closed.png");
+						Sprite* spr = new Sprite();
+						spr->Initialize(groundTex, 32, 32, 0, 0, 500, 500);
+						spr->SetColor({ 220, 255, 220, 255 });
+						spr->SetDrawLayer(RenderLayer::GROUND);
+                        Prop* door = new Prop();
+                        door->Initialize("Door", cell->GetPosition(), spr);
+                        cell->AddOther(door);
                         break;
                     }
                     case('N'):

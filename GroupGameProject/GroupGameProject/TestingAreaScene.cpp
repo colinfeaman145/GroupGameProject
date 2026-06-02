@@ -2,8 +2,12 @@
 #include "GameContext.hpp"
 #include "Player.hpp"
 #include "DungeonGenerator.hpp"
+#include "Camera.hpp"
 
 bool TestingAreaScene::Initialize() {
+    context.dc->RegisterOnStageCompleted([this] {
+		this->hasStageCompleted = true;
+ });
     ResetGameState();
     return true;
 }
@@ -11,10 +15,16 @@ bool TestingAreaScene::Initialize() {
 void TestingAreaScene::Process(float deltaTime) {
 	Scene::Process(deltaTime);
     ReadInputs(deltaTime);
+
+	if (hasStageCompleted) {
+		GenerateNewMap(player);
+		hasStageCompleted = false;
+	}
 }
 
 void TestingAreaScene::Draw(Renderer* renderer) {
 	Scene::Draw(renderer);
+	renderer->cam->Follow(player->GetPosition());
 }
 
 void TestingAreaScene::ResetGameState() {

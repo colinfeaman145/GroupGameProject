@@ -184,6 +184,7 @@
     <ClCompile Include="ItemShopSocket.cpp" />
     <ClCompile Include="ItemSpawner.cpp" />
     <ClCompile Include="PlayerHUD.cpp" />
+    <ClCompile Include="Prop.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="StatSheetOverlay.cpp" />
     <ClCompile Include="TestingAreaScene.cpp" />
@@ -238,10 +239,12 @@
     <ClInclude Include="ItemEffect.hpp" />
     <ClInclude Include="ItemId_6.hpp" />
     <ClInclude Include="ItemId_7.hpp" />
+    <ClInclude Include="ItemId_8.hpp" />
     <ClInclude Include="ItemRegistry.hpp" />
     <ClInclude Include="ItemShopSocket.hpp" />
     <ClInclude Include="ItemSpawner.hpp" />
     <ClInclude Include="PlayerHUD.hpp" />
+    <ClInclude Include="Prop.hpp" />
     <ClInclude Include="StatSheet.hpp" />
     <ClInclude Include="StatSheetOverlay.hpp" />
     <ClInclude Include="TestingAreaScene.hpp" />

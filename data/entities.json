@@ -146,7 +146,7 @@
       "spawnRadius": 150,
       "items": [
         {
-          "id": 3,
+          "id": 8,
           "dropRatePerItem": 1,
           "count": 1
         }

@@ -22,6 +22,5 @@ private:
 	int coinCount;
 	float attackCooldown;
 	PlayerHUD* playerHud;
-	Vector2 initPos;
 };
 

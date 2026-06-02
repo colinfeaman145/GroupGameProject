@@ -3,15 +3,15 @@
 @weight=100
 @rotatable=true
 @limit=unique
-X X X X X X X X X X X X 
-X F F F F F F F F F F X
-X F F F F F F F F F F X
-X F F F F B F F F F F X
-X F F F F F F F F F F X
-X F F F F F F F F F F X
-X F F F F F F F F F F X
-X F F F F F F F F F F X
-X F F F F F F F F F F X
-X F F F F F F F F F F X
-X F F F F F F F F F F X
-X X X X X S X X X X X X
+X X X X X X X X X X X 
+X F F F F D F F F F X
+X F F F F F F F F F X
+X F F F F B F F F F X
+X F F F F F F F F F X
+X F F F F F F F F F X
+X F F F F F F F F F X
+X F F F F F F F F F X
+X F F F F F F F F F X
+X F F F F F F F F F X
+X F F F F F F F F F X
+X X X X X S X X X X X

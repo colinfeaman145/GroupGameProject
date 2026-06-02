@@ -21,5 +21,6 @@ public:
 protected:
     Sprite* levelBackground;
     Player* player;
+    bool hasStageCompleted;
 };
 
