@@ -1,7 +1,6 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
-#include "Attackable.hpp"
 #include "AI.hpp"
 #include "GridCoord.hpp"
 

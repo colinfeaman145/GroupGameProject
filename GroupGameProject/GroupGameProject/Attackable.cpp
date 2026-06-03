@@ -72,7 +72,10 @@ bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 
 void Attackable::Process(float deltaTime) {
 
-	if (!IsAlive() && !IsDying()) return;
+	if (!IsAlive() && !IsDying()) {
+		isToBeDeleted = true;
+		return;
+	}
 
 	Entity::Process(deltaTime);
 

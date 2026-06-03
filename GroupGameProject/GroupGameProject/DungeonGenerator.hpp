@@ -10,6 +10,7 @@
 #include "Direction.hpp"
 #include "GameContext.hpp"
 #include "Sprite.hpp"
+#include "EnemySpawner.hpp"
 
 using namespace std;
 
@@ -51,21 +52,20 @@ class DungeonGenerator {
         bool LoadRooms(const string& folderPath);
         void Generate(const string& startRoomName = "");
         void PrintDungeon() const;
-
+        vector<SpawnLocation> GetEnemySpawnLocations();
     private:
         Player* player;
         vector<vector<vector<char>>> dungeon;//grid
-
         vector<RoomTemplate> rooms; //all rooms
         array<vector<RoomTemplate*>, DIR_COUNT> dirRooms; //rooms with atleast 1 connector facing in DIR
         unordered_map<string, int> spawnCounts; //number of times room spawned
         vector<RoomTemplate*> requiredRooms; //list of rooms required. if not in dungeon, start over
-
+        vector<SpawnLocation> enemySpawnLocations;
 
         bool ParseRoomFile(const string& filepath, RoomTemplate& out);
         vector<char> ParseTile(const string& token);
         void ApplyToGrid();
-        
+
         //placement
         void PlaceRoom(const RoomTemplate& room, GridCoord origin, int depth);
         const RoomTemplate* SelectRoom(int availableDepth, int depth, Direction incomingDir);
@@ -86,5 +86,6 @@ class DungeonGenerator {
         void AddTile(GridCoord c, char letter);
         void RemoveTile(GridCoord c, char letter);
         void AddDungeonTileFloor(GridCell* cell);
+
 
 };

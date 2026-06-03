@@ -27,10 +27,15 @@ void Enemy::Process(float deltaTime) {
     //standard process
     AI::Process(deltaTime);
     context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
+	currentAttackCooldown -= deltaTime;
 }
 
 void Enemy::HandleCollision(Collidable* other, Vector2 penetration) {
     if (!IsAlive()) return;
+
+	if ((int)currentAttackCooldown > 0) return;
+	currentAttackCooldown = attackCooldown;
+
     if (other->GetCollidableType() != CollidableType::PLAYER) return;//only damage player
 
 	if (auto contact = dynamic_cast<Attackable*>(other)) {

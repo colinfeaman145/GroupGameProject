@@ -60,15 +60,15 @@ public:
 
 	template<typename T>
 	static T* CreateEntityFromJson(json data) {
-		auto newItem = new T();
-		if (auto entity = dynamic_cast<Entity*>(newItem)) {
+		auto newEntity = new T();
+		if (auto entity = dynamic_cast<Entity*>(newEntity)) {
 			entity->data = data;
 		}
 		else {
-			delete newItem;
+			delete newEntity;
 			throw std::runtime_error("Type T must be derived from Enemy");
 		}
-		return newItem;
+		return newEntity;
 	}
 
 public:

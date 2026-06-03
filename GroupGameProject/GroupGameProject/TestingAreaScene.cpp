@@ -3,11 +3,20 @@
 #include "Player.hpp"
 #include "DungeonGenerator.hpp"
 #include "Camera.hpp"
+#include "EnemySpawner.hpp"
+
+TestingAreaScene::~TestingAreaScene() {
+    delete player;
+    player = nullptr;
+    delete spawner;
+    spawner = nullptr;
+}
 
 bool TestingAreaScene::Initialize() {
+    spawner = new EnemySpawner();
     context.dc->RegisterOnStageCompleted([this] {
 		this->hasStageCompleted = true;
- });
+    });
     ResetGameState();
     return true;
 }
@@ -20,6 +29,8 @@ void TestingAreaScene::Process(float deltaTime) {
 		GenerateNewMap(player);
 		hasStageCompleted = false;
 	}
+
+	spawner->Process(deltaTime);
 }
 
 void TestingAreaScene::Draw(Renderer* renderer) {
@@ -54,6 +65,8 @@ void TestingAreaScene::GenerateNewMap(Player* player) {
     DungeonGenerator* dg = new DungeonGenerator(player);
     dg->LoadRooms("../../data/dungeonRooms/");
     dg->Generate();
+
+	spawner->Initialise(dg->GetEnemySpawnLocations(), 5, 1, player);
 }
 
 void TestingAreaScene::ReadInputs(float deltaTime) {

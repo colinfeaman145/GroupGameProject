@@ -19,9 +19,6 @@
     <Filter Include="Source Files\Enemies">
       <UniqueIdentifier>{eb4e8938-a1c2-443b-a756-6bc9d8bfc746}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Items">
-      <UniqueIdentifier>{bdda5149-511a-4b60-9e33-9064db7ad91f}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -147,7 +144,6 @@
     <ClCompile Include="CashoutOverlay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="GameSetupEntityRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -183,16 +179,9 @@
     </ClCompile>
     <ClCompile Include="Explosion.cpp">
       <Filter>Source Files</Filter>
-=======
-    <ClCompile Include="ItemId_6.cpp">
+    </ClCompile>
+    <ClCompile Include="EnemySpawner.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BisonSteak.hpp">
-      <Filter>Header Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="GoldenBoots.cpp">
-      <Filter>Source Files\Items</Filter>
->>>>>>> 0a89cad (new status effects, new radius effect trait)
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -310,15 +299,6 @@
     <ClInclude Include="ItemSpawner.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
-=======
-    <ClInclude Include="CashoutModule.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FlyingDevil.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
->>>>>>> 0a89cad (new status effects, new radius effect trait)
     <ClInclude Include="ItemShopSocket.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -331,7 +311,6 @@
     <ClInclude Include="StatSheetOverlay.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="EnemyId_3.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -370,22 +349,9 @@
     </ClInclude>
     <ClInclude Include="Explosion.hpp">
       <Filter>Header Files</Filter>
-=======
-    <ClInclude Include="CashoutOverlay.hpp">
+    </ClInclude>
+    <ClInclude Include="EnemySpawner.hpp">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemId_6.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Coin.hpp">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="GoldenBoots.hpp">
-      <Filter>Header Files\Items</Filter>
-    </ClInclude>
-    <ClInclude Include="InvincibleModule.hpp">
-      <Filter>Header Files\Items</Filter>
->>>>>>> 0a89cad (new status effects, new radius effect trait)
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -59,13 +59,11 @@ class Attackable : public Entity {
 		void TickStatusEffect(float deltaTime);
 		void TickRegeneration(float deltaTime);
 
-		void LoadEntityDataFromJson(const string& section);
-
 		//effect radius bound
 		CollisionShape GetEffectRadiusBound() const { return effectRadiusBound; }
 		void SetEffectRadiusBound(float radius, Vector2 offset = { 0, 0 });
 
-	private:
+	protected:
 		void LoadEntityDataFromJson(json data);
 		void LoadInventoryFromJson(json inventory);
 		void LoadItemSpawnerSettingsFromJson(json spawner);
