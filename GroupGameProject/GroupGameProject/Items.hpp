@@ -7,6 +7,7 @@
 #include "Explosion.hpp"
 #include "InlineHelper.hpp"
 #include "GameContext.hpp"
+#include "Player.hpp"
 #include <algorithm>
 #include <cmath>
 
@@ -37,23 +38,18 @@ class ItemId_2 : public ItemEffect {
 	void OnPickup(Attackable* owner, int stacks) {
 		auto baseHealth = data["params"]["baseHealth"].get<float>();
 		auto increasePerStack = data["params"]["increasePerStack"].get<float>();
-		owner->m_pStats->currentHealth += stacks > 1 ? increasePerStack : baseHealth;
+		float amount = stacks > 1 ? increasePerStack : baseHealth;
+		owner->m_pStats->bonusHealth += amount;
+		owner->m_pStats->currentHealth += amount;
 	}
 
 	void OnRemove(Attackable* owner, int stacks) {
 		auto baseHealth = data["params"]["baseHealth"].get<float>();
 		auto increasePerStack = data["params"]["increasePerStack"].get<float>();
-		owner->m_pStats->currentHealth -= stacks > 1 ? increasePerStack : baseHealth;
+		float amount = stacks > 1 ? increasePerStack : baseHealth;
+		owner->m_pStats->bonusHealth -= amount;
+		owner->m_pStats->currentHealth -= amount;
 	}
-
-	// adds base health per stack
-	void OnModifyStats(StatSheet& stats, int stacks) {
-		auto baseHealth = data["params"]["baseHealth"].get<float>();
-		auto increasePerStack = data["params"]["increasePerStack"].get<float>();
-
-		stats.bonusHealth += ItemEffect::GetLinearStackingItemValue(baseHealth, increasePerStack, stacks);
-	}
-
 };
 
 // item 3 - Coin
@@ -128,18 +124,21 @@ class ItemId_4 : public ItemEffect {
 class ItemId_5 : public ItemEffect {
 	void OnEvent(EventType type, EventContext ctx, int stacks) {
 		if (type != EventType::OnGettingHit) return;
-		ctx.target->ApplyStatusEffect({ StatusEffectType::Invincible, data["params"]["duration"], 0, 0, ctx.target });
-
+		ctx.target->ApplyStatusEffect({ StatusEffectType::Invincible, data["params"]["duration"], ctx.target });
 	}
-
 };
  
 // item 6 - Sugar candy
 // flat increase of attackspeed
 class ItemId_6 : public ItemEffect {
-	void OnModifyStats(StatSheet& stats, int stacks) {
+	void OnPickup(Attackable* owner, int stacks) {
 		auto increasePerStack = data["params"]["increasePerStack"].get<float>();
-		stats.attackSpeedMult += ItemEffect::GetLinearStackingItemValue(increasePerStack, increasePerStack, stacks);
+		owner->m_pStats->attackSpeedMult += increasePerStack;
+	}
+
+	void OnRemove(Attackable* owner, int stacks) {
+		auto increasePerStack = data["params"]["increasePerStack"].get<float>();
+		owner->m_pStats->attackSpeedMult -= increasePerStack;
 	}
 };
 
@@ -148,22 +147,21 @@ class ItemId_6 : public ItemEffect {
 // the stacks of this item are detemined by the progress in the current run
 class ItemId_7 : public ItemEffect {
 	void OnPickup(Attackable* owner, int stacks) {
-		// update current health
 		float healthIncrease = data["params"]["healthIncreasePerLevel"];
-		owner->m_pStats->currentHealth += (owner->m_pStats->defaultBaseHealth * healthIncrease);
+		float damageIncrease = data["params"]["damageIncreasePerLevel"];
+		float healthPercent = owner->GetHealthPercent();
+		owner->m_pStats->healthMult += healthIncrease;
+		owner->m_pStats->damageMult += damageIncrease;
+		owner->m_pStats->currentHealth = healthPercent * owner->m_pStats->GetFinalHealth();
 	}
 
 	void OnRemove(Attackable* owner, int stacks) {
 		float healthIncrease = data["params"]["healthIncreasePerLevel"];
-		owner->m_pStats->currentHealth -= (owner->m_pStats->defaultBaseHealth * healthIncrease);
-	}
-
-	void OnModifyStats(StatSheet& stats, int stacks) {
-		float healthIncrease = data["params"]["healthIncreasePerLevel"];
 		float damageIncrease = data["params"]["damageIncreasePerLevel"];
-		stats.baseHealth = stats.defaultBaseHealth + (stats.defaultBaseHealth * healthIncrease) * stacks;
-		stats.baseDamage = stats.defaultBaseDamage + (stats.defaultBaseDamage * damageIncrease) * stacks;
-
+		float healthPercent = owner->GetHealthPercent();
+		owner->m_pStats->healthMult -= healthIncrease;
+		owner->m_pStats->damageMult -= damageIncrease;
+		owner->m_pStats->currentHealth = healthPercent * owner->m_pStats->GetFinalHealth();
 	}
 };
 
@@ -182,8 +180,7 @@ public:
 		if (type != EventType::OnGettingHit) return;
 		if (!ctx.source || ctx.hitInfo.damageDealt <= 0.f) return;
 
-        float reflectPercent = GetHyperbolicStackingItemValue(
-            (float)data["params"]["reflectPercentage"], stacks);
+        float reflectPercent = GetHyperbolicStackingItemValue((float)data["params"]["reflectPercentage"], stacks);
         float reflectDamage = ctx.hitInfo.damageDealt * reflectPercent;
         ctx.target->DealDamageTo(ctx.source, {
             .damageDealt = reflectDamage,
@@ -199,9 +196,13 @@ public:
 // Passive: crit chance per stack.
 class ItemId_10 : public ItemEffect {
 public:
-    void OnModifyStats(StatSheet& stats, int stacks) override {
-        stats.critChance += (float)data["params"]["critChancePerStack"] * stacks;
-    }
+	void OnPickup(Attackable* owner, int stacks) override {
+		owner->m_pStats->critChance += (float)data["params"]["critChancePerStack"];
+	}
+
+	void OnRemove(Attackable* owner, int stacks) override {
+		owner->m_pStats->critChance -= (float)data["params"]["critChancePerStack"];
+	}
 };
 
 // item 11 - DemonsBlood
@@ -229,9 +230,13 @@ public:
 // Passive: move speed per stack.
 class ItemId_12 : public ItemEffect {
 public:
-    void OnModifyStats(StatSheet& stats, int stacks) override {
-        stats.bonusSpeed += stats.baseSpeed * ((float)data["params"]["speedPerStack"] * stacks);
-    }
+	void OnPickup(Attackable* owner, int stacks) override {
+		owner->m_pStats->bonusSpeed += owner->m_pStats->baseSpeed * (float)data["params"]["speedPerStack"];
+	}
+
+	void OnRemove(Attackable* owner, int stacks) override {
+		owner->m_pStats->bonusSpeed -= owner->m_pStats->baseSpeed * (float)data["params"]["speedPerStack"];
+	}
 };
 
 // item 13 - BerserkersHelmet
@@ -243,23 +248,33 @@ public:
 
         float duration = (float)data["params"]["duration"];
         float boost = (float)data["params"]["attackSpeedBoostPerStack"] * stacks;
-        ctx.source->ApplyStatusEffect({ StatusEffectType::AttackSpeedBoost, duration, boost, boost, ctx.source });
+
+        ctx.source->ApplyStatusEffect({ StatusEffectType::AttackSpeedBoost, duration, ctx.source, boost });
     }
 };
 
 // item 14 - BloodyDagger
-// On hit, apply bleeding.
+// On hit, chance to apply bleeding.
 class ItemId_14 : public ItemEffect {
 public:
     void OnEvent(EventType type, EventContext ctx, int stacks) override {
         if (type != EventType::OnHit) return;
         if (!ctx.target) return;
 
+		//roll for bleed
+		float chance = GetLinearStackingItemValue(
+			(float)data["params"]["baseChance"],
+			(int)data["params"]["chanceIncreasePerStack"],
+			stacks);
+		uniform_real_distribution<float> bleedRoll(0, 1);
+		if (bleedRoll(gen) > chance) return;
+
+		//apply bleeding
         float duration = GetLinearStackingItemValue(
             (float)data["params"]["baseDuration"],
             (int)data["params"]["durationPerStack"],
             stacks);
-        ctx.target->ApplyStatusEffect({ StatusEffectType::Bleeding, duration, 0, 0, ctx.source });
+        ctx.target->ApplyStatusEffect({ StatusEffectType::Bleeding, duration, ctx.source });
     }
 };
 
@@ -312,13 +327,14 @@ public:
 
         float baseRad = (float)data["params"]["baseRadius"];
         float stackRad = (float)data["params"]["radiusPerStack"];
-        float radius = baseRad + stackRad * stacks;
+        float radius = ctx.target->GetRadius() * (baseRad + stackRad * stacks);
+
+		bool targetIsPlayer = dynamic_cast<Player*>(ctx.target) != nullptr;
 
 		ctx.hitInfo.damageDealt = ctx.source->m_pStats->baseDamage * damageMultiplier;
 		ctx.targetPosition = ctx.target->GetPosition();
 
-		auto explosion = new Explosion();
-		explosion->Initialize(ctx, radius);
+		Explosion* explosion = new Explosion(radius, ctx.hitInfo.damageDealt, targetIsPlayer);
 		context.grid->UpdateOccupancy((Entity*)explosion, &GridCell::AddOther, &GridCell::RemoveOther);
     }
 };
@@ -331,12 +347,10 @@ public:
         if (type != EventType::OnCrit) return;
         if (!ctx.target) return;
 
-        float burnTotal = ctx.hitInfo.damageDealt
-            * (float)data["params"]["burnDamageMultiplier"]
-            * stacks;
+        float burnStrength = (float)data["params"]["burnDamageMultiplier"] * stacks;
         float burnDuration = (float)data["params"]["burnDuration"];
 
-        ctx.target->ApplyStatusEffect({ StatusEffectType::Burning, burnDuration, 0, 0, ctx.source });
+        ctx.target->ApplyStatusEffect({ StatusEffectType::Burning, burnDuration, ctx.source, burnStrength });
     }
 };
 
@@ -349,24 +363,20 @@ public:
 
         float invDuration = GetLinearStackingItemValue(
             (float)data["params"]["baseInvincibleDuration"],
-            (int)((float)data["params"]["invincibleDurationPerStack"] * 10), // convert to int cents
-            stacks) / 10.f; // rough linear helper reuse
-
-        // Simpler direct calc for float-per-stack:
-        invDuration = (float)data["params"]["baseInvincibleDuration"]
-            + (float)data["params"]["invincibleDurationPerStack"] * (stacks - 1);
+            (float)data["params"]["invincibleDurationPerStack"],
+            stacks);
 
         float dmgBoost = (float)data["params"]["damageBoostPerStack"] * stacks;
-        float boostWindow = invDuration + (float)data["params"]["boostDurationBonus"];
+        float dmgBoostDuration = invDuration + (float)data["params"]["boostDurationBonus"];
 
-        ctx.source->ApplyStatusEffect({ StatusEffectType::Invincible, invDuration, 0, 0, ctx.source });
-        ctx.source->ApplyStatusEffect({ StatusEffectType::DamageBoost, boostWindow, dmgBoost, dmgBoost, ctx.source });
+        ctx.source->ApplyStatusEffect({ StatusEffectType::Invincible, invDuration, ctx.source });
+        ctx.source->ApplyStatusEffect({ StatusEffectType::DamageBoost, dmgBoostDuration, ctx.source, dmgBoost});
     }
 };
 
 
 // item 19 - DemonsHeart
-// On kill, permanently increase max HP.
+// On kill, permanently increase max HP
 class ItemId_19 : public ItemEffect {
 public:
     void OnEvent(EventType type, EventContext ctx, int stacks) override {
@@ -384,32 +394,38 @@ public:
         if (type != EventType::OnHit) return;
         if (!ctx.target) return;
 
-        int debuffThreshold = (int)data["params"]["debuffThreshold"];
-        if (ctx.target->GetUniqueStatusEffectCount() < debuffThreshold) return;
-
-        float baseMult = (float)data["params"]["baseDamageMultiplier"];
-        float stackMult = (float)data["params"]["damageMultiplierPerStack"];
-        float multiplier = baseMult + stackMult * (stacks - 1);
+        float stackMult = (float)data["params"]["weaknessIncreasePerStack"];
+		float multiplier = stackMult * (stacks - 1);
 
         float baseDur = (float)data["params"]["markDuration"];
         float stackDur = (float)data["params"]["markDurationPerStack"];
-        float duration = baseDur + stackDur * (stacks - 1);
+        float duration = GetLinearStackingItemValue(baseDur, stackDur, stacks);
 
-        ctx.target->ApplyStatusEffect({ StatusEffectType::DeathMark, duration, multiplier, multiplier, nullptr });
+        ctx.target->ApplyStatusEffect({ StatusEffectType::DeathMark, duration, nullptr, multiplier });
     }
 };
 
 
 // item 21 - DemonsSoulPrison
-// On hit, executes targets below an HP threshold.
+// On hit, chance to execute target below an HP threshold.
 class ItemId_21 : public ItemEffect {
 public:
     void OnEvent(EventType type, EventContext ctx, int stacks) override {
         if (type != EventType::OnHit) return;
         if (!ctx.target) return;
 
-        float threshold = GetHyperbolicStackingItemValue(
-            (float)data["params"]["executeThresholdPerStack"], stacks);
+        float threshold = GetLinearStackingItemValue(
+			(float)data["params"]["executeThresholdBase"],
+            (float)data["params"]["executeThresholdPerStack"],
+			stacks);
+        float chance = GetLinearStackingItemValue(
+			(float)data["params"]["executeChanceBase"],
+            (float)data["params"]["executeChancePerStack"],
+			stacks);
+
+		//roll
+		uniform_real_distribution<float> roll(0, 1);
+		if (roll(gen) > chance) return;
 
         if (ctx.target->GetHealthPercent() <= threshold) {
             ctx.source->DealDamageTo(ctx.target, {
@@ -422,3 +438,21 @@ public:
         }
     }
 };
+
+//// item 22 - Golden Boots
+//// On cashout, increase movement speed temporarily
+//class ItemId_22 : public ItemEffect {
+//public:
+//	void OnEvent(EventType type, EventContext ctx, int stacks) override {
+//		if (type == EventType::OnCashout) {
+//			auto baseDuration = data["params"]["baseDuration"].get<float>();
+//			auto increasePerStack = data["params"]["increasePerStack"].get<float>();
+//			int speedBoostDuration = ItemEffect::GetLinearStackingItemValue(baseDuration, increasePerStack, stacks);
+//
+//			StatusEffect effect = StatusEffect();
+//			effect.duration = speedBoostDuration;
+//			effect.type = StatusEffectType::SpeedBoost;
+//			ctx.target->ApplyStatusEffect(effect);
+//		}
+//	}
+//};

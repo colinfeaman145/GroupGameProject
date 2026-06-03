@@ -106,8 +106,8 @@
     "description": "Applies time scaling effects to owner",
     "spritePath": "",
     "params": {
-      "healthIncreasePerLevel": 0.3,
-      "damageIncreasePerLevel": 0.2
+      "healthIncreasePerLevel": 0.15,
+      "damageIncreasePerLevel": 0.1
     }
   },
   "8": {
@@ -169,11 +169,13 @@
   "14": {
     "id": 14,
     "name": "BloodyDagger",
-    "description": "On hit, apply Bleeding. Each stack increases bleed duration.",
+    "description": "On hit, chance to apply Bleeding. Each stack increases chance && duration.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item11.png",
     "params": {
+      "baseChance": 0.05,
+      "chanceIncreasePerStack": 0.03,
       "baseDuration": 3.0,
-      "durationPerStack": 1.5
+      "durationPerStack": 0.75
     }
   },
   "15": {
@@ -199,10 +201,10 @@
     "description": "Killing an enemy causes an explosion around their corpse. Stacks increase radius and damage.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item749.png",
     "params": {
-      "baseDamageMultiplier": 1.5,
+      "baseDamageMultiplier": 2,
       "damageMultiplierPerStack": 0.5,
-      "baseRadius": 2000,
-      "radiusPerStack": 150
+      "baseRadius": 1.5,
+      "radiusIncreasePerStack": 0.1
     }
   },
   "17": {
@@ -211,18 +213,18 @@
     "description": "Critical hits ignite the target, dealing bonus damage as burn over time.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item910.png",
     "params": {
-      "burnDamageMultiplier": 0.3,
+      "burnDamageMultiplier": 0.5,
       "burnDuration": 3.0
     }
   },
   "18": {
     "id": 18,
     "name": "PhantomCloak",
-    "description": "Dodging grants brief invincibility and a damage bonus. Stacks extend both.",
+    "description": "Increase damage and invincibilty time after dodging.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item877.png",
     "params": {
-      "baseInvincibleDuration": 0.5,
-      "invincibleDurationPerStack": 0.3,
+      "baseInvincibleDuration": 0.1,
+      "invincibleDurationPerStack": 0.025,
       "damageBoostPerStack": 0.2,
       "boostDurationBonus": 1.0
     }
@@ -242,20 +244,21 @@
     "description": "Enemies affected by 4 or more debuffs take greatly increased damage.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item207.png",
     "params": {
-      "debuffThreshold": 4,
-      "baseDamageMultiplier": 1.5,
-      "damageMultiplierPerStack": 0.2,
-      "markDuration": 7.0,
-      "markDurationPerStack": 7.0
+      "weaknessIncreasePerStack": 7.5,
+      "markDuration": 5.0,
+      "markDurationPerStack": 2.0
     }
   },
   "21": {
     "id": 21,
     "name": "DemonsSoulPrison",
-    "description": "Instantly kill enemies below a HP threshold. Stacks hyperbolically increase the threshold.",
+    "description": "Chance to instantly kill enemies below a HP threshold. Chance and threshold increase with stacking.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item561.png",
     "params": {
-      "executeThresholdPerStack": 0.07
+      "executeThresholdBase": 0.2,
+      "executeThresholdPerStack": 0.05,
+      "executeChanceBase": 0.35,
+      "executeChancePerStack": 0.1
     }
   }
 }

@@ -60,7 +60,11 @@ public:
 	void TickStatusEffect(float deltaTime);
 	void TickRegeneration(float deltaTime);
 
+	CollisionShape GetEffectRadiusBound() const { return effectRadiusBound; }
+	void SetEffectRadiusBound(float radius, Vector2 offset = { 0, 0 });
+
 	void LoadEntityDataFromJson(json section);
+
 private:
 	void LoadInventoryFromJson(json inventory);
 	void LoadItemSpawnerSettingsFromJson(json spawner);
@@ -72,12 +76,15 @@ private:
 public:
 	Inventory* m_inventory;
 	StatSheet* m_pStats;
+
+	int recentKillCount;//for rampage
 protected:
 	ItemSpawner* m_itemSpawner;
 
 	float m_fLastStatusEffectTick;
 	float m_fLastHealTick;
 	std::vector<StatusEffect> m_activeStatusEffects;
+	CollisionShape effectRadiusBound;
 
 	PercentageBar* healthBar;
 	bool isAlive;
@@ -88,6 +95,9 @@ protected:
 	AnimatedSprite* movingAnimation;
 	AnimatedSprite* attackingAnimation;
 	AnimatedSprite* idleAnimation;
+
+	float rampageTimer;
+	int rampageTotalKills;
 };
 
 #endif

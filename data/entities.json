@@ -14,10 +14,12 @@
       "bonusAttackSpeed": 0,
       "attackSpeedMult": 1,
       "armor": 20,
+      "weakness": 0,
       "regeneration": 0,
       "critChance": 1,
       "critMultiplyer": 1.5,
-      "hasHealCritEnabled": 0
+      "hasHealCritEnabled": 0,
+      "effectRadiusScaler": 1.0
     },
     "animations": {
       "idle": {
@@ -96,10 +98,12 @@
       "attackSpeedMult": 1,
       "speedMult": 1,
       "armor": 0,
+      "weakness" : 0,
       "regeneration": 0,
       "critChance": 0,
       "critMultiplyer": 1.5,
-      "hasHealCritEnabled": 0
+      "hasHealCritEnabled": 0,
+      "effectRadiusScaler": 1.0
     },
     "animations": {
       "idle": {
