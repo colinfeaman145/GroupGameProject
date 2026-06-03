@@ -7,7 +7,7 @@
       "baseDamage": 5,
       "bonusDamage": 0,
       "damageMult": 1,
-      "baseSpeed": 5000,
+      "baseSpeed": 1000,
       "bonusSpeed": 0,
       "speedMult": 1,
       "baseAttackSpeed": 5,
@@ -89,12 +89,12 @@
       "baseDamage": 20,
       "bonusDamage": 0,
       "damageMult": 1,
-      "baseSpeed": 12,
+      "baseSpeed": 200,
       "bonusSpeed": 0,
+      "speedMult": 1,
       "baseAttackSpeed": 1,
       "bonusAttackSpeed": 0,
-      "attackSpeedMult": 1,
-      "speedMult": 1,
+      "attackSpeedMult": 1,      
       "armor": 0,
       "regeneration": 0,
       "critChance": 0,
@@ -151,7 +151,8 @@
     "params": {
       "acceleration": 10.0,
       "deceleration": 2.0,
-      "maxSpeed": 1500
+      "maxSpeed": 1500,
+      "targetRadius":500
     }
   },
   "3": {

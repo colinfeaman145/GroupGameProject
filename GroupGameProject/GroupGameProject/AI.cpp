@@ -2,25 +2,17 @@
 #include "Grid.hpp"
 #include "Sprite.hpp"
 #include "GameContext.hpp"
+#include "StatSheet.hpp"
 
 void AI::Process(float deltaTime) {
     if (!IsAlive()) return;
 
+    Attackable::Process(deltaTime);
     //update timers
     currentRetargetTime -= deltaTime;
     adjustCourseTimer -= deltaTime;
-    frozenTime -= deltaTime;
     framesSinceLastHone++;
-
-    if (frozenTime > 0) {//if frozen
-        SetFlash(true);
-        return;
-    }
-    else if (!frozen) {//on first frame unfrozen
-        frozen = false;
-        velocity = Vector2();
-        Hone();
-    }
+    isChasing = true;
 
     if (framesSinceLastHone >= 5) {//if walking
         Hone(); //move towards target
@@ -56,6 +48,7 @@ void AI::SetTarget(Collidable* c) {
 void AI::Hone() {
 
     if (target == nullptr) return;
+    if (!isChasing) return;
 
     GridCoord myCell = context.grid->WorldToGrid(GetPosition());
     GridCoord targetCoord = context.grid->WorldToGrid(target->GetPosition());
@@ -63,7 +56,7 @@ void AI::Hone() {
     if (myCell.col == targetCoord.col && myCell.row == targetCoord.row) {
         Vector2 toTarget = target->GetCenter() - Collidable::GetCenter();
         if (toTarget.Length() > max(sprite->GetWidth(), sprite->GetHeight()))
-            velocity = toTarget.Normalized() * movementSpeed;
+            velocity = toTarget.Normalized() * m_pStats->GetFinalSpeed();
         return;
     }
 
@@ -77,14 +70,12 @@ void AI::Hone() {
     float dy = Collidable::GetCenter().y - cellCenter.y;
     float threshold = cellSize * 0.35f;
 
-    /*
     //smaller = closer to center before allowing vector change
     if ((dx * dx + dy * dy) < (threshold * threshold) || adjustCourseTimer < 0) {
         Vector2 flowDir = context.grid->GetFlowVector(myCell, targetCoord);
         if (flowDir.x != 0.f || flowDir.y != 0.f)
-            velocity = flowDir * movementSpeed;
+            velocity = flowDir * m_pStats->GetFinalSpeed();
         adjustCourseTimer = 5.0f;
-    }*/
-
+    }
     return;
 }

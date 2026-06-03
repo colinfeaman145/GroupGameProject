@@ -19,13 +19,13 @@ void Enemy::Initialize(Vector2 pos) {
 
 void Enemy::Draw(Renderer* renderer) {
 
-    Attackable::Draw(renderer);
+    AI::Draw(renderer);
 }
 
 void Enemy::Process(float deltaTime) {
 
     //standard process
-    Attackable::Process(deltaTime);
+    AI::Process(deltaTime);
     context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
 }
 

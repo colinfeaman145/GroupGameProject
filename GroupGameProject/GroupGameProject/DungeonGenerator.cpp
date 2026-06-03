@@ -227,6 +227,7 @@ void DungeonGenerator::ApplyToGrid() {
                         AddDungeonTileFloor(cell);
                         Enemy* enemy = Entity::CreateEntityFromJson<EnemyId_2>(context.er->Get(2).data);
                         enemy->Initialize(cell->GetCenter() - enemy->GetRadius());
+						enemy->SetTarget(player);
                         cell->AddEnemy(enemy);
                         break;
                     }

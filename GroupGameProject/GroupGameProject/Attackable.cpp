@@ -347,8 +347,6 @@ void Attackable::TickStatusEffect(float deltaTime) {
 		if (status.type == StatusEffectType::Invincible) {
 			
 			ctx.source = status.source;
-			ctx.target = this;
-			ctx.hitInfo = { 0, false, false };
 			SetCanCollide(false);
 			status.duration -= deltaTime;
 		}

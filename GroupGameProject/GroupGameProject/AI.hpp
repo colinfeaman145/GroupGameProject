@@ -24,13 +24,11 @@ class AI : public Attackable {
 		float retargetCooldown;
 		int framesSinceLastHone;
 		int targetRadius;
-		float movementSpeed;
 
 		//status
 		Vector2 previousPosition;
 		float stuckTime;
-		float frozenTime;
-		bool frozen;
+		bool isChasing;
 };
 
 #endif

@@ -61,6 +61,15 @@ void GridCell::Process(float deltaTime, bool isRendered) {
         e->Process(deltaTime);
         context.grid->UpdateOccupancy(e, &GridCell::AddOther, &GridCell::RemoveOther);
     }
+
+    entities.erase(
+        std::remove_if(
+            entities.begin(),
+            entities.end(),
+            [](Entity* const& p) { return p->isToBeDeleted;}
+        ),
+        entities.end()
+    );
 }
 
 vector<Collidable*> GridCell::GetCollidables() const {

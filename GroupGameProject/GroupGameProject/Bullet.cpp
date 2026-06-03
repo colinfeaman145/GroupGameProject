@@ -17,7 +17,7 @@ Bullet::Bullet(std::string spritePath) {
 bool Bullet::Initialize(EventContext ctx, int pierceCount, float ttl, float bulletSpeed, float rotation, AnimatedSprite* spr) {
 	Entity::Initialize(ctx.source->GetPosition(), bulletSprite);
 
-	velocity = (ctx.targetPosition - ctx.source->GetPosition()).Normalized() * bulletSpeed;//just a very high speed for now, can be changed
+	velocity = (ctx.targetPosition - ctx.source->GetPosition()).Normalized() * bulletSpeed;
 
 	collisionBound = CollisionShape::MakeCircle(10);//make bullet hitbox a circle with radius 10, can be changed
 	collideType = CollidableType::ENEMY;
@@ -38,20 +38,18 @@ void Bullet::Draw(Renderer* renderer) {
 }
 void Bullet::Process(float deltaTime) {
 	Entity::Process(deltaTime);
+	context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
 
 	//remove bullet if it has no pierces left
 	if (pierceCount <= 0) {
-		context.grid->RemoveOther((Entity*)this);
 		isToBeDeleted = true;
 		return;
 	}
-	context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
 
 	if (ttl > 0) {
 		ttl -= deltaTime;
 	}
 	else {
-		context.grid->RemoveOther((Entity*)this);
 		isToBeDeleted = true;
 		return;
 	}

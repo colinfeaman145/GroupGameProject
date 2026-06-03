@@ -3,48 +3,29 @@
 #include "InlineHelper.hpp"
 #include "AnimatedSprite.hpp"
 #include "GameContext.hpp"
+#include "StatSheet.hpp"
 
 
 void EnemyId_2::Initialize(Vector2 pos) {
 	Enemy::Initialize(pos);
 	ChangeState(EnemyState::IDLE);
+	moveSpeed = m_pStats->GetFinalSpeed();
 	acceleration = data["params"]["acceleration"];
 	deceleration = data["params"]["deceleration"];
 	maxSpeed = data["params"]["maxSpeed"];
+	targetRadius = data["params"]["targetRadius"];
 }
-
 
 void EnemyId_2::Process(float deltaTime) {
 	Enemy::Process(deltaTime);
 	if (target == nullptr) return;
-	if (currentState == EnemyState::IDLE) {
-		RecalculateDirection();
-		ChangeState(EnemyState::APPROACHING);
+	
+	if ((target->GetPosition() - GetPosition()).Length() > targetRadius) {
+		HandleRecoverAnimation();
 	}
-
-	if (GetPosition().IsNear(currentTargetPosition, GetRadius())) {
-		ChangeState(EnemyState::RECOVERING);
+	else {
+		HandleAttackAnimation();
 	}
-
-	if (velocity.IsNear({ 0,0 }, 5) && currentState == EnemyState::RECOVERING) {
-		ChangeState(EnemyState::IDLE);
-	}
-
-	if (abs(velocity.x) < maxSpeed && abs(velocity.y) < maxSpeed) {
-		Approach(deltaTime);
-	}
-	Recover(deltaTime);
-}
-
-
-
-
-// attack player while in a specific animation
-void EnemyId_2::Approach(float deltaTime) {
-	if (currentState != EnemyState::APPROACHING) return;
-	velocity.x *= 1 + (acceleration * deltaTime);
-	velocity.y *= 1 + (acceleration * deltaTime);
-	HandleAttackAnimation();
 }
 
 void EnemyId_2::HandleAttackAnimation() {
@@ -67,14 +48,6 @@ void EnemyId_2::HandleCollision(Collidable* other, Vector2 penetration) {
 	}
 }
 
-// if not hit the player
-void EnemyId_2::Recover(float deltaTime) {
-	if (currentState != EnemyState::RECOVERING) return;
-	velocity.x /= 1 + (deceleration * deltaTime);
-	velocity.y /= 1 + (deceleration * deltaTime);
-	HandleRecoverAnimation();
-}
-
 void EnemyId_2::HandleRecoverAnimation() {
 	if (!idleAnimation->IsAnimating()) {
 		sprite = idleAnimation;
@@ -86,12 +59,4 @@ void EnemyId_2::HandleRecoverAnimation() {
 	if (target->GetPosition().x < GetPosition().x) sprite->SetFlip(true);
 	else sprite->SetFlip(false);
 }
-
-void EnemyId_2::RecalculateDirection() {
-	currentTargetPosition = target->GetPosition();
-	velocity = (currentTargetPosition - GetPosition()).Normalized();
-}
-
-
-
 
