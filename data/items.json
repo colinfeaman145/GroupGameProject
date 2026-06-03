@@ -169,7 +169,7 @@
   "14": {
     "id": 14,
     "name": "BloodyDagger",
-    "description": "On hit, chance to apply Bleeding. Each stack increases chance && duration.",
+    "description": "On hit, chance to apply Bleeding. Each stack increases chance & duration.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item11.png",
     "params": {
       "baseChance": 0.05,

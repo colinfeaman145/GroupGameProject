@@ -64,7 +64,7 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 		});
 	context.ir->RegisterItem({
 		.id = 9,
-		.tier = ItemTier::Common,
+		.tier = ItemTier::Rare,
 		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_9>(data["9"]),
 		.data = data["9"]
 		});
@@ -76,7 +76,7 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 		});
 	context.ir->RegisterItem({
 		.id = 11,
-		.tier = ItemTier::Common,
+		.tier = ItemTier::Epic,
 		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_11>(data["11"]),
 		.data = data["11"]
 		});
@@ -94,19 +94,19 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 		});
 	context.ir->RegisterItem({
 		.id = 14,
-		.tier = ItemTier::Common,
+		.tier = ItemTier::Rare,
 		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_14>(data["14"]),
 		.data = data["14"]
 		});
 	context.ir->RegisterItem({
 		.id = 15,
-		.tier = ItemTier::Common,
+		.tier = ItemTier::Legendary,
 		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_15>(data["15"]),
 		.data = data["15"]
 		});
 	context.ir->RegisterItem({
 		.id = 16,
-		.tier = ItemTier::Common,
+		.tier = ItemTier::Legendary,
 		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_16>(data["16"]),
 		.data = data["16"]
 		});
@@ -118,25 +118,25 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 		});
 	context.ir->RegisterItem({
 		.id = 18,
-		.tier = ItemTier::Common,
+		.tier = ItemTier::Rare,
 		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_18>(data["18"]),
 		.data = data["18"]
 		});
 	context.ir->RegisterItem({
 		.id = 19,
-		.tier = ItemTier::Common,
+		.tier = ItemTier::Epic,
 		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_19>(data["19"]),
 		.data = data["19"]
 		});
 	context.ir->RegisterItem({
 		.id = 20,
-		.tier = ItemTier::Common,
+		.tier = ItemTier::Rare,
 		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_20>(data["20"]),
 		.data = data["20"]
 		});
 	context.ir->RegisterItem({
 		.id = 21,
-		.tier = ItemTier::Common,
+		.tier = ItemTier::Rare,
 		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_21>(data["21"]),
 		.data = data["21"]
 		});
