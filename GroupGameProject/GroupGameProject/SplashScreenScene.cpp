@@ -11,16 +11,16 @@ bool SplashScreens::Initialize() {
     SDL_Texture* TeamTex = context.txm->LoadTexture(context.renderer, "../../assets/sprites/SplashScreens/Team_Splash.png");
 
     autLogo = new Sprite();
-    autLogo->Initialize(autTex, 375, 265, 0, 0, WIDTH * 1.5, HEIGHT * 2);
-    autLogo->SetPosition(Vector2((autLogo->GetWidth() - WIDTH) / 2, (autLogo->GetHeight() / HEIGHT) / 2));
-
+    autLogo->Initialize(autTex, 375, 265, 0, 0, WIDTH * 2, HEIGHT * 2);
+    autLogo->SetPosition((autLogo->GetWidth()) / 2, (autLogo->GetHeight()) / 2);
+    
     fmodLogo = new Sprite();
-    fmodLogo->Initialize(fmodTex, 728, 192, 0, 0, WIDTH * 1.5, HEIGHT);
-    fmodLogo->SetPosition(Vector2((fmodLogo->GetWidth() - WIDTH) / 2, HEIGHT * 0.5));
+    fmodLogo->Initialize(fmodTex, 728, 192, 0, 0, WIDTH * 2, HEIGHT);
+    fmodLogo->SetPosition((fmodLogo->GetWidth()) / 2, (fmodLogo->GetHeight()) / 2 + 800);
 
     TeamLogo = new Sprite();
-    TeamLogo->Initialize(TeamTex, 550, 294, 0, 0, WIDTH * 1.5, HEIGHT);
-    TeamLogo->SetPosition(Vector2((TeamLogo->GetWidth() - WIDTH) / 3 , HEIGHT * 0.5));
+    TeamLogo->Initialize(TeamTex, 550, 294, 0, 0, WIDTH * 2, HEIGHT * 2);
+    TeamLogo->SetPosition((TeamLogo->GetWidth()) / 2 , (TeamLogo->GetHeight()) / 2);
 
     return true;
 }
