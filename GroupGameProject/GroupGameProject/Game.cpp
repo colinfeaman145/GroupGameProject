@@ -7,7 +7,8 @@
 #include "GameContext.hpp"
 #include "DifficultyCalculator.hpp"
 #include "Camera.hpp"
-
+#include "GameOverScene.hpp"
+#include "Player.hpp"
 /*
 CALL PIPELINE
 Main makes game
@@ -61,6 +62,11 @@ bool Game::Initialize() {
     splash->Initialize();
     scenes[0] = splash;
 
+    // game over scene
+    Scene* gameOver;
+    gameOver = new GameOverScene();
+    gameOver->Initialize();
+    scenes[1] = gameOver;
 
     // testing area
     Scene* game;
@@ -106,6 +112,46 @@ void Game::Process(float deltaTime) {
    {
        ChangeScene(9);
    }
+   if (currentScene == 9) {
+       auto testingArea = static_cast<TestingAreaScene*>(scenes[currentScene]);
+       Player* player = testingArea->GetPlayer();
+       
+       if (player && player->IsAlive() == false) //checks if player is dead
+       {
+           int mins = context.timer->ElapsedMinutes();
+           int secs = (int)context.timer->ElapsedSeconds() % 60;
+           int stages = context.dc->GetStagesCompleted();
+           int items = 0;
+           auto totalItems = player->GetItems();
+           for (auto item = totalItems.begin(); item != totalItems.end(); ++item) 
+           {
+               if (item->first == 1 || item->first == 3 || item->first == 4 || item->first == 5 || item->first == 7 || item->first == 8) //excluding the initial gun, the coins, the cashoutmodule, invinciblemodule, levelscaler and the key from the item count
+               {
+                   continue;
+               }
+               if (item->second > 0)
+               {
+                   items++;
+               }
+           }
+           int coins = player->GetItemCount(3);
+
+           static_cast<GameOverScene*>(scenes[1])->SetStats(mins, secs, stages, items, coins);
+           static_cast<GameOverScene*>(scenes[1])->RestartPressedFalse();
+           ChangeScene(1);
+       }
+   }
+   if (currentScene == 1 && static_cast<GameOverScene*>(scenes[currentScene])->RestartPressed() == true)
+   {
+       auto testingArea = static_cast<TestingAreaScene*>(scenes[9]);
+       testingArea->Initialize();
+       ChangeScene(9);
+   }
+   if (currentScene == 1 && static_cast<GameOverScene*>(scenes[currentScene])->QuitPressed() == true)
+   {
+       Quit();
+   }
+
 }
 
 void Game::Draw()

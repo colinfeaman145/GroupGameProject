@@ -17,6 +17,7 @@ public:
     void ResetGameState();
     void GenerateNewMap(Player* player);
 	void ReadInputs(float deltaTime);
+    Player* GetPlayer() const;
 
 protected:
     Sprite* levelBackground;

@@ -62,3 +62,7 @@ void TestingAreaScene::ReadInputs(float deltaTime) {
         ResetGameState();
     }
 }
+Player* TestingAreaScene::GetPlayer() const //To get the same player, so that the player tracking is the same
+{
+    return player;
+}
