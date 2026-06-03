@@ -17,7 +17,10 @@ enum StatusEffectType {
 	Burning,
 	Poisoning,
 	Freezing,
-	Shocking
+	Shocking,
+	SpeedBoost,
+	Slowness,
+	Rampage
 };
 struct StatusEffect {
 	StatusEffectType type;
@@ -25,6 +28,7 @@ struct StatusEffect {
 	float currentValue;
 	float originalValue; // used for temporary boosts to know how much to remove on expiration
 	Attackable* source;
+	bool hasStarted = false;
 };
 
 enum EventType {

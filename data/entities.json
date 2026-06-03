@@ -17,7 +17,8 @@
       "regeneration": 0,
       "critChance": 1,
       "critMultiplyer": 1.5,
-      "hasHealCritEnabled": 0
+      "hasHealCritEnabled": 0,
+      "effectRadiusBoundScaler" : 1.0
     },
     "animations": {
       "idle": {
@@ -99,7 +100,8 @@
       "regeneration": 0,
       "critChance": 0,
       "critMultiplyer": 1.5,
-      "hasHealCritEnabled": 0
+      "hasHealCritEnabled": 0,
+      "effectRadiusBoundScaler" : 1.0
     },
     "animations": {
       "idle": {

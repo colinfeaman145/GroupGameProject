@@ -8,7 +8,6 @@
 #include "Item.hpp"
 #include "Items.hpp"
 
-
 using json = nlohmann::json;
 
 void Game::SetupItemRegistry(const std::string& filepath) {
@@ -140,4 +139,11 @@ void Game::SetupItemRegistry(const std::string& filepath) {
 		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_21>(data["21"]),
 		.data = data["21"]
 		});
+	context.ir->RegisterItem({
+		.id = 22,
+		.tier = ItemTier::Common,
+		.effect = ItemEffect::CreateItemEffectFromJson<ItemId_22>(data["22"]),
+		.data = data["22"]
+	});
+
 }

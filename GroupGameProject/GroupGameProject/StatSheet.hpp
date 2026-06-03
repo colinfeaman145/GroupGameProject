@@ -17,10 +17,12 @@ public:
 		float bonusAttackSpeed = 0,
 		float attackSpeedMult = 1,
 		int armor = 0,
+		int weakness = 0,
 		float regernation = 0,
 		float critChance = 0,
 		float critMultiplyer = 0,
-		bool healHasCritEnabled = false
+		bool healHasCritEnabled = false,
+		float effectRadiusBoundScaler = 1.0
 	) {
 		
 		defaultBaseHealth = baseHealth;
@@ -36,10 +38,12 @@ public:
 		defaultBonusAttackSpeed = bonusAttackSpeed;
 		defaultAttackSpeedMult = attackSpeedMult;
 		defaultArmor = armor;
+		defaultWeakness = weakness;
 		defaultRegernation = regernation;
 		defaultCritChance = critChance;
 		defaultCritMultiplyer = critMultiplyer;
 		defaultHasHealCritEnabled = hasHealCritEnabled;
+		defaultEffectRadiusBoundScaler = effectRadiusBoundScaler;
 		Reset();
 	}
 
@@ -63,7 +67,7 @@ public:
 	}
 	float CalculateDamageReceived(float incomingDamage) const {
 		// simple armor calculation, can be improved
-		return incomingDamage * (100.f / (100 + armor));
+		return incomingDamage * (100.f / (100 + armor - weakness));
 	}
 
 	void Reset() {
@@ -84,10 +88,13 @@ public:
 		attackSpeedMult = defaultAttackSpeedMult;
 
 		armor = defaultArmor;
+		weakness = defaultWeakness;
 		critChance = defaultCritChance;
 		critMultiplyer = defaultCritMultiplyer;
 		regernation = defaultRegernation;
 		hasHealCritEnabled = defaultHasHealCritEnabled;
+
+		effectRadiusBoundScaler = defaultEffectRadiusBoundScaler;
 	}
 private:
 	inline float clip(float value, float min, float max) {
@@ -117,10 +124,13 @@ public:
 	float attackSpeedMult;
 
 	int armor;
+	int weakness;
 	float critChance;
 	float critMultiplyer;
 	float regernation;
 	bool hasHealCritEnabled;
+
+	float effectRadiusBoundScaler;
 
 
 	// base stats used to reset the statsheet to default values
@@ -141,10 +151,13 @@ public:
 	float defaultAttackSpeedMult;
 
 	int defaultArmor;
+	int defaultWeakness;
 	float defaultCritChance;
 	float defaultCritMultiplyer;
 	float defaultRegernation;
 	bool defaultHasHealCritEnabled;
+
+	float defaultEffectRadiusBoundScaler;
 };
 
 

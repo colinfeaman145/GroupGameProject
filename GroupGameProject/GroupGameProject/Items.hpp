@@ -422,3 +422,21 @@ public:
         }
     }
 };
+
+// item 22 - Golden Boots
+// On cashout, increase movement speed temporarily
+class ItemId_22 : public ItemEffect {
+public:
+    void OnEvent(EventType type, EventContext ctx, int stacks) override {
+		if (type == EventType::OnCashout) {
+			auto baseDuration = data["params"]["baseDuration"].get<float>();
+			auto increasePerStack = data["params"]["increasePerStack"].get<float>();
+			int speedBoostDuration = ItemEffect::GetLinearStackingItemValue(baseDuration, increasePerStack, stacks);
+
+			StatusEffect effect = StatusEffect();
+			effect.duration = speedBoostDuration;
+			effect.type = StatusEffectType::SpeedBoost;
+			ctx.target->ApplyStatusEffect(effect);
+        }
+    }
+};

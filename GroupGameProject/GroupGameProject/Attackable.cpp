@@ -64,6 +64,8 @@ bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 	}
 
 
+	SetEffectRadiusBound(radius);
+
 	isAlive = true;
 	return true;
 }
@@ -81,6 +83,7 @@ void Attackable::Process(float deltaTime) {
 
 	TickStatusEffect(deltaTime);
 	TickRegeneration(deltaTime);
+
 	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats ? m_pStats->GetFinalHealth() : m_pStats->GetCurrentHealth());
 
 }
@@ -168,6 +171,7 @@ void Attackable::ApplyDamage(EventContext& ctx) {
 	if ((int)m_pStats->GetCurrentHealth() <= 0 && IsAlive()) {
 		FireEvent(EventType::OnDeath, ctx);
 		ctx.source->FireEvent(EventType::OnKill, ctx);
+		ctx.source->recentKillCount++;
 		SetDead();
 	}
 
@@ -320,35 +324,30 @@ void Attackable::TickStatusEffect(float deltaTime) {
 	EventContext ctx;
 	for (auto& status : m_activeStatusEffects) {
 
-		// bleeding effect
-		if (status.type == StatusEffectType::Bleeding) {
+		bool justStarted = !status.hasStarted && status.duration > 0;
+		bool justEnded = status.duration <= 0;
+		bool isOngoing = status.hasStarted && !justEnded;
 
-			ctx.source = status.source;
-			ctx.target = this;
-			ctx.hitInfo = { m_pStats->GetCurrentHealth() * 0.05f, false, false };
-			status.duration -= deltaTime;
+		// bleeding effect
+		if(status.type == StatusEffectType::Bleeding) {
+			if (justStarted) {
+				m_pStats->weakness *= 0.5;
+				status.hasStarted = true;
+			}
+			else if (justEnded) {
+				m_pStats->weakness /= 0.5;
+			}
 		}
 
 		// burning effect
 		if (status.type == StatusEffectType::Burning) {
-			ctx.source = status.source;
-			ctx.target = this;
-			ctx.hitInfo = { 1, false, false };
-			status.duration -= deltaTime;
-		}
-		// poison effect
-		if (status.type == StatusEffectType::Poisoning) {
-			ctx.source = status.source;
-			ctx.target = this;
-			ctx.hitInfo = { m_pStats->GetFinalHealth() * 0.05f, false, false };
-			status.duration -= deltaTime;
-		}
-		// invincible effect
-		if (status.type == StatusEffectType::Invincible) {
-			
-			ctx.source = status.source;
-			SetCanCollide(false);
-			status.duration -= deltaTime;
+			if (isOngoing && applyTick) {
+				ctx.hitInfo = { 1, false, false };
+				ctx.source = status.source;
+				ctx.target = this;
+				status.duration -= deltaTime;
+				ApplyDamage(ctx);
+			}
 		}
 		// damage boost effect
 		if (status.type == StatusEffectType::DamageBoost) {
@@ -371,9 +370,107 @@ void Attackable::TickStatusEffect(float deltaTime) {
 			status.duration -= deltaTime;
 		}
 
-		// only apply damage every tick
-		if (applyTick) ApplyDamage(ctx);
+		// poison effect
+		if (status.type == StatusEffectType::Poisoning) {
+			if (justStarted) {
+				m_pStats->weakness *= 0.8;
+				status.hasStarted = true;
+			}
+			else if (isOngoing && applyTick) {
+				ctx.hitInfo = { m_pStats->GetFinalHealth() * 0.05f, false, false };
+				ctx.source = status.source;
+				ctx.target = this;
+				status.duration -= deltaTime;
+				ApplyDamage(ctx);
+			}
+			else if (justEnded) {
+				m_pStats->weakness /= 0.8;
+			}
+		}
+
+		// invincible effect
+		if (status.type == StatusEffectType::Invincible) {
+			if (justStarted){
+				ctx.hitInfo = { 0, false, false };
+				m_pStats->armor *= 10000000;
+			}
+			else if (justEnded) {
+				m_pStats->armor /= 10000000;
+			}
+		}
+
+		//freezing
+		if (status.type == StatusEffectType::Freezing) {
+			if (justStarted) {
+				m_pStats->speedMult *= 0.25;
+				m_pStats->weakness *= 0.75;
+				SetFlash(true);
+				status.hasStarted = true;
+			}
+			else if (justEnded) {
+				m_pStats->speedMult /= 0.25;
+				m_pStats->weakness /= 0.75;
+				SetFlash(false);
+			}
+		}
+
+		//speedBoost
+		if (status.type == StatusEffectType::SpeedBoost) {
+			if (justStarted) {
+				m_pStats->speedMult *= 2;
+				status.hasStarted = true;
+			}
+			else if (justEnded) {
+				m_pStats->speedMult /= 2;
+			}
+		}
+
+		//slowness
+		if (status.type == StatusEffectType::Slowness) {
+			if (justStarted) {
+				m_pStats->speedMult *= 0.35;
+				status.hasStarted = true;
+			}
+			else if (justEnded) {
+				m_pStats->speedMult /= 0.35;
+			}
+		}
+
+		//rampage
+		if (status.type == StatusEffectType::Rampage) {
+			if (justStarted) {
+				m_pStats->damageMult *= 1.1;
+				m_pStats->speedMult *= 1.1;
+				status.hasStarted = true;
+			}
+			else if (isOngoing) {
+				rampageTimer -= deltaTime;
+				if (recentKillCount > 0) {
+					recentKillCount--;
+					rampageTotalKills++;
+					m_pStats->damageMult *= 1.1;
+					m_pStats->speedMult *= 1.1;
+					rampageTimer = 7; //7 seconds to kill another
+				}
+				if (rampageTimer < 0 && rampageTotalKills >= 2) {
+					rampageTotalKills -= 2;
+					for (int i = 0; i < 2; ++i) {
+						m_pStats->damageMult /= 1.1;
+						m_pStats->speedMult /= 1.1;
+					}
+					rampageTimer = 7;
+				}
+			}
+			else if (justEnded) {
+				for (int i = 0; i < (rampageTotalKills + 1); ++i) {
+					m_pStats->damageMult /= 1.1;
+					m_pStats->speedMult /= 1.1;
+				}
+				rampageTotalKills = 0;
+			}
+		}
 	}
+
 	if (applyTick) m_fLastStatusEffectTick = 0;
 
 	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) { 
@@ -511,10 +608,16 @@ void Attackable::LoadStatsFromJson(json stats) {
 		stats["bonusAttackSpeed"].get<float>(),
 		stats["attackSpeedMult"].get<float>(),
 		stats["armor"].get<int>(),
+		stats["weakness"].get<int>(),
 		stats["regeneration"].get<float>(),
 		stats["critChance"].get<float>(),
 		stats["critMultiplyer"].get<float>(),
-		stats["hasHealCritEnabled"].get<int>()
+		stats["hasHealCritEnabled"].get<int>(),
+		stats["effectRadiusBoundScaler"].get<float>()
 	);
 	m_pStats->Reset();
+}
+
+void Attackable::SetEffectRadiusBound(float radius, Vector2 offset) {
+	effectRadiusBound = CollisionShape::MakeCircle(radius, offset);
 }
