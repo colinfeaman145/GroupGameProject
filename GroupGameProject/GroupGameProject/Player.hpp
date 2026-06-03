@@ -22,7 +22,6 @@ private:
 	int coinCount;
 	float attackCooldown;
 
-
 	float dodgeDuration; //how long dodge lasts
 	float dodgeTimer; //currently dodgeing timer
 	float dodgeCooldown; //time between dodges

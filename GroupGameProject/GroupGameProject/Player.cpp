@@ -57,6 +57,8 @@ void Player::Process(float deltaTime) {
 void Player::Draw(Renderer* renderer) {
  	Attackable::Draw(renderer);
 	playerHud->Draw(renderer);
+	renderer->cam->Follow(GetPosition());
+	healthBar->Draw(renderer);
 }
 
 void Player::HandleAnimation() {
@@ -140,7 +142,6 @@ void Player::HandleMovement() {
 		velocity.y = 0;
 	}
 
-<<<<<<< HEAD
 	// normalize diagonal movement so speed is consistent in all directions
 	if (velocity.x != 0 && velocity.y != 0) {
 		velocity = velocity.Normalized() * m_pStats->GetFinalSpeed();
@@ -164,22 +165,16 @@ void Player::HandleMovement() {
 		dodgeTimer = dodgeDuration;
 		dodgeCooldownTimer = dodgeCooldown;
 		dodging = true;
-		ApplyStatusEffect(StatusEffectType::Invincible, dodgeDuration * 1.1, this);
-	}
 
+		StatusEffect effect;
+		effect.type = StatusEffectType::Invincible;
+		effect.duration = dodgeDuration * 1.1;
+		ApplyStatusEffect(effect);
 
-}
-
-void Player::Draw(Renderer* renderer) {
- 	Attackable::Draw(renderer);
-	renderer->cam->Follow(GetPosition());
-	healthBar->Draw(renderer);
-=======
-	// dodge
-	if (context.im->IsKeyPressed("dodge")) {
 		FireEvent(EventType::OnDodge, { .source = this, .target = this });
 	}
->>>>>>> main
+
+
 }
 
 void Player::HandleCollision(Collidable* other, Vector2 penetration) {
