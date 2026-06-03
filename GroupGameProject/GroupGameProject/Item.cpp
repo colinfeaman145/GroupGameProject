@@ -3,6 +3,7 @@
 #include "GameContext.hpp"
 #include "Attackable.hpp"
 #include "AnimatedSprite.hpp"
+#include "Grid.hpp"
 #include <limits>
 
 Item::Item(json itemData) {
@@ -48,6 +49,7 @@ void Item::HandleCollision(Collidable* other, Vector2 penetration) {
 
 	if (auto entity = dynamic_cast<Attackable*>(other)) {
 		entity->AddItem(id, 1);
+		context.grid->RemoveOther(this);
 		isToBeDeleted = true;
 	}
 

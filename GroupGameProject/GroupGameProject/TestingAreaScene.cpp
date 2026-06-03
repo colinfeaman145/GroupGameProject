@@ -1,67 +1,68 @@
 #include "TestingAreaScene.hpp"
-#include "Grid.hpp"
-#include "Player.hpp"
-#include "FlyingDevil.hpp"
 #include "GameContext.hpp"
-#include "AnimatedSprite.hpp"
-#include "ItemShopSocket.hpp"
-#include "PlayerHUD.hpp"
+#include "Player.hpp"
+#include "DungeonGenerator.hpp"
+#include "Camera.hpp"
 
 bool TestingAreaScene::Initialize() {
-
-    // grid setup
-    context.grid = new Grid(GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
-    SDL_Texture* grassTex = context.txm->LoadTexture(context.renderer, "../../assets/sprites/DungeonTextures/dungeon_floor_with_moss.png");
-    context.grid->Initialize(grassTex);
-    AddElement(context.grid);
-
-
-    // player setup
-    player = new Player();
-    player->Initialize(Vector2(1000,1000));
-    context.grid->UpdateOccupancy((Entity*)player, &GridCell::AddOther, &GridCell::RemoveOther);
-	AddElement(player);
-
-
-
-    //player hud?
-    playerHUD = new PlayerHUD(player);
-    playerHUD->Initialize();
-    AddElement(playerHUD);
-
-    /*
-	//animation setup
-    AnimatedSprite* enemyIdle;
-    SDL_Texture* enemyIdleTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Enemy/big_demon.png");
-    enemyIdle = new AnimatedSprite();
-    enemyIdle->Initialize(enemyIdleTexture, 34, 34, 0, 0, 500, 500, 3, 4);
-    enemyIdle->SetDrawLayer(RenderLayer::ENEMIES);
-    enemyIdle->SetFrameDuration(0.10);
-    enemyIdle->SetLooping(true);
-    enemyIdle->SetLeaveOnLastFrame(true);
-    */
-	enemy = new FlyingDevil();
-	enemy->Initialize(Vector2(2000, 1000));
-    AddElement(enemy);
-
-    auto shopSocket = new ItemShopSocket();
-    shopSocket->Initialize(Vector2(3000, 1000), 2);
-    AddElement(shopSocket);
-
+    context.dc->RegisterOnStageCompleted([this] {
+		this->hasStageCompleted = true;
+ });
+    ResetGameState();
     return true;
 }
 
 void TestingAreaScene::Process(float deltaTime) {
 	Scene::Process(deltaTime);
+    ReadInputs(deltaTime);
 
-
-
+	if (hasStageCompleted) {
+		GenerateNewMap(player);
+		hasStageCompleted = false;
+	}
 }
 
 void TestingAreaScene::Draw(Renderer* renderer) {
 	Scene::Draw(renderer);
+	renderer->cam->Follow(player->GetPosition());
+}
+
+void TestingAreaScene::ResetGameState() {
+    if (player != nullptr) {
+        delete player;
+        player = nullptr;
+	}
+	player = Entity::CreateEntityFromJson<Player>(context.er->Get(1).data);
+	player->Initialize({ 0,0 });
+	GenerateNewMap(player);
+
+    context.timer->Reset();
+}
+
+
+void TestingAreaScene::GenerateNewMap(Player* player) {
+    if (context.grid != nullptr) {
+        delete context.grid;
+        context.grid = nullptr;
+    }
+    // grid setup
+    context.grid = new Grid(GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
+    context.grid->Initialize();
+    AddElement(context.grid);
+
+    //make dungeon
+    DungeonGenerator* dg = new DungeonGenerator(player);
+    dg->LoadRooms("../../data/dungeonRooms/");
+    dg->Generate();
 }
 
 void TestingAreaScene::ReadInputs(float deltaTime) {
-    //needs to be implemented 
+    // reload map layout
+    if (context.im->IsKeyDown("ctrl") && context.im->IsKeyDown("shift") && context.im->IsKeyDown("r")) {
+        ResetGameState();
+    }
+}
+Player* TestingAreaScene::GetPlayer() const //To get the same player, so that the player tracking is the same
+{
+    return player;
 }

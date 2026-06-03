@@ -28,6 +28,8 @@ public:
 	void DealDamageTo(Attackable* target, HitInfo info);
 	void ApplyDamage(EventContext& ctx);
 	void ApplyHeal(EventContext& ctx);
+	float GetHealthPercent() const;
+	int GetUniqueStatusEffectCount();
 
 	// getter
 	bool IsAlive() const { return isAlive; };
@@ -54,16 +56,18 @@ public:
 	void RemoveItem(ItemID id, int count);
 	void RecalculateStats();
 	void FireEvent(EventType type, EventContext ctx);
-	void ApplyStatusEffect(StatusEffectType status, float duration, Attackable* source);
+	void ApplyStatusEffect(StatusEffect effect);
 	void TickStatusEffect(float deltaTime);
 	void TickRegeneration(float deltaTime);
 
-	void LoadEntityDataFromJson(const string& section);
+	void LoadEntityDataFromJson(json section);
 private:
 	void LoadInventoryFromJson(json inventory);
 	void LoadItemSpawnerSettingsFromJson(json spawner);
 	void LoadStatsFromJson(json stats);
 	void LoadAnimationsFromJson(json animations);
+
+
 
 public:
 	Inventory* m_inventory;
@@ -74,7 +78,6 @@ protected:
 	float m_fLastStatusEffectTick;
 	float m_fLastHealTick;
 	std::vector<StatusEffect> m_activeStatusEffects;
-	float m_fCurrentHealth;
 
 	PercentageBar* healthBar;
 	bool isAlive;

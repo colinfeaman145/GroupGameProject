@@ -3,19 +3,17 @@
 #include <vector>
 #include "Vector2.hpp"
 #include "GridCoord.hpp"
+#include "Direction.hpp"
+#include "Collidable.hpp"
 
-class Nature;
-class Foliage;
 class Sprite;
 class Enemy;
 class Entity;
-class Collidable;
-class Renderer;
 
 using namespace std;
-class GridCell {
+class GridCell : public Collidable{
 public:
-    GridCell(Sprite* spr);
+    GridCell(Sprite* spr = nullptr);
     ~GridCell() = default;
 
     void SetSprite(Sprite* spr);
@@ -24,12 +22,11 @@ public:
     Sprite* GetSprite() const { return sprite; }
     GridCoord GetCoords() const { return coords; }
     Vector2 GetPosition() const { return position; }
+    Vector2 GetCenter() const;
     void Draw(Renderer* renderer);
     void Process(float deltaTime, bool isRendered);
-    //void DrawWalls(Renderer* renderer);
-    //void ProcessWalls(float deltaTime);
-    //void DrawDrops(Renderer* renderer);
-    //void ProcessDrops(float deltaTime);
+
+    virtual void HandleCollision(Collidable* other, Vector2 penetration) override;
 
     vector<Collidable*> GetCollidables() const;
 
@@ -40,9 +37,9 @@ public:
     const vector<Enemy*>& GetEnemies() const { return enemies; }
 
     //walls
-    //bool PlaceWall(WallDirection dir);
-    //bool RemoveWall(WallDirection dir);
-    //bool HasWall(WallDirection dir) const;
+    bool PlaceWall(Direction dir);
+    bool RemoveWall(Direction dir);
+    bool IsWall() const;
 
     ////drops
     //void AddDrop(Resource* drop);
@@ -59,7 +56,7 @@ private:
     vector <Entity*> entities;//player, attackCone
     vector<Enemy*> enemies;
     //vector<Resource*> drops;
-    bool walls[2];
+    bool isWall;
 };
 
 #endif

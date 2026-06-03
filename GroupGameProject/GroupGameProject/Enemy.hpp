@@ -10,6 +10,12 @@ enum class EnemyType {
 	GROUND,//GREEN
 };
 
+enum EnemyState {
+	IDLE,
+	APPROACHING,
+	ATTACKING,
+	RECOVERING
+};
 
 class AnimatedSprite;
 class Enemy : public AI {
@@ -25,17 +31,20 @@ public:
 	virtual void OnStuck() override;
 
 
+
 	// getter
 	float GetAttackCooldown();
 
 	//setter
 	void SetAttackCooldown(float atckCool);
+	void ChangeState(EnemyState newState);
 
 
 
 
-private:
+protected:
 	EnemyType type;
+	EnemyState currentState;
 	Entity* currentTarget;
 
 	float attackCooldown;

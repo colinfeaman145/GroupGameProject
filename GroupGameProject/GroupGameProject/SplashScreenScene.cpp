@@ -8,6 +8,7 @@ bool SplashScreens::Initialize() {
 
     SDL_Texture* autTex = context.txm->LoadTexture(context.renderer, "../../assets/sprites/SplashScreens/AUT_logo.png");
     SDL_Texture* fmodTex = context.txm->LoadTexture(context.renderer, "../../assets/sprites/SplashScreens/FMOD Logo White - Black Background.png");
+    SDL_Texture* TeamTex = context.txm->LoadTexture(context.renderer, "../../assets/sprites/SplashScreens/Team_Splash.png");
 
     autLogo = new Sprite();
     autLogo->Initialize(autTex, 375, 265, 0, 0, WIDTH * 1.5, HEIGHT * 2);
@@ -17,23 +18,27 @@ bool SplashScreens::Initialize() {
     fmodLogo->Initialize(fmodTex, 728, 192, 0, 0, WIDTH * 1.5, HEIGHT);
     fmodLogo->SetPosition(Vector2((fmodLogo->GetWidth() - WIDTH) / 2, HEIGHT * 0.5));
 
+    TeamLogo = new Sprite();
+    TeamLogo->Initialize(TeamTex, 550, 294, 0, 0, WIDTH * 1.5, HEIGHT);
+    TeamLogo->SetPosition(Vector2((TeamLogo->GetWidth() - WIDTH) / 3 , HEIGHT * 0.5));
+
     return true;
 }
 
 void SplashScreens::Process(float deltaTime) {
     ReadInputs(deltaTime);
     timer += deltaTime;
-    if (timer >= 4 * 2) context.changeScene(0);
+    if (timer >= 4 * 3) context.changeScene(0);
 
-    if (timer > 8) //once both logos have finished, set as done so it can move on to next scene(without it, the fmod would keep on flashing)
+    if (timer > 12) //once all splashes have finished, set as done so it can move on to next scene(without it, the fmod would keep on flashing)
     {
         isdone = true;
     }
 }
 
 void SplashScreens::Draw(Renderer* renderer) {
-    float t = timer < 4 ? timer : timer - 4;
-    Sprite* logo = timer < 4 ? autLogo : fmodLogo;
+    float t = timer < 4 ? timer : timer < 8 ? timer - 4 : timer - 8;
+    Sprite* logo = timer < 4 ? autLogo : timer < 8 ? fmodLogo : TeamLogo;
 
     //increase then decrease
     float alpha = t < 2 ? (t / 2) * 255 : (1 - (t - 2) / 2) * 255;

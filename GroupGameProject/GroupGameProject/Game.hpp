@@ -24,6 +24,7 @@ private:
     void Process(float deltaTime);
     void Draw();
 	void SetupItemRegistry(const string& filepath);
+	void SetupEntityRegistry(const string& filepath);
 
 private:
     vector<Scene*> scenes;

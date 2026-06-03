@@ -7,6 +7,7 @@
 class ItemEffect;
 enum ItemTier {
 	Module,
+	Utility,
 	Common,
 	Rare,
 	Epic,

@@ -19,7 +19,6 @@ Attackable::Attackable() {
 
 	// register callback to automatically recalculate stats when inventory changes
 	m_inventory = new Inventory();
-	m_inventory->RegisterCallback([this]() { this->RecalculateStats();});
 
 	// default statsheet values
 	m_pStats = new StatSheet();
@@ -28,6 +27,17 @@ Attackable::Attackable() {
 }
 
 Attackable::~Attackable() {
+	context.dc->ResetCallbacks();
+
+	delete m_inventory;
+	m_inventory = nullptr;
+
+	delete m_pStats;
+	m_pStats = nullptr;
+
+	delete m_itemSpawner;
+	m_itemSpawner = nullptr;
+
 	delete idleAnimation;
 	idleAnimation = nullptr;
 	delete movingAnimation;
@@ -36,19 +46,23 @@ Attackable::~Attackable() {
 	deathAnimation = nullptr;
 	delete attackingAnimation;
 	attackingAnimation = nullptr;
+
+	sprite = nullptr;
 }
 
 bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 	Entity::Initialize(pos, spr);
+	context.dc->RegisterOnLevelUp([this] {this->AddItem(7,1);});
+	m_inventory->RegisterCallback([this]() { this->RecalculateStats();});
 	
-
-	m_fCurrentHealth = m_pStats->GetFinalHealth();
-
 	// healthbar setup
 	Vector2 size = sprite->GetDrawSize();
-	healthBar = new PercentageBar(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth, size.x * 1, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255}, RenderLayer::PERCENTBAR);
-	healthBar->SetPosition(position.x, position.y);
-	healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.2));
+	if (healthBar == nullptr) {
+		healthBar = new PercentageBar(m_pStats->GetCurrentHealth(), m_pStats ? m_pStats->GetFinalHealth() : m_pStats->GetCurrentHealth(), size.x * 1, size.y * 0.1, {255, 50, 50, 255}, {150, 50, 50, 255}, RenderLayer::PERCENTBAR);
+		healthBar->SetPosition(position.x, position.y);
+		healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.2));
+	}
+
 
 	isAlive = true;
 	return true;
@@ -67,7 +81,7 @@ void Attackable::Process(float deltaTime) {
 
 	TickStatusEffect(deltaTime);
 	TickRegeneration(deltaTime);
-
+	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats ? m_pStats->GetFinalHealth() : m_pStats->GetCurrentHealth());
 
 }
 
@@ -104,7 +118,7 @@ void Attackable::TickRegeneration(float deltaTime) {
 }
 
 int Attackable::GetHealth() {
-	return m_fCurrentHealth;
+	return m_pStats->GetCurrentHealth();
 }
 
 int Attackable::GetMaxHealth() {
@@ -115,49 +129,56 @@ int Attackable::GetMaxHealth() {
 }
 
 void Attackable::SetHealth(float h) {
-
-	// clip health to 0 and max health
+	if (m_pStats == nullptr) {
+		m_pStats = new StatSheet();
+		m_pStats->SetDefaultValues();
+		m_pStats->Reset();
+	}
 	int maxHealth = m_pStats ? m_pStats->GetFinalHealth() : h;
-	m_fCurrentHealth = clip(h, 0, m_pStats ? m_pStats->GetFinalHealth() : h);
-
+	m_pStats->SetCurrentHealth(h);
 	Vector2 size = sprite->GetDrawSize();
-	healthBar = new PercentageBar(m_fCurrentHealth, maxHealth, size.x * 0.9, size.y * 0.1, { 255, 50, 50, 150 }, { 0, 0, 0, 150 }, RenderLayer::PERCENTBAR);
+	healthBar = new PercentageBar(m_pStats->GetCurrentHealth(), maxHealth, size.x * 0.9, size.y * 0.1, {255, 50, 50, 150}, {0, 0, 0, 150}, RenderLayer::PERCENTBAR);
 	healthBar->SetPosition(position.x, position.y);
 	healthBar->SetOffset((size.x * 0.05), (size.y * 0.8));
 }
 
-// returns the actual damage received after armor calculations
 void Attackable::ApplyDamage(EventContext& ctx) {
-	float maxHealth = m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth;
 	float damageReceived = m_pStats ? m_pStats->CalculateDamageReceived(ctx.hitInfo.damageDealt) : ctx.hitInfo.damageDealt;
 	ctx.hitInfo.damageDealt = damageReceived;
 
-	if (ctx.hitInfo.damageDealt == -1) {//full kill
-		m_fCurrentHealth = 0;
+	auto deathMarkStacks = m_inventory->Count(20);
+	if (deathMarkStacks > 0) {
+		ctx.hitInfo.damageDealt *= (5 + (0.5f * deathMarkStacks));
 	}
-	if (ctx.hitInfo.damageDealt == 0) { // should not proc event if 0 damage is done
+
+
+	if ((int)ctx.hitInfo.damageDealt < 0) {//full kill
+		m_pStats->SetCurrentHealth(-1);
+	}
+	else if ((int)ctx.hitInfo.damageDealt == 0) { // should not proc event if 0 damage is done
 		return;
 	}
+	else {
+		m_pStats->SetCurrentHealth(m_pStats->GetCurrentHealth() - damageReceived);
+	}
 
-	m_fCurrentHealth = clip(m_fCurrentHealth - damageReceived, 0, maxHealth);
 	SetFlash(true);
-	healthBar->SetValues(m_fCurrentHealth, maxHealth);
+	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats->GetFinalHealth());
 
-	if (m_fCurrentHealth <= 0 && IsAlive()) {
+	if ((int)m_pStats->GetCurrentHealth() <= 0 && IsAlive()) {
 		FireEvent(EventType::OnDeath, ctx);
 		ctx.source->FireEvent(EventType::OnKill, ctx);
 		SetDead();
 	}
 
-	FireEvent(EventType::OnGettigHit, ctx);
+	FireEvent(EventType::OnGettingHit, ctx);
 }
 
 void Attackable::ApplyHeal(EventContext& ctx) {
-	float maxHealth = m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth;
 	auto isHealCrit = HasHitChance(m_pStats->critChance) && (m_pStats->hasHealCritEnabled);
 
 	if (ctx.hitInfo.healAmount == -1) {//full heal
-		m_fCurrentHealth = maxHealth;
+		m_pStats->SetCurrentHealth(m_pStats->GetFinalHealth());
 		return;
 	}
 	if (isHealCrit) {
@@ -165,10 +186,21 @@ void Attackable::ApplyHeal(EventContext& ctx) {
 		ctx.hitInfo.isCritical = true;
 	}
 
-	m_fCurrentHealth = clip(m_fCurrentHealth + ctx.hitInfo.healAmount, 0, maxHealth);
-	healthBar->SetValues(m_fCurrentHealth, maxHealth);
+	m_pStats->SetCurrentHealth(m_pStats->GetCurrentHealth() + ctx.hitInfo.healAmount);
+	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats->GetFinalHealth());
 
 	FireEvent(EventType::OnHeal, ctx);
+}
+
+float Attackable::GetHealthPercent() const {
+	return m_pStats ? m_pStats->GetCurrentHealth() / m_pStats->GetFinalHealth() : 1.0f;
+}
+
+int Attackable::GetUniqueStatusEffectCount() {
+	std::unordered_set<StatusEffectType> unique;
+	for (auto& effect : m_activeStatusEffects)
+		unique.insert(effect.type);
+	return unique.size();
 }
 
 void Attackable::SetPosition(Vector2 pos) {
@@ -197,7 +229,9 @@ void Attackable::DealDamageTo(Attackable* target, HitInfo info) {
 
 	target->ApplyDamage(ctx);
 
-	FireEvent(EventType::OnHit, ctx);
+	if (ctx.hitInfo.appliesOnHitEffects) {
+		 FireEvent(EventType::OnHit, ctx);
+	}
 	if (info.isCritical) {
 		FireEvent(EventType::OnCrit, ctx);
 	}
@@ -273,8 +307,8 @@ std::unordered_map<ItemID, int> Attackable::GetItems() {
 	return m_inventory->All();
 }
 
-void Attackable::ApplyStatusEffect(StatusEffectType status, float duration, Attackable* source) {
-	m_activeStatusEffects.push_back({status, duration, source});
+void Attackable::ApplyStatusEffect(StatusEffect effect) {
+	m_activeStatusEffects.push_back(effect);
 }
 
 void Attackable::TickStatusEffect(float deltaTime) {
@@ -291,7 +325,7 @@ void Attackable::TickStatusEffect(float deltaTime) {
 
 			ctx.source = status.source;
 			ctx.target = this;
-			ctx.hitInfo = { m_fCurrentHealth * 0.05f, false, false };
+			ctx.hitInfo = { m_pStats->GetCurrentHealth() * 0.05f, false, false };
 			status.duration -= deltaTime;
 		}
 
@@ -315,8 +349,27 @@ void Attackable::TickStatusEffect(float deltaTime) {
 			ctx.source = status.source;
 			ctx.target = this;
 			ctx.hitInfo = { 0, false, false };
-			//SetVisibliliy(Visibility::HIDDEN);
 			SetCanCollide(false);
+			status.duration -= deltaTime;
+		}
+		// damage boost effect
+		if (status.type == StatusEffectType::DamageBoost) {
+			
+			ctx.source = status.source;
+			ctx.target = this;
+			ctx.hitInfo = { 0, false, false };
+			m_pStats->bonusDamage += m_pStats->GetFinalDamage() * status.currentValue;
+			status.currentValue = 0; // only apply at first tick - lasts for whole duration
+			status.duration -= deltaTime;
+		}
+		// attackspeed boost effect
+		if (status.type == StatusEffectType::AttackSpeedBoost) {
+			
+			ctx.source = status.source;
+			ctx.target = this;
+			ctx.hitInfo = { 0, false, false };
+			m_pStats->bonusAttackSpeed += m_pStats->baseAttackSpeed * status.currentValue; 
+			status.currentValue = 0;
 			status.duration -= deltaTime;
 		}
 
@@ -327,6 +380,13 @@ void Attackable::TickStatusEffect(float deltaTime) {
 
 	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) { 
 		if (s.duration <= 0) {
+			// OnExit logic
+			if (s.type == StatusEffectType::AttackSpeedBoost) {
+				s.source->m_pStats->bonusAttackSpeed -= s.source->m_pStats->baseAttackSpeed * s.originalValue;
+			}
+			if (s.type == StatusEffectType::DamageBoost) {
+				s.source->m_pStats->bonusDamage -= s.source->m_pStats->baseDamage * s.originalValue;
+			}
 			if (s.type == StatusEffectType::Invincible) {
 				s.source->SetCanCollide(true);
 			}
@@ -338,10 +398,22 @@ void Attackable::TickStatusEffect(float deltaTime) {
 
 void Attackable::AddItem(ItemID id, int count) {
 	m_inventory->Add(id, count);
+	for (auto& [itemID, stacks] : m_inventory->All()) {
+		ItemDef def = context.ir->Get(itemID);
+		if (def.effect) {
+			def.effect->OnPickup(this, stacks);
+		}
+	}
 }
 
 void Attackable::RemoveItem(ItemID id, int count) {
 	m_inventory->Remove(id, count);
+	for (auto& [itemID, stacks] : m_inventory->All()) {
+		ItemDef def = context.ir->Get(itemID);
+		if (def.effect) {
+			def.effect->OnRemove(this, stacks);
+		}
+	}
 }
 
 void Attackable::RecalculateStats() {
@@ -356,19 +428,13 @@ void Attackable::RecalculateStats() {
 	}
 }
 
-void Attackable::LoadEntityDataFromJson(const string& section) {
-	auto filepath = "../../data/entities.json";
-    ifstream file(filepath);
-    if (!file.is_open()) {
-        cerr << "Failed to open stats file: " << filepath << endl;
-        return;
-    }
-    json data = json::parse(file);
-	LoadStatsFromJson(data[section]["stats"]);
-	LoadInventoryFromJson(data[section]["inventory"]);
-	LoadItemSpawnerSettingsFromJson(data[section]["spawner"]);
-	LoadAnimationsFromJson(data[section]["animations"]);
-	m_fCurrentHealth = m_pStats->GetFinalHealth();// set current health after item calculations
+void Attackable::LoadEntityDataFromJson(json data) {
+	this->data = data;
+	LoadStatsFromJson(data["stats"]);
+	LoadInventoryFromJson(data["inventory"]);
+	LoadItemSpawnerSettingsFromJson(data["spawner"]);
+	LoadAnimationsFromJson(data["animations"]);
+	m_pStats->SetCurrentHealth(m_pStats->GetFinalHealth());// set current health after item calculations
 }
 
 void Attackable::LoadAnimationsFromJson(json animations) {

@@ -25,6 +25,8 @@ public:
     inline Vector2& operator-=(const Vector2& v2);
     inline Vector2& operator*=(const Vector2& v2);
     inline Vector2& operator/=(const Vector2& v2);
+    inline Vector2& operator+=(const float t);
+    inline Vector2& operator-=(const float t);
     inline Vector2& operator*=(const float t);
     inline Vector2& operator/=(const float t);
 
@@ -32,6 +34,7 @@ public:
     inline float LengthSquared() const { return ((x * x) + (y * y)); }
     inline float Length() const { return sqrtf(LengthSquared()); }
     inline string toString() const;
+    inline bool IsNear(Vector2 v2, float delta);
 };
 
 inline Vector2::Vector2() {
@@ -67,6 +70,18 @@ inline Vector2& Vector2::operator/=(const Vector2& v) {
     return *this;
 }
 
+inline Vector2& Vector2::operator+=(const float t) {
+    x += t;
+    y += t;
+    return *this;
+}
+
+inline Vector2& Vector2::operator-=(const float t) {
+    x -= t;
+    y -= t;
+    return *this;
+}
+
 inline Vector2& Vector2::operator*=(const float t) {
     x *= t;
     y *= t;
@@ -85,6 +100,12 @@ inline string Vector2::toString() const {
     return s.str();
 }
 
+// for comparison of float values
+inline bool Vector2::IsNear(Vector2 v2, float delta) {
+    return std::fabs(x - v2.x) <= delta &&
+        std::fabs(y - v2.y) <= delta;
+}
+
 inline Vector2 operator+(const Vector2& v1, const Vector2& v2) {
     return Vector2(v1.x + v2.x, v1.y + v2.y);
 }
@@ -98,6 +119,15 @@ inline Vector2 operator/(const Vector2& v1, const Vector2& v2) {
     return Vector2(v1.x / v2.x, v1.y / v2.y);
 }
 
+inline Vector2 operator+(const Vector2 v1, float t) {
+    return Vector2(v1.x + t, v1.y + t);
+}
+inline Vector2 operator+(float t, const Vector2 v1) {
+    return Vector2(v1.x + t, v1.y + t);
+}
+inline Vector2 operator-(const Vector2 v1, float t) {
+    return Vector2(v1.x - t, v1.y - t);
+}
 inline Vector2 operator*(const Vector2 v1, float t) {
     return Vector2(v1.x * t, v1.y * t);
 }

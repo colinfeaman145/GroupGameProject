@@ -7,15 +7,25 @@
 #include "Camera.hpp"
 #include "ItemSpawner.hpp"
 #include "Inventory.hpp"
+#include "Grid.hpp"
+#include "Prop.hpp"
+#include "PlayerHUD.hpp"
 
 
-
-Player::Player() {
-	LoadEntityDataFromJson("Player");
+Player::~Player() {
+	delete playerHud;
+	playerHud = nullptr;
 }
 
 void Player::Initialize(Vector2 pos) {
+	LoadEntityDataFromJson(data);
 	Attackable::Initialize(pos, idleAnimation);
+
+    //player hud
+	if (playerHud == nullptr) {
+		playerHud = new PlayerHUD(this);
+		playerHud->Initialize();
+	}
 
 	collideType = CollidableType::PLAYER;
 	dodgeCooldown = 1;
@@ -28,6 +38,8 @@ void Player::Initialize(Vector2 pos) {
 void Player::Process(float deltaTime) {
 	Attackable::Process(deltaTime);
 
+	playerHud->Process(deltaTime);
+
 	auto occ = GetOccupancy();
 	dodgeTimer -= deltaTime;
 	dodgeCooldownTimer -= deltaTime;
@@ -35,14 +47,16 @@ void Player::Process(float deltaTime) {
 	HandleMouseClick(deltaTime);
 	HandleMovement();
 	HandleAnimation();
-	healthBar->SetValues(m_fCurrentHealth, m_pStats ? m_pStats->GetFinalHealth() : m_fCurrentHealth);
-
-    //collision updates
-    context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
 
 	if (attackCooldown > 0) {
 		attackCooldown -= deltaTime;
 	}
+	context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
+}
+
+void Player::Draw(Renderer* renderer) {
+ 	Attackable::Draw(renderer);
+	playerHud->Draw(renderer);
 }
 
 void Player::HandleAnimation() {
@@ -126,6 +140,7 @@ void Player::HandleMovement() {
 		velocity.y = 0;
 	}
 
+<<<<<<< HEAD
 	// normalize diagonal movement so speed is consistent in all directions
 	if (velocity.x != 0 && velocity.y != 0) {
 		velocity = velocity.Normalized() * m_pStats->GetFinalSpeed();
@@ -159,10 +174,23 @@ void Player::Draw(Renderer* renderer) {
  	Attackable::Draw(renderer);
 	renderer->cam->Follow(GetPosition());
 	healthBar->Draw(renderer);
+=======
+	// dodge
+	if (context.im->IsKeyPressed("dodge")) {
+		FireEvent(EventType::OnDodge, { .source = this, .target = this });
+	}
+>>>>>>> main
 }
 
 void Player::HandleCollision(Collidable* other, Vector2 penetration) {
 	//handle collisions here
+	auto prop = dynamic_cast<Prop*>(other);
+	if (prop != nullptr && prop->name == "Door") {
+		if (m_inventory->Count(8) == 0) return;//need at least 1 key to open door
+		context.dc->StageCompleted();
+		m_inventory->Remove(8, 1);//remove 1 key
+	}
 }
+
 
 

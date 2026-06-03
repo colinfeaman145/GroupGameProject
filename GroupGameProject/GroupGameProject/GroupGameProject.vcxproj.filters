@@ -120,35 +120,14 @@
     <ClCompile Include="GameSetupItemRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BisonSteak.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BisonSteak.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="Gun.cpp">
-      <Filter>Source Files\Items</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ItemSpawner.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Coin.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="CashoutModule.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InvincibleModule.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="FlyingDevil.cpp">
-      <Filter>Source Files\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="ItemShopSocket.cpp">
       <Filter>Source Files\Items</Filter>
@@ -160,6 +139,45 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StatSheetOverlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CashoutOverlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSetupEntityRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DifficultyOverlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DifficultyCalculator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DungeonGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DungeonGeneratorHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DungeonGeneratorPlacement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Prop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyId_2.cpp">
+      <Filter>Source Files\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyId_3.cpp">
+      <Filter>Source Files\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Explosion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -266,9 +284,6 @@
     <ClInclude Include="ItemEffect.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Gun.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Inventory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -279,18 +294,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ItemSpawner.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Coin.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CashoutModule.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InvincibleModule.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FlyingDevil.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ItemShopSocket.hpp">
@@ -305,5 +308,47 @@
     <ClInclude Include="StatSheetOverlay.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyId_3.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CashoutOverlay.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityRegistry.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyId_2.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DifficultyOverlay.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DifficultyCalculator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Direction.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DungeonGenerator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Prop.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Items.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosion.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\README.md" />
   </ItemGroup>
 </Project>

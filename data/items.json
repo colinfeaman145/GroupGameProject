@@ -7,7 +7,9 @@
     "params": {
       "pierceCount": 1,
       "ttl": 5,
-      "bulletSpeed": 5000
+      "bulletSpeed": 1000,
+      "bulletSpeedPerStack": 100,
+      "bulletSprite": "../../assets/sprites/Bullets/SMG_Pistols_bullets.png"
     }
   },
   "2": {
@@ -89,13 +91,171 @@
       "duration": 1
     }
   },
- "6": {
+  "6": {
     "id": 6,
-    "name": "Sugar candy",
+    "name": "SugarCandy",
     "description": "Get attackspeed",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item615.png",
     "params": {
       "increasePerStack": 0.15
+    }
+  },
+  "7": {
+    "id": 7,
+    "name": "ScalingItem",
+    "description": "Applies time scaling effects to owner",
+    "spritePath": "",
+    "params": {
+      "healthIncreasePerLevel": 0.3,
+      "damageIncreasePerLevel": 0.2
+    }
+  },
+  "8": {
+    "id": 8,
+    "name": "BossKey",
+    "description": "Enables the player to access the next stage",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item691.png",
+    "params": {
+      
+    }
+  },
+  "9": {
+    "id": 9,
+    "name": "ThornBracelet",
+    "description": "Reflect a portion of the received damage back to the attacker. Stacks hyperbolically.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item1016.png",
+    "params": {
+      "reflectPercentage": 0.08
+    }
+  },
+  "10": {
+    "id": 10,
+    "name": "DemonEye",
+    "description": "Increases critical hit chance by 5% per stack.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item1173.png",
+    "params": {
+      "critChancePerStack": 0.05
+    }
+  },
+  "11": {
+    "id": 11,
+    "name": "DemonBlood",
+    "description": "Killing an enemy heals you for a flat amount. More stacks, more healing.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item1189.png",
+    "params": {
+      "baseHeal": 10,
+      "healPerStack": 5
+    }
+  },
+  "12": {
+    "id": 12,
+    "name": "WeightedBoots",
+    "description": "Increases movement speed per stack.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item261.png",
+    "params": {
+      "speedPerStack": 0.1
+    }
+  },
+  "13": {
+    "id": 13,
+    "name": "BerserkersHelmet",
+    "description": "Killing an enemy grants a temporary attack speed boost. Stacks add more charges.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item211.png",
+    "params": {
+      "duration": 5.0,
+      "attackSpeedBoostPerStack": 0.15
+    }
+  },
+  "14": {
+    "id": 14,
+    "name": "BloodyDagger",
+    "description": "On hit, apply Bleeding. Each stack increases bleed duration.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item11.png",
+    "params": {
+      "baseDuration": 3.0,
+      "durationPerStack": 1.5
+    }
+  },
+  "15": {
+    "id": 15,
+    "name": "LooseAmunition",
+    "description": "Every Nth attack releases a chain lightning bolt. More stacks lower the threshold.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item912.png",
+    "params": {
+      "procChance": 0.1,
+      "targetNumBase": 3,
+      "targetNumIncreasePerStack": 1,
+      "damageOfTotalDamage": 0.8,
+      "baseRangeInTiles": 2,
+      "rangePerStack": 1,      
+      "ttl": 5,
+      "bulletSpeed": 5000,
+      "bulletSprite": "../../assets/sprites/Bullets/SMG_Pistols_bullets.png"
+    }
+  },
+  "16": {
+    "id": 16,
+    "name": "FireLordsBraces",
+    "description": "Killing an enemy causes an explosion around their corpse. Stacks increase radius and damage.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item749.png",
+    "params": {
+      "baseDamageMultiplier": 1.5,
+      "damageMultiplierPerStack": 0.5,
+      "baseRadius": 2000,
+      "radiusPerStack": 150
+    }
+  },
+  "17": {
+    "id": 17,
+    "name": "ExplosiveAmmunition",
+    "description": "Critical hits ignite the target, dealing bonus damage as burn over time.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item910.png",
+    "params": {
+      "burnDamageMultiplier": 0.3,
+      "burnDuration": 3.0
+    }
+  },
+  "18": {
+    "id": 18,
+    "name": "PhantomCloak",
+    "description": "Dodging grants brief invincibility and a damage bonus. Stacks extend both.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item877.png",
+    "params": {
+      "baseInvincibleDuration": 0.5,
+      "invincibleDurationPerStack": 0.3,
+      "damageBoostPerStack": 0.2,
+      "boostDurationBonus": 1.0
+    }
+  },
+  "19": {
+    "id": 19,
+    "name": "DemonsHeart",
+    "description": "Permanently gain max HP on every kill. Snowballs hard.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item1179.png",
+    "params": {
+      "hpPerKillPerStack": 2.0
+    }
+  },
+  "20": {
+    "id": 20,
+    "name": "DeathMark",
+    "description": "Enemies affected by 4 or more debuffs take greatly increased damage.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item207.png",
+    "params": {
+      "debuffThreshold": 4,
+      "baseDamageMultiplier": 1.5,
+      "damageMultiplierPerStack": 0.2,
+      "markDuration": 7.0,
+      "markDurationPerStack": 7.0
+    }
+  },
+  "21": {
+    "id": 21,
+    "name": "DemonsSoulPrison",
+    "description": "Instantly kill enemies below a HP threshold. Stacks hyperbolically increase the threshold.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item561.png",
+    "params": {
+      "executeThresholdPerStack": 0.07
     }
   }
 }

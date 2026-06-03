@@ -4,7 +4,10 @@
     "move_up":      ["up", "w"],
     "move_down":    ["down", "s"],
     "dodge":        ["r"],
-    "skip_splash": ["tab", "space"],
+    "skip_splash":  ["tab", "space"],
     "pause":        ["escape"],
-    "testing_room": ["f2"]
+    "testing_room": ["f2"],
+    "ctrl":	    ["left ctrl"],
+    "r":	    ["r"],
+    "shift":	    ["left shift"]
 }
