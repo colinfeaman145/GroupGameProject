@@ -349,25 +349,25 @@ void Attackable::TickStatusEffect(float deltaTime) {
 				ApplyDamage(ctx);
 			}
 		}
+
 		// damage boost effect
 		if (status.type == StatusEffectType::DamageBoost) {
-			
-			ctx.source = status.source;
-			ctx.target = this;
-			ctx.hitInfo = { 0, false, false };
-			m_pStats->bonusDamage += m_pStats->GetFinalDamage() * status.currentValue;
-			status.currentValue = 0; // only apply at first tick - lasts for whole duration
-			status.duration -= deltaTime;
+			if (justStarted) {
+				m_pStats->bonusDamage *= 1.5;
+			}
+			else if (justEnded) {
+				m_pStats->bonusDamage /= 1.5;
+			}
 		}
+
 		// attackspeed boost effect
 		if (status.type == StatusEffectType::AttackSpeedBoost) {
-			
-			ctx.source = status.source;
-			ctx.target = this;
-			ctx.hitInfo = { 0, false, false };
-			m_pStats->bonusAttackSpeed += m_pStats->baseAttackSpeed * status.currentValue; 
-			status.currentValue = 0;
-			status.duration -= deltaTime;
+			if (justStarted) {
+				m_pStats->bonusAttackSpeed *= 1.5; 
+			}
+			else if (justEnded) {
+				m_pStats->bonusAttackSpeed /= 1.5; 
+			}
 		}
 
 		// poison effect
@@ -476,15 +476,6 @@ void Attackable::TickStatusEffect(float deltaTime) {
 	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) { 
 		if (s.duration <= 0) {
 			// OnExit logic
-			if (s.type == StatusEffectType::AttackSpeedBoost) {
-				s.source->m_pStats->bonusAttackSpeed -= s.source->m_pStats->baseAttackSpeed * s.originalValue;
-			}
-			if (s.type == StatusEffectType::DamageBoost) {
-				s.source->m_pStats->bonusDamage -= s.source->m_pStats->baseDamage * s.originalValue;
-			}
-			if (s.type == StatusEffectType::Invincible) {
-				s.source->SetCanCollide(true);
-			}
 			return true;
 		}
 		return false; 

@@ -1,394 +1,342 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Source Files\Items">
-      <UniqueIdentifier>{5df2446b-904d-40cd-878d-768d51ba3f9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Enemies">
-      <UniqueIdentifier>{eb4e8938-a1c2-443b-a756-6bc9d8bfc746}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Items">
-      <UniqueIdentifier>{bdda5149-511a-4b60-9e33-9064db7ad91f}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Text.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimatedSprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EnumTypes.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Collidable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FontManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GridCell.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Container.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AI.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PercentageBar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Attackable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GridPathfinding.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GridEnemyManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GridDropsManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GridOtherManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Headers</Filter>
     </ClCompile>
     <ClCompile Include="FlowField.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Headers</Filter>
     </ClCompile>
-    <ClCompile Include="SplashScreenScene.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="AI.cpp">
+      <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Attackable.cpp">
+      <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleEmitter.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="AnimatedSprite.cpp">
+      <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestingAreaScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSetupItemRegistry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemSpawner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemShopSocket.cpp">
-      <Filter>Source Files\Items</Filter>
-    </ClCompile>
-    <ClCompile Include="InventoryOverlay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerHUD.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StatSheetOverlay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CashoutOverlay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="GameSetupEntityRegistry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameTimer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DifficultyOverlay.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DifficultyCalculator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DungeonGenerator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DungeonGeneratorHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DungeonGeneratorPlacement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Prop.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyId_2.cpp">
-      <Filter>Source Files\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyId_3.cpp">
-      <Filter>Source Files\Enemies</Filter>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="CashoutOverlay.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Collidable.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Container.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="DifficultyCalculator.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="DifficultyOverlay.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="DungeonGenerator.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="DungeonGeneratorHelper.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="DungeonGeneratorPlacement.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyId_2.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyId_3.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="Explosion.cpp">
-      <Filter>Source Files</Filter>
-=======
-    <ClCompile Include="ItemId_6.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="BisonSteak.hpp">
-      <Filter>Header Files\Items</Filter>
+    <ClCompile Include="FontManager.cpp">
+      <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="GoldenBoots.cpp">
-      <Filter>Source Files\Items</Filter>
->>>>>>> 0a89cad (new status effects, new radius effect trait)
+    <ClCompile Include="Game.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSetupEntityRegistry.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSetupItemRegistry.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameTimer.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="GridCell.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="GridDropsManager.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="GridEnemyManager.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="GridOtherManager.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="GridPathfinding.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="InventoryOverlay.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemShopSocket.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemSpawner.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleEmitter.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="PercentageBar.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerHUD.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Prop.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="SplashScreenScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="StatSheetOverlay.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="TestingAreaScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Text.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioManager.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Element.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="AI.hpp">
+      <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="AnimatedSprite.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Collidable.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Button.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FontManager.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameContext.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureManager.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Grid.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GridCell.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GridCoord.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Container.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AI.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Attackable.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="PercentageBar.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SplashScreenScene.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Particle.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleEmitter.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InlineHelper.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TestingAreaScene.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemRegistry.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemEffect.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Inventory.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StatSheet.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemSpawner.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-=======
-    <ClInclude Include="CashoutModule.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FlyingDevil.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
->>>>>>> 0a89cad (new status effects, new radius effect trait)
-    <ClInclude Include="ItemShopSocket.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InventoryOverlay.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerHUD.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StatSheetOverlay.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="EnemyId_3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CashoutOverlay.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityRegistry.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyId_2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameTimer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DifficultyOverlay.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DifficultyCalculator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Direction.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DungeonGenerator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Prop.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Items.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="AudioManager.hpp">
+      <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CashoutOverlay.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Collidable.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Container.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="DifficultyCalculator.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Direction.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="DifficultyOverlay.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="DungeonGenerator.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Element.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyId_2.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyId_3.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityRegistry.hpp">
+      <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="Explosion.hpp">
-      <Filter>Header Files</Filter>
-=======
-    <ClInclude Include="CashoutOverlay.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="ItemId_6.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="FontManager.hpp">
+      <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Coin.hpp">
-      <Filter>Header Files\Items</Filter>
+    <ClInclude Include="Game.hpp">
+      <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="GoldenBoots.hpp">
-      <Filter>Header Files\Items</Filter>
+    <ClInclude Include="GameContext.hpp">
+      <Filter>Headers</Filter>
     </ClInclude>
-    <ClInclude Include="InvincibleModule.hpp">
-      <Filter>Header Files\Items</Filter>
->>>>>>> 0a89cad (new status effects, new radius effect trait)
+    <ClInclude Include="GameTimer.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCell.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GridCoord.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="InlineHelper.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="InventoryOverlay.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemEffect.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemRegistry.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Items.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemShopSocket.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemSpawner.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleEmitter.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PercentageBar.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerHUD.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Prop.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SplashScreenScene.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="StatSheet.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="StatSheetOverlay.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TestingAreaScene.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.hpp">
+      <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{578c7ef8-d34d-4f33-bb72-c0c624039ebc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classes">
+      <UniqueIdentifier>{a7118e9f-c8e8-4c1a-b70d-7f687f78177e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

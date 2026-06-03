@@ -25,8 +25,6 @@ enum StatusEffectType {
 struct StatusEffect {
 	StatusEffectType type;
 	float duration;
-	float currentValue;
-	float originalValue; // used for temporary boosts to know how much to remove on expiration
 	Attackable* source;
 	bool hasStarted = false;
 };

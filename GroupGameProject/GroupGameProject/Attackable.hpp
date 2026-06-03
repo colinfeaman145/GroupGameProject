@@ -66,7 +66,6 @@ class Attackable : public Entity {
 		void SetEffectRadiusBound(float radius, Vector2 offset = { 0, 0 });
 
 	private:
-		void LoadEntityDataFromJson(json data);
 		void LoadInventoryFromJson(json inventory);
 		void LoadItemSpawnerSettingsFromJson(json spawner);
 		void LoadStatsFromJson(json stats);
