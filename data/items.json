@@ -257,5 +257,15 @@
     "params": {
       "executeThresholdPerStack": 0.07
     }
+  },
+ "22": {
+    "id": 22,
+    "name": "Golden boots",
+    "description": "Give temporary speed boost when cashing out",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item265.png",
+    "params": {
+      "baseDuration": 10,
+      "increasePerStack": 5
+    }
   }
 }

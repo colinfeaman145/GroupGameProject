@@ -38,6 +38,7 @@ public:
     vector<GridCell*> FindEntityCells(Entity* entity);
     vector<GridCell*>& GetNeighbourCells(GridCoord coord, int radius);
     vector<Collidable*>& GetNearbyCollidables(GridCoord coord, int radius);
+    vector<Collidable*> GetCollidablesInRadius(const CollisionShape& shape, Vector2 pos);
 
     template<typename T>
     void UpdateOccupancy(T* entity, void (GridCell::* addFunc)(T*), void (GridCell::* removeFunc)(T*));
