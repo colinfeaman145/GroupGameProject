@@ -54,6 +54,7 @@ bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 	Entity::Initialize(pos, spr);
 	context.dc->RegisterOnLevelUp([this] {this->AddItem(7,1);});
 	m_inventory->RegisterCallback([this]() { this->RecalculateStats();});
+	canHealTimer = 0;
 	
 	// healthbar setup
 	Vector2 size = sprite->GetDrawSize();
@@ -74,14 +75,25 @@ void Attackable::Process(float deltaTime) {
 	if (!IsAlive() && !IsDying()) return;
 
 	Entity::Process(deltaTime);
+	for (auto& [itemID, stacks] : m_inventory->All()) { //tick timer for each item
+		ItemDef def = context.ir->Get(itemID);
+		if (def.effect && def.effect->internalTimer > 0) {
+			def.effect->internalTimer -= deltaTime;
+		}
+	}
 
-	healthBar->SetPosition(position.x, position.y);
+	EventContext ctx;
+	ctx.source = this;
+	FireEvent(EventType::OnStep, ctx);
+	TickStatusEffect(deltaTime);
+
+	if(canHealTimer > 0) canHealTimer -= deltaTime;
+	else TickRegeneration(deltaTime);
 
 	if (flashDuration > 0) flashDuration -= deltaTime;
 	else SetFlash(false);
 
-	TickStatusEffect(deltaTime);
-	TickRegeneration(deltaTime);
+	healthBar->SetPosition(position.x, position.y);
 	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats ? m_pStats->GetFinalHealth() : m_pStats->GetCurrentHealth());
 
 }
@@ -98,6 +110,9 @@ void Attackable::TickRegeneration(float deltaTime) {
 	if (m_pStats->regernation <= 0) return;
 
 	auto healTickInSeconds = 0.5f;
+	m_fLastHealTick += deltaTime;
+	if (m_fLastHealTick < healTickInSeconds) return;// tick every half a second
+
 	auto healAmount = m_pStats->regernation * healTickInSeconds; // because the tick is every 0.5 seconds
 
 	HitInfo info = {
@@ -111,8 +126,7 @@ void Attackable::TickRegeneration(float deltaTime) {
 		.hitInfo = info
 	};
 
-	m_fLastHealTick += deltaTime;
-	if (m_fLastHealTick < healTickInSeconds) return;// tick every half a second
+
 	m_fLastHealTick = 0;
 	ApplyHeal(ctx);
 
@@ -165,6 +179,7 @@ void Attackable::ApplyDamage(EventContext& ctx) {
 
 	SetFlash(true);
 	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats->GetFinalHealth());
+	canHealTimer = m_pStats->regenerateTime;
 
 	if ((int)m_pStats->GetCurrentHealth() <= 0 && IsAlive()) {
 		FireEvent(EventType::OnDeath, ctx);
@@ -308,7 +323,19 @@ std::unordered_map<ItemID, int> Attackable::GetItems() {
 	return m_inventory->All();
 }
 
+vector<StatusEffect> Attackable::GetStatusEffects() {
+	return m_activeStatusEffects;
+}
+
 void Attackable::ApplyStatusEffect(StatusEffect effect) {
+	//only 1 instance of each effect, take the highest duration and strength
+	for (auto& existing : m_activeStatusEffects) {
+		if (existing.type != effect.type) continue;
+
+		existing.duration = max(existing.duration, effect.duration);
+		existing.strength = max(existing.strength, effect.strength);
+		return;
+	}
 	m_activeStatusEffects.push_back(effect);
 }
 
@@ -358,22 +385,22 @@ void Attackable::TickStatusEffect(float deltaTime) {
 		// damage boost effect
 		if (status.type == StatusEffectType::DamageBoost) {
 			if (justStarted) {
-				m_pStats->bonusDamage *= 1.25 + status.strength;
+				m_pStats->damageMult += status.strength;
 				status.hasStarted = true;
 			}
 			else if (justEnded) {
-				m_pStats->bonusDamage /= 1.25 + status.strength;
+				m_pStats->damageMult -= status.strength;
 			}
 		}
 
 		// attackspeed boost effect
 		if (status.type == StatusEffectType::AttackSpeedBoost) {
 			if (justStarted) {
-				m_pStats->bonusAttackSpeed *= 1.25 + status.strength;
+				m_pStats->attackSpeedMult += status.strength;
 				status.hasStarted = true;
 			}
 			else if (justEnded) {
-				m_pStats->bonusAttackSpeed /= 1.25 + status.strength;
+				m_pStats->attackSpeedMult -= status.strength;
 			}
 		}
 
@@ -426,33 +453,34 @@ void Attackable::TickStatusEffect(float deltaTime) {
 		//speedBoost
 		if (status.type == StatusEffectType::SpeedBoost) {
 			if (justStarted) {
-				m_pStats->speedMult *= 1.5 + status.strength;
+				m_pStats->speedMult *= 1.0 + status.strength;
 				status.hasStarted = true;
 			}
 			else if (justEnded) {
-				m_pStats->speedMult /= 1.5 + status.strength;
+				m_pStats->speedMult /= 1.0 + status.strength;
 			}
 		}
 
 		//slowness
 		if (status.type == StatusEffectType::Slowness) {
 			if (justStarted) {
-				m_pStats->speedMult *= 0.35;
+				m_pStats->speedMult *= (1 / status.strength);
 				status.hasStarted = true;
 			}
 			else if (justEnded) {
-				m_pStats->speedMult /= 0.35;
+				m_pStats->speedMult /= (1 / status.strength);
 			}
 		}
 
 		//death mark
 		if (status.type == StatusEffectType::DeathMark) {
 			//hasStarted acts as a flag for whether the weakness is applied
-			if (m_activeStatusEffects.size() >= 4 && status.hasStarted == false) {
+			int effectCount = GetUniqueStatusEffectCount();
+			if (effectCount >= 4 && status.hasStarted == false) {
 				m_pStats->weakness += 50 + status.strength;
 				status.hasStarted = true;
 			}
-			else if (m_activeStatusEffects.size() < 4 && status.hasStarted) {
+			else if (effectCount < 4 && status.hasStarted) {
 				m_pStats->weakness -= 50 + status.strength;
 				status.hasStarted = false;
 			}
@@ -626,6 +654,7 @@ void Attackable::LoadStatsFromJson(json stats) {
 		stats["armor"].get<int>(),
 		stats["weakness"].get<int>(),
 		stats["regeneration"].get<float>(),
+		stats["regenerateTime"].get<float>(),
 		stats["critChance"].get<float>(),
 		stats["critMultiplyer"].get<float>(),
 		stats["hasHealCritEnabled"].get<int>(),

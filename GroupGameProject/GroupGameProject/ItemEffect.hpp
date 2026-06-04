@@ -86,7 +86,9 @@ public:
 		return 1 - pow(1 - perStack, stacks);
 	}
 
+	float internalTimer;//used for item cooldowns or other things
 protected:
+	bool isActive;
 	json data;
 };
 

@@ -39,6 +39,7 @@ public:
 	int GetItemCount(ItemID id);
 	bool IsDying();
 	std::unordered_map<ItemID, int>  GetItems();
+	vector<StatusEffect> GetStatusEffects();
 
 
 	// setter
@@ -71,8 +72,6 @@ private:
 	void LoadStatsFromJson(json stats);
 	void LoadAnimationsFromJson(json animations);
 
-
-
 public:
 	Inventory* m_inventory;
 	StatSheet* m_pStats;
@@ -83,6 +82,7 @@ protected:
 
 	float m_fLastStatusEffectTick;
 	float m_fLastHealTick;
+	float canHealTimer;
 	std::vector<StatusEffect> m_activeStatusEffects;
 	CollisionShape effectRadiusBound;
 

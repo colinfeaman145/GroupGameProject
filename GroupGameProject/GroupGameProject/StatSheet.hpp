@@ -19,6 +19,7 @@ public:
 		int armor = 0,
 		int weakness = 0,
 		float regernation = 0,
+		float regenerateTime = 5,
 		float critChance = 0,
 		float critMultiplyer = 0,
 		bool healHasCritEnabled = false,
@@ -40,6 +41,7 @@ public:
 		defaultArmor = armor;
 		defaultWeakness = weakness;
 		defaultRegernation = regernation;
+		defaultRegenerateTime = regenerateTime;
 		defaultCritChance = critChance;
 		defaultCritMultiplyer = critMultiplyer;
 		defaultHasHealCritEnabled = hasHealCritEnabled;
@@ -92,6 +94,7 @@ public:
 		critChance = defaultCritChance;
 		critMultiplyer = defaultCritMultiplyer;
 		regernation = defaultRegernation;
+		regenerateTime = defaultRegenerateTime;
 		hasHealCritEnabled = defaultHasHealCritEnabled;
 		effectRadiusScaler = defaultEffectRadiusScaler;
 	}
@@ -127,6 +130,7 @@ public:
 	float critChance;
 	float critMultiplyer;
 	float regernation;
+	float regenerateTime;
 	bool hasHealCritEnabled;
 
 	float effectRadiusScaler;
@@ -154,6 +158,7 @@ public:
 	float defaultCritChance;
 	float defaultCritMultiplyer;
 	float defaultRegernation;
+	float defaultRegenerateTime;
 	bool defaultHasHealCritEnabled;
 	float defaultEffectRadiusScaler;
 };
