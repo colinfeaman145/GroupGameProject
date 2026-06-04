@@ -29,6 +29,7 @@ private:
 	float dodgeDistance;
 	Vector2 dodgeDirection;
 	bool dodging;
+	float walkSoundTimer;
 
 	PlayerHUD* playerHud;
 

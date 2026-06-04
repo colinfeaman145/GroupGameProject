@@ -76,9 +76,6 @@ float Explosion::GetDamageScaler(Collidable* c) {
 	return (dist / radius) * 1.25;
 }
 
-void Explosion::IncreaseDamage(float amount) {
-	damage += amount;
-}
 
 void Explosion::HandleCollision(Collidable* other, Vector2 penetration) {
 	if (canDamage) {

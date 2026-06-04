@@ -248,6 +248,114 @@ void DungeonGenerator::ApplyToGrid() {
                         cell->AddOther(door);
                         break;
                     }
+                    case('J'): {
+                        AddDungeonTileFloor(cell);
+                        SDL_Texture* jarTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Props/Jar.png");
+                        Sprite* spr = new Sprite();
+                        spr->Initialize(jarTexture, 51, 49, 0, 0, 500, 500);
+                        spr->SetColor({ 220, 255, 220, 255 });
+                        spr->SetDrawLayer(RenderLayer::GROUND);
+                        Prop* jar = new Prop();
+                        jar->Initialize("Jar", cell->GetPosition(), spr);
+                        cell->AddOther(jar);
+                        break;
+                    }
+                    case('C'): {
+                        AddDungeonTileFloor(cell);
+                        SDL_Texture* scullTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Props/Scull.png");
+                        Sprite* spr = new Sprite();
+                        spr->Initialize(scullTexture, 49, 47, 0, 0, 500, 500);
+                        spr->SetColor({ 220, 255, 220, 255 });
+                        spr->SetDrawLayer(RenderLayer::GROUND);
+                        Prop* scull = new Prop();
+                        scull->Initialize("Scull", cell->GetPosition(), spr);
+                        cell->AddOther(scull);
+                        break;
+                    }
+                    case('M'): {
+                        AddDungeonTileFloor(cell);
+                        SDL_Texture* magictableTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Props/Magic_Table.png");
+                        Sprite* spr = new Sprite();
+                        spr->Initialize(magictableTexture, 67, 45, 0, 0, 500, 500);
+                        spr->SetColor({ 220, 255, 220, 255 });
+                        spr->SetDrawLayer(RenderLayer::GROUND);
+                        Prop* mt = new Prop();
+                        mt->Initialize("MagicTable", cell->GetPosition(), spr);
+                        cell->AddOther(mt);
+                        break;
+                    }
+                    case('A'): {
+                        AddDungeonTileFloor(cell);
+                        SDL_Texture* magictable1Texture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Props/Magic_Table_1.png");
+                        Sprite* spr = new Sprite();
+                        spr->Initialize(magictable1Texture, 55, 52, 0, 0, 500, 500);
+                        spr->SetColor({ 220, 255, 220, 255 });
+                        spr->SetDrawLayer(RenderLayer::GROUND);
+                        Prop* mt1 = new Prop();
+                        mt1->Initialize("MagicTableOne", cell->GetPosition(), spr);
+                        cell->AddOther(mt1);
+                        break;
+                    }
+                    case('V'): {
+                        AddDungeonTileFloor(cell);
+                        SDL_Texture* magictable2Texture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Props/Magic_Table_2.png");
+                        Sprite* spr = new Sprite();
+                        spr->Initialize(magictable2Texture, 51, 49, 0, 0, 500, 500);
+                        spr->SetColor({ 220, 255, 220, 255 });
+                        spr->SetDrawLayer(RenderLayer::GROUND);
+                        Prop* mt2 = new Prop();
+                        mt2->Initialize("MagicTableTwo", cell->GetPosition(), spr);
+                        cell->AddOther(mt2);
+                        break;
+                    }
+                    case('I'): {
+                        AddDungeonTileFloor(cell);
+                        SDL_Texture* magictable3Texture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Props/Magic_Table_3.png");
+                        Sprite* spr = new Sprite();
+                        spr->Initialize(magictable3Texture, 36, 72, 0, 0, 500, 500);
+                        spr->SetColor({ 220, 255, 220, 255 });
+                        spr->SetDrawLayer(RenderLayer::GROUND);
+                        Prop* mt3 = new Prop();
+                        mt3->Initialize("MagicTableThree", cell->GetPosition(), spr);
+                        cell->AddOther(mt3);
+                        break;
+                    }
+                    case('L'): {
+                        AddDungeonTileFloor(cell);
+                        SDL_Texture* smalltableTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Props/Small_Table.png");
+                        Sprite * spr = new Sprite();
+                        spr->Initialize(smalltableTexture, 45, 43, 0, 0, 500, 500);
+                        spr->SetColor({ 220, 255, 220, 255 });
+                        spr->SetDrawLayer(RenderLayer::GROUND);
+                        Prop* sm = new Prop();
+                        sm->Initialize("SmallTable", cell->GetPosition(), spr);
+                        cell->AddOther(sm);
+                        break;
+                    }
+                    case('R'): {
+                        AddDungeonTileFloor(cell);
+                        SDL_Texture* tree1Texture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Props/Tree_1.png");
+                        Sprite* spr = new Sprite();
+                        spr->Initialize(tree1Texture, 55, 52, 0, 0, 500, 500);
+                        spr->SetColor({ 220, 255, 220, 255 });
+                        spr->SetDrawLayer(RenderLayer::GROUND);
+                        Prop* tree = new Prop();
+                        tree->Initialize("TreeOne", cell->GetPosition(), spr);
+                        cell->AddOther(tree);
+                        break;
+                    }
+                    case('O'): {
+                        AddDungeonTileFloor(cell);
+                        SDL_Texture* tree2Texture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Props/Tree_2.png");
+                        Sprite* spr = new Sprite();
+                        spr->Initialize(tree2Texture, 62, 59, 0, 0, 500, 500);
+                        spr->SetColor({ 220, 255, 220, 255 });
+                        spr->SetDrawLayer(RenderLayer::GROUND);
+                        Prop* treetwo = new Prop();
+                        treetwo->Initialize("TreeTwo", cell->GetPosition(), spr);
+                        cell->AddOther(treetwo);
+                        break;
+                    }
                     case('N'):
                     case('E'):
                     case('S'):

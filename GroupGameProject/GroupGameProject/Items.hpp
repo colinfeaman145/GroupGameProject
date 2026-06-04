@@ -1608,7 +1608,7 @@ public:
 private:
 	bool IsThursday() {
 		time_t rawtime = time(NULL);
-		struct tm timeinfo;                        // Allocate your own buffer
+		struct tm timeinfo;                       
 		localtime_s(&timeinfo, &rawtime);
 		return timeinfo.tm_wday == 4; // 0 = Sunday, 4 = Thursday
 	}

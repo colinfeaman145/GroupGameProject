@@ -1,6 +1,7 @@
 #include "Player.hpp"
 #include <SDL.h>
 #include "AnimatedSprite.hpp"
+#include "InlineHelper.hpp"
 #include "GameContext.hpp"
 #include "StatSheet.hpp"
 #include "PercentageBar.hpp"
@@ -31,6 +32,7 @@ void Player::Initialize(Vector2 pos) {
 	dodgeCooldown = 1;
 	dodgeDuration = 0.5;
 	dodgeDistance = 2;
+	walkSoundTimer = 0.0f;
 
 	idleAnimation->Animate();
 }
@@ -51,6 +53,20 @@ void Player::Process(float deltaTime) {
 	if (attackCooldown > 0) {
 		attackCooldown -= deltaTime;
 	}
+
+	if (velocity.x != 0 || velocity.y != 0) {
+		walkSoundTimer -= deltaTime;
+		if (walkSoundTimer <= 0) {
+			FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
+			FMOD_VECTOR vel = { 0,0,0 };
+			context.am->PlaySound("walking", "SFX", pos, vel, { 0.9f, 1.1f });
+			walkSoundTimer = 0.6f;
+		}
+	}
+	else {
+		walkSoundTimer = 0.0f;
+	}
+
 	context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
 }
 
@@ -93,6 +109,10 @@ void Player::HandleMouseClick(float deltaTime) {
 			.targetPosition = mousePos,
 			.hitInfo = hitInfo
 		};
+
+		FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
+		FMOD_VECTOR vel = { 0,0,0 };
+		context.am->PlaySound("shoot_1", "SFX", pos, vel, { 0.85f, 1.15f });
 
 		// executes all onAttack item effects from the inventory
 		FireEvent(EventType::OnAttack, event);
@@ -165,6 +185,9 @@ void Player::HandleMovement() {
 		dodgeTimer = dodgeDuration;
 		dodgeCooldownTimer = dodgeCooldown;
 		dodging = true;
+		FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
+		FMOD_VECTOR vel = { 0,0,0 };
+		context.am->PlaySound("dash", "SFX", pos, vel, { 0.9f, 1.1f });
 
 		StatusEffect effect;
 		effect.type = StatusEffectType::Invincible;

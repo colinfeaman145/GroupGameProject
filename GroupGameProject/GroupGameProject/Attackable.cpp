@@ -178,6 +178,9 @@ void Attackable::ApplyDamage(EventContext& ctx) {
 	}
 
 	SetFlash(true);
+	FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
+	FMOD_VECTOR vel = { 0,0,0 };
+	context.am->PlaySound("hit", "SFX", pos, vel, { 0.9f, 1.1f });
 	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats->GetFinalHealth());
 	canHealTimer = m_pStats->regenerateTime;
 
@@ -294,6 +297,9 @@ void Attackable::SetDead() {
 	// already dead
 	if (!isAlive) return;
 	isAlive = false;
+	FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
+	FMOD_VECTOR vel = { 0,0,0 };
+	context.am->PlaySound("death", "SFX", pos, vel, { 0.85f, 1.15f });
 
     SetCanCollide(false);
 	m_itemSpawner->SpawnItems(GetPosition());
@@ -538,6 +544,9 @@ void Attackable::TickStatusEffect(float deltaTime) {
 
 
 void Attackable::AddItem(ItemID id, int count) {
+	FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
+	FMOD_VECTOR vel = { 0,0,0 };
+	context.am->PlaySound("powerup", "SFX", pos, vel, { 0.95f, 1.05f });
 	m_inventory->Add(id, count);
 	ItemDef def = context.ir->Get(id);
 	int stacks = m_inventory->Count(id);
