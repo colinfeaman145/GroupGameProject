@@ -149,6 +149,7 @@
     <ClCompile Include="EnemyId_3.cpp" />
     <ClCompile Include="EnemySpawner.cpp" />
     <ClCompile Include="Explosion.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -207,6 +208,7 @@
     <ClInclude Include="EnemyId_3.hpp" />
     <ClInclude Include="EnemySpawner.hpp" />
     <ClInclude Include="Explosion.hpp" />
+    <ClInclude Include="GameOverScene.hpp" />
     <ClInclude Include="GameTimer.hpp" />
     <ClInclude Include="CashoutOverlay.hpp" />
     <ClInclude Include="Collidable.hpp" />
