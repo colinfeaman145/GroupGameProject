@@ -1,22 +1,29 @@
-#pragma once
-#include "Entity.hpp"
-#include "ItemEffect.hpp"
-#include  <string>
+#ifndef EXPLOSION_HPP
+#define EXPLOSION_HPP
 
-class Attackable;
-class AnimatedSprite;
-class Explosion : public Entity {
+#include "Attackable.hpp"
+
+class Explosion : public Attackable {
 public:
-	Explosion();
-	bool Initialize(EventContext ctx, float radius);
-	void Draw(Renderer* renderer) override;
+	Explosion(const Explosion& other);
+	Explosion(int size, int dam, bool playersExplosion);
 	void Process(float deltaTime) override;
+	void Explode();
+	void SetPosition(Vector2 pos) override;
+	bool isActive();
+	float GetDamageScaler(Collidable* c);
+	void IncreaseDamage(float amount);
+
 	void HandleCollision(Collidable* other, Vector2 penetration) override;
 
 private:
 	float damage;
-	float radius;
-	AnimatedSprite* explosionAnimation;
-	Attackable* source;
-	vector<Collidable*> collisions;//to prevent multiple collisions with the same target
+	bool activated;
+	float damageDelay;
+	float currentTimer;
+	bool canDamage;
+	bool damageDealt;
+	bool onPlayersTeam;
 };
+
+#endif

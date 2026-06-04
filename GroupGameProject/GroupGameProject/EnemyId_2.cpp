@@ -63,7 +63,7 @@ void EnemyId_2::HandleCollision(Collidable* other, Vector2 penetration) {
 	Enemy::HandleCollision(other, penetration);
 	if (other->GetCollidableType() != CollidableType::PLAYER) return;
 	if (auto player = dynamic_cast<Attackable*>(other)) {
-		player->ApplyStatusEffect({ StatusEffectType::Bleeding, 5.0f, 0, 0,this });
+		player->ApplyStatusEffect({ StatusEffectType::Bleeding, 5.0f, this });
 	}
 }
 
