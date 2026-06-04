@@ -31,8 +31,6 @@ private:
     Button* restartButton;
     Button* quitButton;
 
-    Sprite* autLogo;
-
     int minutes;
     int seconds;
     int stagesCompleted;
