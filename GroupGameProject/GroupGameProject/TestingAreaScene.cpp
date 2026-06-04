@@ -9,17 +9,33 @@ bool TestingAreaScene::Initialize() {
 		this->hasStageCompleted = true;
  });
     ResetGameState();
+    context.am->AddGroup("SFX");
+    context.am->AddGroup("Music");
+    context.am->LoadSound("../../assets/audio/hit.wav", "hit", 0.1f);
+    context.am->LoadSound("../../assets/audio/death.wav", "death", 0.5f);
+    context.am->LoadSound("../../assets/audio/shoot_1.wav", "shoot_1", 0.05f);
+    context.am->LoadSound("../../assets/audio/shoot_2.wav", "shoot_2", 0.05f);
+    context.am->LoadSound("../../assets/audio/shoot_3.wav", "shoot_3", 0.05f);
+    context.am->LoadSound("../../assets/audio/coin_pickup.wav", "coin_pickup", 0.2f);
+    context.am->LoadSound("../../assets/audio/dash.wav", "dash", 0.3f);
+    context.am->LoadSound("../../assets/audio/explosion.wav", "explosion", 0.2f);
+    context.am->LoadSound("../../assets/audio/powerup.wav", "powerup", 0.3f);
+    context.am->LoadSound("../../assets/audio/walking.wav", "walking", 1.5f);
+    context.am->LoadMusicTrack("../../assets/audio/game_music.wav", "game_music");
+    context.am->SetGroupVolume("SFX", 0.8f);
     return true;
 }
 
 void TestingAreaScene::Process(float deltaTime) {
-	Scene::Process(deltaTime);
+    Scene::Process(deltaTime);
     ReadInputs(deltaTime);
 
-	if (hasStageCompleted) {
-		GenerateNewMap(player);
-		hasStageCompleted = false;
-	}
+    if (hasStageCompleted) {
+        GenerateNewMap(player);
+        hasStageCompleted = false;
+    }
+
+       // context.am->Process(player->GetPosition(), deltaTime);
 }
 
 void TestingAreaScene::Draw(Renderer* renderer) {
