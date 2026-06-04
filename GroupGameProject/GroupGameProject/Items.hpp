@@ -1607,9 +1607,10 @@ public:
 
 private:
 	bool IsThursday() {
-		std::time_t t = std::time(nullptr);
-		std::tm* now = std::localtime(&t);
-		return now->tm_wday == 4; // 0 = Sunday, 4 = Thursday
+		time_t rawtime = time(NULL);
+		struct tm timeinfo;                        // Allocate your own buffer
+		localtime_s(&timeinfo, &rawtime);
+		return timeinfo.tm_wday == 4; // 0 = Sunday, 4 = Thursday
 	}
 };
 
