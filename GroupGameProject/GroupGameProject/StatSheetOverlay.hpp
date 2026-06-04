@@ -15,12 +15,21 @@ public:
 
 private:
 	void RecalculateStatSheet();
-	void CreateStatRow(const std::string& statIconPath, std::string& value, Vector2 pos);
+	Text* CreateStatRow(const std::string& statIconPath, Vector2 pos);
+	void UpdateStatValues();
 
 private:
 	Inventory* inventory;
 	StatSheet* statSheet;
 	float rowHeight;
 	float foregroundAlpha;
+
+	Text* healthText;
+	Text* regenText;
+	Text* damageText;
+	Text* attackSpeedText;
+	Text* speedText;
+	Text* critChanceText;
+	Text* armorText;
 };
 

@@ -47,7 +47,14 @@ bool Sprite::Initialize(SDL_Texture* tex, int srcWidth, int srcHeight, int srcX,
     return true;
 }
 
-void Sprite::Process(float deltaTime) {}
+void Sprite::Process(float deltaTime) {
+    if (spinTimer > 0) {
+        float rotateAmount = (deltaTime / spinDuration) * 360;
+        rotateAmount *= flip == SDL_FLIP_NONE ? -1 : 1;
+        Rotate(rotateAmount);
+        spinTimer -= deltaTime;
+    }
+}
 
 //draw using renderer
 void Sprite::Draw(Renderer* renderer) {
@@ -74,6 +81,10 @@ void Sprite::SetPosition(Vector2 vec) {
 
 void Sprite::SetRotation(float angle) {
     rotation = angle;
+}
+
+void Sprite::Rotate(float amount) {
+    rotation += amount;
 }
 
 void Sprite::SetColor(Color c) {
@@ -106,4 +117,9 @@ void Sprite::SetFlip(bool flipH) {
 void Sprite::SetVerticalFlip(bool flipV) 
 { 
     flip = (SDL_RendererFlip)(flipV | SDL_FLIP_VERTICAL);
+}
+
+void Sprite::Spin(float time) {
+    spinDuration = time;
+    spinTimer = time;
 }
