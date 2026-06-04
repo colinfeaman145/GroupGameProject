@@ -47,7 +47,7 @@ Vector2 Grid::GetFlowVector(GridCoord from, GridCoord target) {
         it = flowFields.find(target);
     }
     else if (it->second.dirty) {
-        ComputeFlowField(target, 1);
+        ComputeFlowField(target, 5);
         it = flowFields.find(target);
     }
 

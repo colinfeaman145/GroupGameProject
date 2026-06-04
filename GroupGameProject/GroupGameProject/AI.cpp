@@ -30,7 +30,7 @@ void AI::Process(float deltaTime) {
     adjustCourseTimer -= deltaTime;
     framesSinceLastHone++;
 
-    if (framesSinceLastHone >= 5) {//if walking
+    if (framesSinceLastHone >= 10) {//if walking
         Hone(); //move towards target
         framesSinceLastHone = 0;
     }
@@ -63,6 +63,7 @@ void AI::Hone() {
 
     if (target == nullptr) return;
     if (!isChasing) return;
+
 
     GridCoord myCell = context.grid->WorldToGrid(GetPosition());
     GridCoord targetCoord = context.grid->WorldToGrid(target->GetPosition());

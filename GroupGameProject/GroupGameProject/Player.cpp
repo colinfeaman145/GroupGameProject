@@ -56,7 +56,6 @@ void Player::Process(float deltaTime) {
 void Player::Draw(Renderer* renderer) {
  	Attackable::Draw(renderer);
 	playerHud->Draw(renderer);
-	renderer->cam->Follow(GetPosition());
 	healthBar->Draw(renderer);
 }
 
