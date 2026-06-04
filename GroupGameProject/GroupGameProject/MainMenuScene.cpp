@@ -15,13 +15,6 @@ MainMenuScene::MainMenuScene()
 
 MainMenuScene::~MainMenuScene()
 {
-    delete titleText;
-    delete startButton;
-    delete instructionsButton;
-    delete quitButton;
-    startPressed = false;
-    instructionsPressed = false;
-    quitPressed = false;
 }
 
 bool MainMenuScene::Initialize()

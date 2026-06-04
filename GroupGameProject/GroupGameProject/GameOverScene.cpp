@@ -24,20 +24,6 @@ GameOverScene::GameOverScene()
 
 GameOverScene::~GameOverScene() 
 {
-    delete titleText;
-    delete timeText;
-    delete stageText;
-    delete itemsText;
-    delete coinsText;
-    delete restartButton;
-    delete quitButton;
-    minutes = 0;
-    seconds = 0;
-    stagesCompleted = 0;
-    itemsCollected = 0;
-    coinsLeft = 0;
-    restartPressed = false;
-    quitPressed = false;
 }
 
 bool GameOverScene::Initialize() 

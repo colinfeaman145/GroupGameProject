@@ -11,9 +11,6 @@ InstructionsScene::InstructionsScene()
 
 InstructionsScene::~InstructionsScene()
 {
-    delete titleText;
-    delete backButton;
-    backPressed = false;
 }
 
 bool InstructionsScene::Initialize()
