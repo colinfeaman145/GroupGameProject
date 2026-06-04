@@ -103,7 +103,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\lib\SDL2_ttf-2.22.0\lib\x86;..\..\lib\SDL2_image-2.6.1\lib\x86;..\..\lib\glew-2.1.0\lib\x86;..\..\lib\SDL2-2.0.22\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\lib\SDL2_ttf-2.22.0\lib\x86;..\..\lib\SDL2_image-2.6.1\lib\x86;..\..\lib\glew-2.1.0\lib\x86;..\..\lib\FMOD\lib\x86;..\..\lib\SDL2-2.0.22\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2main.lib;SDL2.lib;SDL2_image.lib;glew32.lib;opengl32.lib;SDL2_ttf.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -174,10 +174,12 @@
     <ClCompile Include="GridOtherManager.cpp" />
     <ClCompile Include="GridPathfinding.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="InstructionsScene.cpp" />
     <ClCompile Include="InventoryOverlay.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemShopSocket.cpp" />
     <ClCompile Include="ItemSpawner.cpp" />
+    <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="PlayerHUD.cpp" />
     <ClCompile Include="Prop.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -227,6 +229,7 @@
     <ClInclude Include="GridCoord.hpp" />
     <ClInclude Include="InlineHelper.hpp" />
     <ClInclude Include="InputManager.hpp" />
+    <ClInclude Include="InstructionsScene.hpp" />
     <ClInclude Include="InventoryOverlay.hpp" />
     <ClInclude Include="Item.hpp" />
     <ClInclude Include="Inventory.hpp" />
@@ -235,6 +238,7 @@
     <ClInclude Include="Items.hpp" />
     <ClInclude Include="ItemShopSocket.hpp" />
     <ClInclude Include="ItemSpawner.hpp" />
+    <ClInclude Include="MainMenuScene.hpp" />
     <ClInclude Include="PlayerHUD.hpp" />
     <ClInclude Include="Prop.hpp" />
     <ClInclude Include="StatSheet.hpp" />
