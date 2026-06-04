@@ -6,8 +6,7 @@ bool AudioManager::Initialize(const FMOD_VECTOR& pos, float startDelay) {
     System_Create(&system);
     system->init(512, FMOD_INIT_NORMAL, nullptr);
     system->set3DListenerAttributes(0, &pos, nullptr, nullptr, nullptr);
-    system->set3DSettings(1.0f, context.grid->GetCellSize() / 10, 2.0f);
-
+    system->set3DSettings(1.0f, 50, 2.0f);
     betweenSongs = true;
     songBreakTimer = startDelay;
     musicFadeDuration = 10;
@@ -77,8 +76,7 @@ bool AudioManager::LoadSound(const string& filepath, const string& soundName, fl
     if (sounds.count(filepath)) return 0;
 
     Sound* sound = nullptr;
-    system->createSound(filepath.c_str(), FMOD_3D | FMOD_3D_LINEARSQUAREROLLOFF, nullptr, &sound);
-    sound->set3DMinMaxDistance(context.grid->GetCellSize(), context.grid->GetCellSize() * 25);
+    system->createSound(filepath.c_str(), FMOD_2D, nullptr, &sound);   
     sounds[soundName] = sound;
     soundCooldown[soundName] = 0;
     soundCooldownDuration[soundName] = cooldown;

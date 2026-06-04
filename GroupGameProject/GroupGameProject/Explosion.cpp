@@ -44,6 +44,11 @@ void Explosion::HandleCollision(Collidable* other, Vector2 penetration) {
 	auto target = dynamic_cast<Attackable*>(other);
 	if (target == nullptr) return;
 
+	if (collisions.empty()) {
+		FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
+		FMOD_VECTOR vel = { 0,0,0 };
+		context.am->PlaySound("explosion", "SFX", pos, vel, { 0.9f, 1.1f });
+	}
 
 	source->DealDamageTo(target, { damage, 0, false, false, true });
 	target->ApplyStatusEffect({ StatusEffectType::Burning, 3, 0, 0, source });

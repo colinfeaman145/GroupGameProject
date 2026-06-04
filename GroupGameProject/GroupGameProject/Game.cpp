@@ -28,6 +28,8 @@ Game::Game() {
     context.fm = new FontManager();
     context.im = new InputManager();
     context.am = new AudioManager();
+    FMOD_VECTOR pos = { 0,0,0 };
+    context.am->Initialize(pos, 5);
 	context.ir = new ItemRegistry();
     context.timer = new GameTimer();
     context.dc = new DifficultyCalculator();
@@ -58,6 +60,10 @@ bool Game::Initialize() {
 
     scenes.resize(10, nullptr);//make space for atleast 10 scenes
 
+    context.am->AddGroup("Music");
+    context.am->AddGroup("UI");
+    context.am->AddGroup("SFX");
+
     // main game scenes
     Scene* splash;
     splash = new SplashScreens();
@@ -87,6 +93,12 @@ bool Game::Initialize() {
     gameOver = new GameOverScene();
     gameOver->Initialize();
     scenes[4] = gameOver;
+
+    
+    context.am->LoadMusicTrack("../../assets/audio/menu_music.wav", "menu_music");
+    context.am->PlayMusic("menu_music");
+    context.am->SetGroupVolume("UI", 0.8f);
+    context.am->SetGroupVolume("SFX", 0.8f);
 
     return true;
 }
@@ -119,6 +131,9 @@ void Game::Process(float deltaTime) {
 
         context.im->HandleEvent(event);
     }
+
+    FMOD_VECTOR pos = { 0,0,0 };
+    context.am->Process({ 0,0 }, deltaTime);
 
    scenes[currentScene]->Process(deltaTime);
 
