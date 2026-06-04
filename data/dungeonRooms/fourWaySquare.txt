@@ -9,7 +9,7 @@ X X X X N X X X X
 X F F F F F F F X
 X F F F F F F F X
 X F F F F F F F X
-W F F F F F F F E
+W F F F G F F F E
 X F F F F F F F X
 X F F F F F F F X
 X F F F F F F F X

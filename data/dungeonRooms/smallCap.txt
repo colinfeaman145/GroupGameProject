@@ -7,6 +7,6 @@
 
 X X N X X
 X F F F X
-X F F F X
+X F G F X
 X F F F X
 X X X X X

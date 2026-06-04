@@ -8,7 +8,7 @@
 X X X X N X X X X X X X X X
 X F F F F F F F F F F F F X
 X F F F F F F F F F F F F X
-W F F F F F F F F F F F F X
+W F F F G F F F F G F F F X
 X F F F F F F F F F F F F X
 X F F F F F F F F F F F F X
 X X X X S X X X X X X X X X
