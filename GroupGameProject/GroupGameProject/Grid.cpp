@@ -181,6 +181,27 @@ vector<Collidable*>& Grid::GetNearbyCollidables(GridCoord coord, int radius) {
     return collidableScratch;
 }
 
+vector<Collidable*> Grid::GetCollidablesInRadius(const CollisionShape& shape, Vector2 pos) {
+    vector<Collidable*> results;
+
+    GridCoord center = WorldToGrid(pos + shape.offset);
+    int cellSearchRadius = (shape.radius / cellSize) * 1.5;
+
+    for (Collidable* other : GetNearbyCollidables(center, cellSearchRadius)) {
+        if (!other) continue;
+
+        Vector2 penetration;
+        if (Collision::TestShapes(
+            shape, pos,
+            other->GetCollisionBound(), other->GetPosition(),
+            penetration))
+        {
+            results.push_back(other);
+        }
+    }
+    return results;
+}
+
 //check if entity collides with anything. Act if they do
 bool Grid::ResolveCollisions(Entity* entity) {
 
