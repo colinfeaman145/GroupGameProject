@@ -7,8 +7,8 @@
 
 X X X N X X X
 X F F F F F X 
+X F L F F F X
 X F F F F F X
 X F F F F F X
-X F F F F F X
-X F F F F F X
+X O F F F F X
 X X X X X X X

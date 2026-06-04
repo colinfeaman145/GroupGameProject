@@ -26,6 +26,15 @@ W = West entrance
 
 T = Treasure
 
+J = Jar
+C - Scull
+M = Magic Table
+A = Magic Table 1
+V = Magic Table 2
+I = Magic Table 3
+L = Small Table
+R = Tree 1
+O = Tree 2
 
 
 

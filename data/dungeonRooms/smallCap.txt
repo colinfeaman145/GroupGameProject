@@ -8,5 +8,5 @@
 X X N X X
 X F F F X
 X F F F X
-X F F F X
+X F F O X
 X X X X X
