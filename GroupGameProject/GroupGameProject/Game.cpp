@@ -9,6 +9,8 @@
 #include "Camera.hpp"
 #include "GameOverScene.hpp"
 #include "Player.hpp"
+#include "MainMenuScene.hpp"
+#include "InstructionsScene.hpp"
 /*
 CALL PIPELINE
 Main makes game
@@ -62,17 +64,29 @@ bool Game::Initialize() {
     splash->Initialize();
     scenes[0] = splash;
 
-    // game over scene
-    Scene* gameOver;
-    gameOver = new GameOverScene();
-    gameOver->Initialize();
-    scenes[1] = gameOver;
+    // main menu scene
+    Scene* mainMenu;
+    mainMenu = new MainMenuScene();
+    mainMenu->Initialize();
+    scenes[1] = mainMenu;
+
+    // instructions scene
+    Scene* Instructions;
+    Instructions = new InstructionsScene();
+    Instructions->Initialize();
+    scenes[2] = Instructions;
 
     // testing area
     Scene* game;
     game = new TestingAreaScene();
     game->Initialize();
-    scenes[9] = game;
+    scenes[3] = game;
+
+    // game over scene
+    Scene* gameOver;
+    gameOver = new GameOverScene();
+    gameOver->Initialize();
+    scenes[4] = gameOver;
 
     return true;
 }
@@ -108,11 +122,36 @@ void Game::Process(float deltaTime) {
 
    scenes[currentScene]->Process(deltaTime);
 
-   if (static_cast<SplashScreens*>(scenes[currentScene])->IsDone() == true)//checks if the splash screens are done then changes the scene
+   if (currentScene == 0 && static_cast<SplashScreens*>(scenes[currentScene])->IsDone() == true)//checks if the splash screens are done then changes the scene
    {
-       ChangeScene(9);
+       ChangeScene(1);
    }
-   if (currentScene == 9) {
+
+   if (currentScene == 1) //checks if current scene is in main menu scene first
+   {
+       if (static_cast<MainMenuScene*>(scenes[currentScene])->StartPressed() == true)
+       {
+           ChangeScene(3);
+       }
+       if (static_cast<MainMenuScene*>(scenes[currentScene])->InstructionsPressed() == true)
+       {
+           static_cast<MainMenuScene*>(scenes[1])->InstructionsPressedFalse();//change it back to false so that the player can repeatedly go to the instructions
+           ChangeScene(2);
+       }
+       if (static_cast<MainMenuScene*>(scenes[currentScene])->QuitPressed() == true)
+       {
+           Quit();
+       }
+   }
+   
+   if (currentScene == 2 && static_cast<InstructionsScene*>(scenes[currentScene])->BackPressed() == true)
+   {
+       static_cast<InstructionsScene*>(scenes[2])->BackPressedFalse();
+       ChangeScene(1);
+   }
+
+   if (currentScene == 3) //checks if current scene is in testing area scene first
+   {
        auto testingArea = static_cast<TestingAreaScene*>(scenes[currentScene]);
        Player* player = testingArea->GetPlayer();
        
@@ -136,21 +175,26 @@ void Game::Process(float deltaTime) {
            }
            int coins = player->GetItemCount(3);
 
-           static_cast<GameOverScene*>(scenes[1])->SetStats(mins, secs, stages, items, coins);
-           static_cast<GameOverScene*>(scenes[1])->RestartPressedFalse();
-           ChangeScene(1);
+           static_cast<GameOverScene*>(scenes[4])->SetStats(mins, secs, stages, items, coins);
+           ChangeScene(4);
        }
    }
-   if (currentScene == 1 && static_cast<GameOverScene*>(scenes[currentScene])->RestartPressed() == true)
+
+   if (currentScene == 4) //checks if current scene is in game over scene first
    {
-       auto testingArea = static_cast<TestingAreaScene*>(scenes[9]);
-       testingArea->Initialize();
-       ChangeScene(9);
+       if (static_cast<GameOverScene*>(scenes[currentScene])->RestartPressed() == true)
+       {
+           static_cast<GameOverScene*>(scenes[4])->RestartPressedFalse();
+           auto testingArea = static_cast<TestingAreaScene*>(scenes[3]);
+           testingArea->Initialize();
+           ChangeScene(3);
+       }
+       if (static_cast<GameOverScene*>(scenes[currentScene])->QuitPressed() == true)
+       {
+           Quit();
+       }
    }
-   if (currentScene == 1 && static_cast<GameOverScene*>(scenes[currentScene])->QuitPressed() == true)
-   {
-       Quit();
-   }
+   
 
 }
 
