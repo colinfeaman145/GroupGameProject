@@ -5,6 +5,7 @@
 #include "Player.hpp"
 #include "EnemyId_2.hpp"
 #include "EnemyId_3.hpp"
+#include "EnemyId_4.hpp"
 
 EnemySpawner::EnemySpawner() :
 	maxEnemyCount(0),
@@ -96,6 +97,12 @@ Entity* EnemySpawner::CreateEntityFromJson(json data) {
 	}
 	if (data["id"] == 3) {
 		newEntity = new EnemyId_3();
+		if (auto entity = dynamic_cast<Entity*>(newEntity)) {
+			entity->data = data;
+		}
+	}
+	if (data["id"] == 4) {
+		newEntity = new EnemyId_4();
 		if (auto entity = dynamic_cast<Entity*>(newEntity)) {
 			entity->data = data;
 		}

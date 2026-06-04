@@ -28,6 +28,7 @@ public:
 	virtual void Process(float deltaTime) override;
 	virtual void HandleCollision(Collidable* other, Vector2 penetration) override;
 	virtual void OnStuck() override;
+	bool IsTargetInAttackRange();
 
 
 

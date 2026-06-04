@@ -29,7 +29,6 @@ void AI::Process(float deltaTime) {
     currentRetargetTime -= deltaTime;
     adjustCourseTimer -= deltaTime;
     framesSinceLastHone++;
-    isChasing = true;
 
     if (framesSinceLastHone >= 5) {//if walking
         Hone(); //move towards target
@@ -49,8 +48,6 @@ void AI::Draw(Renderer* renderer) {
     Attackable::Draw(renderer);
 }
 
-
-
 void AI::SetTarget(Collidable* c) {
     if (target) {
         auto& vec = target->targetedBy;
@@ -66,10 +63,6 @@ void AI::Hone() {
 
     if (target == nullptr) return;
     if (!isChasing) return;
-
-    GridCoord playerCell = context.grid->WorldToGrid(target->GetPosition());
-    context.grid->CleanupFlowFields(playerCell);
-
 
     GridCoord myCell = context.grid->WorldToGrid(GetPosition());
     GridCoord targetCoord = context.grid->WorldToGrid(target->GetPosition());

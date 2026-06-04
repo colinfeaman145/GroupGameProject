@@ -11,6 +11,7 @@ Enemy::~Enemy() = default;
 bool Enemy::Initialize(Vector2 pos, Sprite* spr) {
 
 	LoadEntityDataFromJson(data);
+	targetRadius = data["params"]["targetRadius"].get<int>();
     // the idle animation is always the base animation
     Attackable::Initialize(pos, idleAnimation);
     collideType = CollidableType::ENEMY;
@@ -51,6 +52,15 @@ void Enemy::HandleCollision(Collidable* other, Vector2 penetration) {
 }
 
 void Enemy::OnStuck() {
+}
+
+bool Enemy::IsTargetInAttackRange() {
+	if (!target) return false;
+	if (auto attackableTarget = dynamic_cast<Attackable*>(target)) {
+		float distance = (attackableTarget->GetPosition() - GetPosition()).Length();
+		return distance <= targetRadius;
+	}
+
 }
 
 void Enemy::SetAttackCooldown(float atckCool) {

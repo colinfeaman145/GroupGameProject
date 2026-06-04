@@ -190,15 +190,6 @@ void Grid::SmoothFlowField(FlowField& field) {
     }
 }
 
-void Grid::CleanupFlowFields(GridCoord currentTargetCoord) {
-    for (auto it = flowFields.begin(); it != flowFields.end(); ) {
-        if (it->first.col != currentTargetCoord.col ||
-            it->first.row != currentTargetCoord.row)
-            it = flowFields.erase(it);
-        else
-            ++it;
-    }
-}
 
 //MADE BY AI
 void Grid::DebugDumpFlowField(GridCoord target, int centerCol, int centerRow, int radius) {

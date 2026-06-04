@@ -6,7 +6,6 @@
 
 bool EnemyId_3::Initialize(Vector2 pos, Sprite* spr) {
 	Enemy::Initialize(pos);
-	RecalculateTargetLocation();
 	return true;
 }
 
@@ -15,69 +14,95 @@ void EnemyId_3::Draw(Renderer* renderer) {
 }
 
 void EnemyId_3::Process(float deltaTime) {
-	Enemy::Process(deltaTime);
+    Enemy::Process(deltaTime);
 
+    if (attackCooldown > 0)
+        attackCooldown -= deltaTime;
 
-	HandleAttack();
-
-
-	sprite->SetFlip(velocity.x < 0);
-
-
-	if (attackCooldown > 0) {
-		attackCooldown -= deltaTime;
-	}
+    UpdateState();
+    sprite->SetFlip(velocity.x < 0);
 }
 
-void EnemyId_3::RecalculateTargetLocation() {
-	auto newYPos = GetRandomIntrBetween(0, context.grid->GetGridHeight() * context.grid->GetCellSize());
-	auto newXPos = GetRandomIntrBetween(0, context.grid->GetGridWidth() * context.grid->GetCellSize());
+void EnemyId_3::UpdateState() {
+    if (!IsAlive() || target == nullptr) return;
 
-	currentTargetPos = Vector2{ (float)newXPos, (float)newYPos }  ;
+    // dont interrupt attacking animation
+    if (currentState == EnemyState::ATTACKING && attackingAnimation->IsAnimating())
+        return;
 
-	velocity = (currentTargetPos - GetPosition()).Normalized() * m_pStats->GetFinalSpeed();
+    bool inRange = IsTargetInAttackRange();
+    bool onCooldown = attackCooldown > 0;
 
-}
+    EnemyState newState;
+    if (!inRange)
+        newState = EnemyState::APPROACHING;
+    else if (onCooldown)
+        newState = EnemyState::IDLE;
+    else
+        newState = EnemyState::ATTACKING;
 
-void EnemyId_3::HandleAttack() {
-	if (!IsAlive()) return;
-	if (attackCooldown > 0 ) {
-		// play moving animatin if attackanimation is finished - moving animatin should not be started every frame
-		if (attackingAnimation->IsAnimating() == false && movingAnimation->IsAnimating() == false) {
-			sprite = movingAnimation;
-			attackingAnimation->Pause();
-			movingAnimation->Restart();
-			movingAnimation->Animate();
-			RecalculateTargetLocation();
-		}
 
-		return;
-	}
 
-	
-	sprite = attackingAnimation;
-	movingAnimation->Pause();
-	attackingAnimation->Restart();
-	attackingAnimation->Animate();
-	attackingAnimation->SetLooping(false);
-	velocity = { 0,0 };
-
-	attackCooldown = 1.f / m_pStats->GetFinalAttackSpeed();
-
-	auto hitInfo = HitInfo{
-		.damageDealt = m_pStats ? m_pStats->GetFinalDamage() : 0,
-		.isCritical = false,
-		.isDodged = false
-	};
-	auto ctx = EventContext{
-		.source = this,
-		.targetPosition = target->GetPosition(),
-		.hitInfo = hitInfo
-	};
-
-	FireEvent(EventType::OnAttack, ctx);
+	printf("EnemyId_3 State: %d - %d\n", newState, isChasing);
+    if (newState != currentState)
+        EnterState(newState);
 }
 
 void EnemyId_3::HandleCollision(Collidable* other, Vector2 penetration) {
 	Enemy::HandleCollision(other, penetration);
+}
+
+void EnemyId_3::EnterState(EnemyState newState) {
+    currentState = newState;
+
+    switch (newState) {
+
+    case EnemyState::APPROACHING:
+        sprite = movingAnimation;
+        movingAnimation->Restart();
+        movingAnimation->Animate();
+        idleAnimation->Pause();
+        attackingAnimation->Pause();
+        isChasing = true;
+        break;
+
+    case EnemyState::IDLE:
+        sprite = idleAnimation;  // or an idle animation if you have one
+        idleAnimation->Restart();
+		idleAnimation->Animate();
+        movingAnimation->Pause();
+        attackingAnimation->Pause();
+        velocity = { 0, 0 };
+        isChasing = false;
+        break;
+
+    case EnemyState::ATTACKING:
+        sprite = attackingAnimation;
+        attackingAnimation->Restart();
+        attackingAnimation->Animate();
+        attackingAnimation->SetLooping(false);
+		idleAnimation->Pause();
+        movingAnimation->Pause();
+        velocity = { 0, 0 };
+        isChasing = false;
+        DoAttack();
+        break;
+    }
+}
+
+void EnemyId_3::DoAttack() {
+    attackCooldown = 1.f / m_pStats->GetFinalAttackSpeed();
+
+    auto hitInfo = HitInfo{
+        .damageDealt = m_pStats ? m_pStats->GetFinalDamage() : 0,
+        .isCritical = false,
+        .isDodged = false
+    };
+    auto ctx = EventContext{
+        .source = this,
+        .targetPosition = target->GetPosition(),
+        .hitInfo = hitInfo
+    };
+
+    FireEvent(EventType::OnAttack, ctx);
 }

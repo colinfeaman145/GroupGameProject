@@ -147,6 +147,7 @@
     <ClCompile Include="DifficultyCalculator.cpp" />
     <ClCompile Include="DifficultyOverlay.cpp" />
     <ClCompile Include="EnemyId_3.cpp" />
+    <ClCompile Include="EnemyId_4.cpp" />
     <ClCompile Include="EnemySpawner.cpp" />
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="DifficultyCalculator.hpp" />
     <ClInclude Include="DifficultyOverlay.hpp" />
     <ClInclude Include="EnemyId_3.hpp" />
+    <ClInclude Include="EnemyId_4.hpp" />
     <ClInclude Include="EnemySpawner.hpp" />
     <ClInclude Include="Explosion.hpp" />
     <ClInclude Include="GameOverScene.hpp" />

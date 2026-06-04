@@ -7,11 +7,11 @@ public:
 	bool Initialize(Vector2 pos, Sprite* spr = nullptr) override;
 	void Draw(Renderer* renderer) override;
 	void Process(float deltaTime) override;
+	void UpdateState();
 	void HandleCollision(Collidable* other, Vector2 penetration) override;
-	void RecalculateTargetLocation();
+	void EnterState(EnemyState newState);
 
-private:
-	void HandleAttack();
+	void DoAttack();
 
 private:
 	Vector2 currentTargetPos;
