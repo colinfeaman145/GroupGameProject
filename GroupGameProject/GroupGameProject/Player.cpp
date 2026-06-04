@@ -47,7 +47,6 @@ void Player::Process(float deltaTime) {
 	if (attackCooldown > 0) {
 		attackCooldown -= deltaTime;
 	}
-	context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
 }
 
 void Player::Draw(Renderer* renderer) {

@@ -6,7 +6,7 @@
 #include "StatSheet.hpp"
 
 
-void EnemyId_2::Initialize(Vector2 pos) {
+bool EnemyId_2::Initialize(Vector2 pos, Sprite* spr) {
 	Enemy::Initialize(pos);
 	ChangeState(EnemyState::IDLE);
 	moveSpeed = m_pStats->GetFinalSpeed();
@@ -14,6 +14,7 @@ void EnemyId_2::Initialize(Vector2 pos) {
 	deceleration = data["params"]["deceleration"];
 	maxSpeed = data["params"]["maxSpeed"];
 	targetRadius = data["params"]["targetRadius"];
+	return true;
 }
 
 void EnemyId_2::Process(float deltaTime) {
@@ -22,9 +23,11 @@ void EnemyId_2::Process(float deltaTime) {
 	
 	if ((target->GetPosition() - GetPosition()).Length() > targetRadius) {
 		HandleRecoverAnimation();
+		isChasing = false;
 	}
 	else {
 		HandleAttackAnimation();
+		isChasing = true;
 	}
 }
 
@@ -37,7 +40,6 @@ void EnemyId_2::HandleAttackAnimation() {
 		if (target->GetPosition().x < GetPosition().x) sprite->SetFlip(true);
 		else sprite->SetFlip(false);
 	}
-
 }
 
 void EnemyId_2::HandleCollision(Collidable* other, Vector2 penetration) {

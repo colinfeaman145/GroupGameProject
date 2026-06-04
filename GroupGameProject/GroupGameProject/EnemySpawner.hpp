@@ -1,6 +1,7 @@
 #pragma once
 #include "EntityRegistry.hpp"
 #include <vector>
+
 class GridCell;
 class Entity;
 class Enemy;
@@ -18,6 +19,7 @@ public:
 	void SpawnEnemy(EntityDef enemy, SpawnLocation location);
 	void SpawnInEnemiesUntilMax();
 	void SpawnInBossesUntilMax();
+	static Entity* CreateEntityFromJson(json data);
 
 private:
 	Entity* currentTarget;

@@ -23,7 +23,7 @@ public:
 	~Enemy();
 
 	// lifecycle functions
-	virtual void Initialize(Vector2 pos);
+	virtual bool Initialize(Vector2 pos, Sprite* = nullptr) override;
 	virtual void Draw(Renderer* renderer) override;
 	virtual void Process(float deltaTime) override;
 	virtual void HandleCollision(Collidable* other, Vector2 penetration) override;

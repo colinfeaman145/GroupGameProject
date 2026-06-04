@@ -1,5 +1,6 @@
 {
   "1": {
+    "id":1,
     "stats": {
       "baseHealth": 100,
       "bonusHealth": 0,
@@ -84,6 +85,7 @@
     }
   },
   "2": {
+    "id":2,
     "stats": {
       "baseHealth": 100,
       "bonusHealth": 0,
@@ -160,6 +162,7 @@
     }
   },
   "3": {
+    "id":3,
     "stats": {
       "baseHealth": 100,
       "bonusHealth": 0,

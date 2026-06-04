@@ -4,6 +4,23 @@
 #include "GameContext.hpp"
 #include "StatSheet.hpp"
 
+
+AI::AI() : 
+    target(nullptr),
+    adjustCourseTimer(0),
+    currentRetargetTime(0),
+    retargetCooldown(2.0f),
+    framesSinceLastHone(0), 
+    targetRadius(100), 
+    previousPosition(0, 0), 
+    stuckTime(0), 
+    isChasing(false) {}
+
+bool AI::Initialize(Vector2 pos, Sprite* spr) {
+	Attackable::Initialize(pos, spr);
+	return true;
+}
+
 void AI::Process(float deltaTime) {
     if (!IsAlive()) return;
 
@@ -49,6 +66,10 @@ void AI::Hone() {
 
     if (target == nullptr) return;
     if (!isChasing) return;
+
+    GridCoord playerCell = context.grid->WorldToGrid(target->GetPosition());
+    context.grid->CleanupFlowFields(playerCell);
+
 
     GridCoord myCell = context.grid->WorldToGrid(GetPosition());
     GridCoord targetCoord = context.grid->WorldToGrid(target->GetPosition());

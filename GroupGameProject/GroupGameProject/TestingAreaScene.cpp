@@ -43,9 +43,12 @@ void TestingAreaScene::ResetGameState() {
         delete player;
         player = nullptr;
 	}
-	player = Entity::CreateEntityFromJson<Player>(context.er->Get(1).data);
-	player->Initialize({ 0,0 });
-	GenerateNewMap(player);
+	auto playerEntity = EnemySpawner::CreateEntityFromJson(context.er->Get(1).data);
+	if (auto p = dynamic_cast<Player*>(playerEntity)) {
+		player = p;
+	    player->Initialize({ 0,0 });
+	    GenerateNewMap(player);
+	}
 
     context.timer->Reset();
 }

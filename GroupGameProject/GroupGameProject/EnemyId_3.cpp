@@ -4,9 +4,10 @@
 #include "GameContext.hpp"
 #include "InlineHelper.hpp"
 
-void EnemyId_3::Initialize(Vector2 pos) {
+bool EnemyId_3::Initialize(Vector2 pos, Sprite* spr) {
 	Enemy::Initialize(pos);
 	RecalculateTargetLocation();
+	return true;
 }
 
 void EnemyId_3::Draw(Renderer* renderer) {
@@ -22,10 +23,6 @@ void EnemyId_3::Process(float deltaTime) {
 
 	sprite->SetFlip(velocity.x < 0);
 
-
-	if (GetPosition().IsNear(currentTargetPos, GetRadius())) {
-		RecalculateTargetLocation();
-	}
 
 	if (attackCooldown > 0) {
 		attackCooldown -= deltaTime;

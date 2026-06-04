@@ -6,7 +6,7 @@
 
 class EnemyId_2 : public Enemy {
 public:
-	virtual void Initialize(Vector2 pos) override;
+	bool Initialize(Vector2 pos, Sprite* spr = nullptr) override;
 	void Process(float deltaTime) override;
 	void HandleCollision(Collidable* other, Vector2 penetration) override;
 	void HandleAttackAnimation();

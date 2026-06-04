@@ -8,13 +8,14 @@
 Enemy::Enemy() = default;
 Enemy::~Enemy() = default;
 
-void Enemy::Initialize(Vector2 pos) {
+bool Enemy::Initialize(Vector2 pos, Sprite* spr) {
 
 	LoadEntityDataFromJson(data);
     // the idle animation is always the base animation
     Attackable::Initialize(pos, idleAnimation);
     collideType = CollidableType::ENEMY;
     idleAnimation->Animate();
+    return true;
 }
 
 void Enemy::Draw(Renderer* renderer) {

@@ -56,6 +56,7 @@ void GridCell::Process(float deltaTime, bool isRendered) {
         e->Process(deltaTime);
         context.grid->UpdateEnemyOccupancy(e);
     }
+
     for (Entity* e : entities) {
         if (e->hasBeenProcessed) continue;
         e->Process(deltaTime);

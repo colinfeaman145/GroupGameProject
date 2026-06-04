@@ -51,6 +51,7 @@ public:
     void InvalidateFlowFieldsNear(GridCoord changedAt, int radius);
     void InvalidateAllFlowFields();
     void DebugDumpFlowField(GridCoord target, int centerCol, int centerRow, int radius);
+    void CleanupFlowFields(GridCoord currentTargetCoord);
 
     //Enemies
     void AddEnemy(Enemy* enemy);
