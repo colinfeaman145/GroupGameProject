@@ -20,6 +20,7 @@ public:
     virtual void SetPosition(int x, int y);
     void SetPosition(Vector2 vec);
     void SetRotation(float angle);
+    void Rotate(float amount);
     void SetColor(Color c);
     void SetAlpha(float a);
     void SetDrawSize(int w, int h);
@@ -36,6 +37,8 @@ public:
     Color GetColor() const { return color; }
     float GetAlpha() const { return color.a; }
 
+    void Spin(float time);
+
 protected:
     SDL_Texture* texture;
     Color color;
@@ -48,6 +51,8 @@ protected:
     SDL_Rect dstRect;
 
     bool isFlashing;//on hit
+    float spinDuration;
+    float spinTimer;
 
 };
 
