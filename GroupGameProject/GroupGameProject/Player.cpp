@@ -1,6 +1,7 @@
 #include "Player.hpp"
 #include <SDL.h>
 #include "AnimatedSprite.hpp"
+#include "InlineHelper.hpp"
 #include "GameContext.hpp"
 #include "StatSheet.hpp"
 #include "PercentageBar.hpp"
@@ -27,10 +28,14 @@ void Player::Initialize(Vector2 pos) {
 		playerHud->Initialize();
 	}
 
+	int playerWidth = sprite->GetWidth() * 0.3;
+	int playerHeight = sprite->GetHeight() * 0.45;
+	SetCollisionBound(CollisionShape::MakeAABB(playerWidth, playerHeight, Vector2(-playerWidth / 2, 0)));
 	collideType = CollidableType::PLAYER;
 	dodgeCooldown = 1;
 	dodgeDuration = 0.5;
 	dodgeDistance = 2;
+	walkSoundTimer = 0.0f;
 
 	idleAnimation->Animate();
 }
@@ -50,6 +55,28 @@ void Player::Process(float deltaTime) {
 
 	if (attackCooldown > 0) {
 		attackCooldown -= deltaTime;
+	}
+
+	if (velocity.x != 0 || velocity.y != 0) {
+		walkSoundTimer -= deltaTime;
+		if (walkSoundTimer <= 0) {
+			FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
+			FMOD_VECTOR vel = { 0,0,0 };
+			context.am->PlaySound("walking", "Footsteps", pos, vel, { 0.9f, 1.1f });			walkSoundTimer = 0.6f;
+		}
+	}
+	else {
+		walkSoundTimer = 0.6f;  // reset so first step plays immediately next time
+	}
+
+	context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
+
+	//refresh flow field
+	refreshFlowFieldTimer -= deltaTime;
+	if (refreshFlowFieldTimer <= 0.f) {
+		refreshFlowFieldTimer = 1.0f;
+		GridCoord myCoord = context.grid->WorldToGrid(GetPosition());
+		context.grid->InvalidateFlowFieldsNear(myCoord, 20);
 	}
 }
 
@@ -91,6 +118,10 @@ void Player::HandleMouseClick(float deltaTime) {
 			.targetPosition = mousePos,
 			.hitInfo = hitInfo
 		};
+
+		FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
+		FMOD_VECTOR vel = { 0,0,0 };
+		context.am->PlaySound("shoot_1", "SFX", pos, vel, { 0.85f, 1.15f });
 
 		// executes all onAttack item effects from the inventory
 		FireEvent(EventType::OnAttack, event);
@@ -163,6 +194,9 @@ void Player::HandleMovement() {
 		dodgeTimer = dodgeDuration;
 		dodgeCooldownTimer = dodgeCooldown;
 		dodging = true;
+		FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
+		FMOD_VECTOR vel = { 0,0,0 };
+		context.am->PlaySound("dash", "SFX", pos, vel, { 0.9f, 1.1f });
 
 		StatusEffect effect;
 		effect.type = StatusEffectType::Invincible;
@@ -176,12 +210,22 @@ void Player::HandleMovement() {
 }
 
 void Player::HandleCollision(Collidable* other, Vector2 penetration) {
+	Attackable::HandleCollision(other, penetration);
 	//handle collisions here
 	auto prop = dynamic_cast<Prop*>(other);
 	if (prop != nullptr && prop->name == "Door") {
 		if (m_inventory->Count(8) == 0) return;//need at least 1 key to open door
 		context.dc->StageCompleted();
 		m_inventory->Remove(8, 1);//remove 1 key
+	}
+}
+
+void Player::AddItem(ItemID id, int count) {
+	Attackable::AddItem(id, count);
+	if (!playerHud) return;  
+	auto def = context.ir->Get(id);
+	if (def.data.contains("name") && def.data.contains("description")) {
+		playerHud->PushPopup(def.data["name"], def.data["description"]);
 	}
 }
 

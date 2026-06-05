@@ -5,6 +5,7 @@
 #include "GridCoord.hpp"
 #include "Direction.hpp"
 #include "Collidable.hpp"
+#include "Explosion.hpp"
 
 class Sprite;
 class Enemy;
@@ -34,16 +35,13 @@ public:
     void AddEnemy(Enemy* enemy);
     void RemoveEnemy(Enemy* enemy);
     void ClearEnemies();
+    void ClearEntities() { entities.clear(); }
     const vector<Enemy*>& GetEnemies() const { return enemies; }
 
     //walls
-    bool PlaceWall(Direction dir);
-    bool RemoveWall(Direction dir);
+    bool PlaceWall(Sprite* spr);
+    bool RemoveWall();
     bool IsWall() const;
-
-    ////drops
-    //void AddDrop(Resource* drop);
-    //void RemoveDrop(Resource* drop);
 
     //other entities
     void AddOther(Entity* p);
@@ -55,6 +53,8 @@ private:
     Sprite* sprite;
     vector <Entity*> entities;
     vector<Enemy*> enemies;
+    vector<Explosion*> explosions;
+    //vector<Resource*> drops;
     vector<Entity*> pendingEntities;
     bool isWall;
 };

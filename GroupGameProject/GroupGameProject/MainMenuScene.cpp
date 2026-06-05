@@ -1,6 +1,8 @@
 #include "MainMenuScene.hpp"
 #include "Sprite.hpp"
 #include "Camera.hpp"
+#include "GameContext.hpp"
+#include "fmod.hpp"
 
 MainMenuScene::MainMenuScene()
     : titleText(nullptr)
@@ -19,6 +21,7 @@ MainMenuScene::~MainMenuScene()
 
 bool MainMenuScene::Initialize()
 {
+
     const string fontPath = "../../assets/fonts/pixelpurl/PixelPurl.ttf";
 
     titleText = new Text();
@@ -26,15 +29,21 @@ bool MainMenuScene::Initialize()
     titleText->SetPosition((WIDTH - titleText->GetWidth()) / 2, 80);
     UI.push_back(titleText);
 
-    startButton = new Button(440, 500, 220, 70, { 40, 40, 40, 255 }, { 80, 80, 80, 255 }, { 255, 255, 255, 255 }, { 255, 255, 255, 255 }, 4, [this]() { startPressed = true; }, 1.05f);
+    startButton = new Button(440, 500, 220, 70, { 40, 40, 40, 255 }, { 80, 80, 80, 255 }, { 255, 255, 255, 255 }, { 255, 255, 255, 255 }, 4, [this]() { FMOD_VECTOR pos = { 0,0,0 }; FMOD_VECTOR vel = { 0,0,0 }; 
+    context.am->PlaySound("select", "UI", pos, vel, { 1.0f, 1.0f });
+    startPressed = true; }, 1.05f);  
     startButton->SetPosition((WIDTH - startButton->GetWidth()) / 2, 400);
     UI.push_back(startButton);
 
-    instructionsButton = new Button(440, 500, 220, 70, { 40, 40, 40, 255 }, { 80, 80, 80, 255 }, { 255, 255, 255, 255 }, { 255, 255, 255, 255 }, 4, [this]() { instructionsPressed = true; }, 1.05f);
+    instructionsButton = new Button(440, 500, 220, 70, { 40, 40, 40, 255 }, { 80, 80, 80, 255 }, { 255, 255, 255, 255 }, { 255, 255, 255, 255 }, 4, [this]() { FMOD_VECTOR pos = { 0,0,0 }; FMOD_VECTOR vel = { 0,0,0 };
+    context.am->PlaySound("select", "UI", pos, vel, { 1.0f, 1.0f }); 
+    instructionsPressed = true; }, 1.05f);   
     instructionsButton->SetPosition((WIDTH - instructionsButton->GetWidth()) / 2, 490);
     UI.push_back(instructionsButton);
 
-    quitButton = new Button(440, 590, 220, 70, { 40, 40, 40, 255 }, { 80, 80, 80, 255 }, { 255, 255, 255, 255 }, { 255, 255, 255, 255 }, 4, [this]() { quitPressed = true; }, 1.05f);
+    quitButton = new Button(440, 590, 220, 70, { 40, 40, 40, 255 }, { 80, 80, 80, 255 }, { 255, 255, 255, 255 }, { 255, 255, 255, 255 }, 4, [this]() { FMOD_VECTOR pos = { 0,0,0 }; FMOD_VECTOR vel = { 0,0,0 }; 
+    context.am->PlaySound("select", "UI", pos, vel, { 1.0f, 1.0f }); 
+    quitPressed = true; }, 1.05f);   
     quitButton->SetPosition((WIDTH - quitButton->GetWidth()) / 2, 580);
     UI.push_back(quitButton);
 

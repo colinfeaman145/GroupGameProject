@@ -49,6 +49,10 @@ void Item::HandleCollision(Collidable* other, Vector2 penetration) {
 
 	if (auto entity = dynamic_cast<Attackable*>(other)) {
 		entity->AddItem(id, 1);
+		FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
+		FMOD_VECTOR vel = { 0,0,0 };
+		context.am->PlaySound("coin_pickup", "SFX", pos, vel, { 0.9f, 1.1f });
+		context.grid->RemoveOther(this);
 		isToBeDeleted = true;
 	}
 

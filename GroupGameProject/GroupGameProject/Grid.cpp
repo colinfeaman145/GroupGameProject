@@ -83,7 +83,6 @@ void Grid::Draw(Renderer* renderer) {
 void Grid::Process(float deltaTime) {
 
     SDL_Rect vp = context.renderer->cam->GetViewportWorldRect();
-    uniform_int_distribution<int> startNatureGen(1, 80000000);//happens more often than youd think(every ~20 seconds)
 
     int minCol = max(0, (int)floor((float)vp.x / cellSize) - RENDER_DISTANCE);
     int maxCol = min(gridWidth - 1, (int)ceil((float)(vp.x + vp.w) / cellSize) + RENDER_DISTANCE);
@@ -220,7 +219,6 @@ bool Grid::ResolveCollisions(Entity* entity) {
     for (Collidable* other : candidates) {
         if (!other) continue;//if destroyed
         if (other == entity) continue;//if self
-        if (!other->CanCollide() || !entity->CanCollide()) continue;
 
         Vector2 penetration;
         if (Collision::TestShapes(
@@ -270,4 +268,15 @@ Attackable* Grid::GetRandomEnemyInRange(Entity* entity, int searchRadius) {
 		}
 	}
 	return targetsInRange.empty() ? nullptr : targetsInRange[rand() % targetsInRange.size()];
+}
+
+void Grid::ClearAllEntities() {
+    for (int row = 0; row < gridHeight; row++) {
+        for (int col = 0; col < gridWidth; col++) {
+            if (cells[row][col]) {
+                cells[row][col]->ClearEnemies();
+                cells[row][col]->ClearEntities();
+            }
+        }
+    }
 }

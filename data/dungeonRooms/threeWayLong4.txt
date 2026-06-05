@@ -6,9 +6,9 @@
 @required=false
 
 X X X X X X X X X N X X X X
+X F J F F F F F F F F F V X
 X F F F F F F F F F F F F X
-X F F F F F G F F F F F F X
-W F F F F F F F F F F F F X
-X F F G F F F F F F F F F X
-X F F F F F F F F F F F F X
+W F F F F F F F F F R F F X
+X F F F F C F F F F F F F X
+X F F F F F F L F F F F F X
 X X X X S X X X X X X X X X 

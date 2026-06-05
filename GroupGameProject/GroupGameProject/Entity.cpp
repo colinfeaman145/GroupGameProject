@@ -72,10 +72,11 @@ void Entity::Draw(Renderer* renderer) {
     }
    
     if (DEBUGMODE) {
+
         if (canCollide)
-            Collidable::Draw(renderer, { 255, 0, 0 });
+            Collidable::Draw(renderer, { 255, 0, 0, 255 });
         else
-            Collidable::Draw(renderer, { 0, 255, 0 });
+            Collidable::Draw(renderer, { 0, 255, 0, 255});
     }
 }
 
@@ -137,4 +138,10 @@ Visibility Entity::IsVisible() {
 
 void Entity::SetOccupancy(GridOccupancy occ) {
     occupancy = occ;
+}
+
+void Entity::HandleCollision(Collidable* other, Vector2 penetration) {
+    if (other->CanCollide()) {
+        position = GetCorner() + penetration;
+    }
 }

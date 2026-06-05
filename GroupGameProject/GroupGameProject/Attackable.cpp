@@ -54,6 +54,7 @@ bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 	Entity::Initialize(pos, spr);
 	context.dc->RegisterOnLevelUp([this] {this->AddItem(7,1);});
 	m_inventory->RegisterCallback([this]() { this->RecalculateStats();});
+	canHealTimer = 0;
 	
 	// healthbar setup
 	Vector2 size = sprite->GetDrawSize();
@@ -63,6 +64,7 @@ bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 		healthBar->SetOffset(-(size.x * 0.05), (size.y * 0.2));
 	}
 
+	SetEffectRadiusBound(radius * m_pStats->effectRadiusScaler);
 
 	SetEffectRadiusBound(radius);
 
@@ -78,15 +80,25 @@ void Attackable::Process(float deltaTime) {
 	}
 
 	Entity::Process(deltaTime);
+	for (auto& [itemID, stacks] : m_inventory->All()) { //tick timer for each item
+		ItemDef def = context.ir->Get(itemID);
+		if (def.effect && def.effect->internalTimer > 0) {
+			def.effect->internalTimer -= deltaTime;
+		}
+	}
 
-	healthBar->SetPosition(position.x, position.y);
+	EventContext ctx;
+	ctx.source = this;
+	FireEvent(EventType::OnStep, ctx);
+	TickStatusEffect(deltaTime);
+
+	if(canHealTimer > 0) canHealTimer -= deltaTime;
+	else TickRegeneration(deltaTime);
 
 	if (flashDuration > 0) flashDuration -= deltaTime;
 	else SetFlash(false);
 
-	TickStatusEffect(deltaTime);
-	TickRegeneration(deltaTime);
-
+	healthBar->SetPosition(position.x, position.y);
 	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats ? m_pStats->GetFinalHealth() : m_pStats->GetCurrentHealth());
 
 }
@@ -95,7 +107,7 @@ void Attackable::Draw(Renderer* renderer) {
 
 	if (!IsAlive() && !IsDying()) return;
 	Entity::Draw(renderer);
-	healthBar->Draw(renderer);
+	if(GetHealth() < GetMaxHealth()) healthBar->Draw(renderer);
 }
 
 void Attackable::TickRegeneration(float deltaTime) {
@@ -103,6 +115,9 @@ void Attackable::TickRegeneration(float deltaTime) {
 	if (m_pStats->regernation <= 0) return;
 
 	auto healTickInSeconds = 0.5f;
+	m_fLastHealTick += deltaTime;
+	if (m_fLastHealTick < healTickInSeconds) return;// tick every half a second
+
 	auto healAmount = m_pStats->regernation * healTickInSeconds; // because the tick is every 0.5 seconds
 
 	HitInfo info = {
@@ -116,11 +131,14 @@ void Attackable::TickRegeneration(float deltaTime) {
 		.hitInfo = info
 	};
 
-	m_fLastHealTick += deltaTime;
-	if (m_fLastHealTick < healTickInSeconds) return;// tick every half a second
+
 	m_fLastHealTick = 0;
 	ApplyHeal(ctx);
 
+}
+
+float Attackable::GetSpeed() {
+	return m_pStats->GetFinalSpeed();
 }
 
 int Attackable::GetHealth() {
@@ -169,7 +187,11 @@ void Attackable::ApplyDamage(EventContext& ctx) {
 	}
 
 	SetFlash(true);
+	FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
+	FMOD_VECTOR vel = { 0,0,0 };
+	context.am->PlaySound("hit", "SFX", pos, vel, { 0.9f, 1.1f });
 	healthBar->SetValues(m_pStats->GetCurrentHealth(), m_pStats->GetFinalHealth());
+	canHealTimer = m_pStats->regenerateTime;
 
 	if ((int)m_pStats->GetCurrentHealth() <= 0 && IsAlive()) {
 		FireEvent(EventType::OnDeath, ctx);
@@ -285,6 +307,9 @@ void Attackable::SetDead() {
 	// already dead
 	if (!isAlive) return;
 	isAlive = false;
+	FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
+	FMOD_VECTOR vel = { 0,0,0 };
+	context.am->PlaySound("death", "SFX", pos, vel, { 0.85f, 1.15f });
 
     SetCanCollide(false);
 	m_itemSpawner->SpawnItems(GetPosition());
@@ -314,7 +339,19 @@ std::unordered_map<ItemID, int> Attackable::GetItems() {
 	return m_inventory->All();
 }
 
+vector<StatusEffect> Attackable::GetStatusEffects() {
+	return m_activeStatusEffects;
+}
+
 void Attackable::ApplyStatusEffect(StatusEffect effect) {
+	//only 1 instance of each effect, take the highest duration and strength
+	for (auto& existing : m_activeStatusEffects) {
+		if (existing.type != effect.type) continue;
+
+		existing.duration = max(existing.duration, effect.duration);
+		existing.strength = max(existing.strength, effect.strength);
+		return;
+	}
 	m_activeStatusEffects.push_back(effect);
 }
 
@@ -332,51 +369,62 @@ void Attackable::TickStatusEffect(float deltaTime) {
 		bool isOngoing = status.hasStarted && !justEnded;
 
 		// bleeding effect
-		if(status.type == StatusEffectType::Bleeding) {
+		if (status.type == StatusEffectType::Bleeding) {
 			if (justStarted) {
-				m_pStats->weakness *= 0.5;
+				m_pStats->weakness += 25;
+				m_pStats->damageMult *= 1.05;
 				status.hasStarted = true;
 			}
 			else if (justEnded) {
-				m_pStats->weakness /= 0.5;
+				m_pStats->weakness -= 25;
+				m_pStats->damageMult /= 1.05;
 			}
 		}
 
 		// burning effect
 		if (status.type == StatusEffectType::Burning) {
-			if (isOngoing && applyTick) {
-				ctx.hitInfo = { 1, false, false };
+			if (justStarted) {
+				m_pStats->speedMult *= 1.25;
+			}
+			else if (isOngoing && applyTick) {
+				ctx.hitInfo = { 1 + status.strength, false, false };
 				ctx.source = status.source;
 				ctx.target = this;
 				status.duration -= deltaTime;
 				ApplyDamage(ctx);
 			}
+			else if (justEnded) {
+				m_pStats->speedMult /= 1.25;
+			}
 		}
+
 		// damage boost effect
 		if (status.type == StatusEffectType::DamageBoost) {
-			
-			ctx.source = status.source;
-			ctx.target = this;
-			ctx.hitInfo = { 0, false, false };
-			m_pStats->bonusDamage += m_pStats->GetFinalDamage() * status.currentValue;
-			status.currentValue = 0; // only apply at first tick - lasts for whole duration
-			status.duration -= deltaTime;
+			if (justStarted) {
+				m_pStats->damageMult += status.strength;
+				status.hasStarted = true;
+			}
+			else if (justEnded) {
+				m_pStats->damageMult -= status.strength;
+			}
 		}
+
 		// attackspeed boost effect
 		if (status.type == StatusEffectType::AttackSpeedBoost) {
-			
-			ctx.source = status.source;
-			ctx.target = this;
-			ctx.hitInfo = { 0, false, false };
-			m_pStats->bonusAttackSpeed += m_pStats->baseAttackSpeed * status.currentValue; 
-			status.currentValue = 0;
-			status.duration -= deltaTime;
+			if (justStarted) {
+				m_pStats->attackSpeedMult += status.strength;
+				status.hasStarted = true;
+			}
+			else if (justEnded) {
+				m_pStats->attackSpeedMult -= status.strength;
+			}
 		}
 
 		// poison effect
 		if (status.type == StatusEffectType::Poisoning) {
 			if (justStarted) {
-				m_pStats->weakness *= 0.8;
+				m_pStats->weakness += 15;
+				m_pStats->baseDamage *= 0.75;
 				status.hasStarted = true;
 			}
 			else if (isOngoing && applyTick) {
@@ -387,13 +435,14 @@ void Attackable::TickStatusEffect(float deltaTime) {
 				ApplyDamage(ctx);
 			}
 			else if (justEnded) {
-				m_pStats->weakness /= 0.8;
+				m_pStats->weakness -= 15;
+				m_pStats->baseDamage /= 0.75;
 			}
 		}
 
 		// invincible effect
 		if (status.type == StatusEffectType::Invincible) {
-			if (justStarted){
+			if (justStarted) {
 				ctx.hitInfo = { 0, false, false };
 				m_pStats->armor *= 10000000;
 			}
@@ -406,13 +455,13 @@ void Attackable::TickStatusEffect(float deltaTime) {
 		if (status.type == StatusEffectType::Freezing) {
 			if (justStarted) {
 				m_pStats->speedMult *= 0.25;
-				m_pStats->weakness *= 0.75;
+				m_pStats->weakness += 5;
 				SetFlash(true);
 				status.hasStarted = true;
 			}
 			else if (justEnded) {
 				m_pStats->speedMult /= 0.25;
-				m_pStats->weakness /= 0.75;
+				m_pStats->weakness -= 5;
 				SetFlash(false);
 			}
 		}
@@ -420,22 +469,40 @@ void Attackable::TickStatusEffect(float deltaTime) {
 		//speedBoost
 		if (status.type == StatusEffectType::SpeedBoost) {
 			if (justStarted) {
-				m_pStats->speedMult *= 2;
+				m_pStats->speedMult *= 1.0 + status.strength;
 				status.hasStarted = true;
 			}
 			else if (justEnded) {
-				m_pStats->speedMult /= 2;
+				m_pStats->speedMult /= 1.0 + status.strength;
 			}
 		}
 
 		//slowness
 		if (status.type == StatusEffectType::Slowness) {
 			if (justStarted) {
-				m_pStats->speedMult *= 0.35;
+				m_pStats->speedMult *= (1 / status.strength);
 				status.hasStarted = true;
 			}
 			else if (justEnded) {
-				m_pStats->speedMult /= 0.35;
+				m_pStats->speedMult /= (1 / status.strength);
+			}
+		}
+
+		//death mark
+		if (status.type == StatusEffectType::DeathMark) {
+			//hasStarted acts as a flag for whether the weakness is applied
+			int effectCount = GetUniqueStatusEffectCount();
+			if (effectCount >= 4 && status.hasStarted == false) {
+				m_pStats->weakness += 50 + status.strength;
+				status.hasStarted = true;
+			}
+			else if (effectCount < 4 && status.hasStarted) {
+				m_pStats->weakness -= 50 + status.strength;
+				status.hasStarted = false;
+			}
+
+			if (justEnded && status.hasStarted) {
+				m_pStats->weakness -= 50 + status.strength;
 			}
 		}
 
@@ -448,20 +515,20 @@ void Attackable::TickStatusEffect(float deltaTime) {
 			}
 			else if (isOngoing) {
 				rampageTimer -= deltaTime;
-				if (recentKillCount > 0) {
+				if (recentKillCount > 0) {//new kill = higher stats
 					recentKillCount--;
 					rampageTotalKills++;
 					m_pStats->damageMult *= 1.1;
 					m_pStats->speedMult *= 1.1;
-					rampageTimer = 7; //7 seconds to kill another
+					rampageTimer = 5 + status.strength;
 				}
-				if (rampageTimer < 0 && rampageTotalKills >= 2) {
+				if (rampageTimer < 0 && rampageTotalKills >= 2) {//lower stats back down if no recent kill
 					rampageTotalKills -= 2;
 					for (int i = 0; i < 2; ++i) {
 						m_pStats->damageMult /= 1.1;
 						m_pStats->speedMult /= 1.1;
 					}
-					rampageTimer = 7;
+					rampageTimer = 5 + status.strength;
 				}
 			}
 			else if (justEnded) {
@@ -476,31 +543,25 @@ void Attackable::TickStatusEffect(float deltaTime) {
 
 	if (applyTick) m_fLastStatusEffectTick = 0;
 
-	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) { 
+	std::erase_if(m_activeStatusEffects, [](const StatusEffect& s) {
 		if (s.duration <= 0) {
 			// OnExit logic
-			if (s.type == StatusEffectType::AttackSpeedBoost) {
-				s.source->m_pStats->bonusAttackSpeed -= s.source->m_pStats->baseAttackSpeed * s.originalValue;
-			}
-			if (s.type == StatusEffectType::DamageBoost) {
-				s.source->m_pStats->bonusDamage -= s.source->m_pStats->baseDamage * s.originalValue;
-			}
-			if (s.type == StatusEffectType::Invincible) {
-				s.source->SetCanCollide(true);
-			}
 			return true;
 		}
-		return false; 
-	});
+		return false;
+		});
 }
 
+
 void Attackable::AddItem(ItemID id, int count) {
+	FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
+	FMOD_VECTOR vel = { 0,0,0 };
+	context.am->PlaySound("powerup", "SFX", pos, vel, { 0.95f, 1.05f });
 	m_inventory->Add(id, count);
-	for (auto& [itemID, stacks] : m_inventory->All()) {
-		ItemDef def = context.ir->Get(itemID);
-		if (def.effect) {
-			def.effect->OnPickup(this, stacks);
-		}
+	ItemDef def = context.ir->Get(id);
+	int stacks = m_inventory->Count(id);
+	if (def.effect) {
+		def.effect->OnPickup(this, stacks);
 	}
 }
 
@@ -516,7 +577,6 @@ void Attackable::RemoveItem(ItemID id, int count) {
 
 void Attackable::RecalculateStats() {
 	if (!m_pStats) return;
-	m_pStats->Reset();
 
 	for (auto& [itemID, stacks] : m_inventory->All()) {
 		ItemDef def = context.ir->Get(itemID);
@@ -613,14 +673,19 @@ void Attackable::LoadStatsFromJson(json stats) {
 		stats["armor"].get<int>(),
 		stats["weakness"].get<int>(),
 		stats["regeneration"].get<float>(),
+		stats["regenerateTime"].get<float>(),
 		stats["critChance"].get<float>(),
 		stats["critMultiplyer"].get<float>(),
 		stats["hasHealCritEnabled"].get<int>(),
-		stats["effectRadiusBoundScaler"].get<float>()
+		stats["effectRadiusScaler"].get<float>()
 	);
 	m_pStats->Reset();
 }
 
 void Attackable::SetEffectRadiusBound(float radius, Vector2 offset) {
 	effectRadiusBound = CollisionShape::MakeCircle(radius, offset);
+}
+
+void Attackable::HandleCollision(Collidable* other, Vector2 penetration) {
+	Entity::HandleCollision(other, penetration);
 }

@@ -13,7 +13,7 @@ class AI : public Attackable {
 		virtual void Draw(Renderer* renderer) override;
 
 		void SetTarget(Collidable* c);
-		Collidable* GetTarget() const { return target; }
+		Collidable* GetTarget() const { return target; };
 		void Hone();
 		virtual void OnStuck() = 0;
 

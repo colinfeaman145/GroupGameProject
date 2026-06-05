@@ -19,10 +19,11 @@ public:
 		int armor = 0,
 		int weakness = 0,
 		float regernation = 0,
+		float regenerateTime = 5,
 		float critChance = 0,
 		float critMultiplyer = 0,
 		bool healHasCritEnabled = false,
-		float effectRadiusBoundScaler = 1.0
+		float effectRadiusScaler = 1.0
 	) {
 		
 		defaultBaseHealth = baseHealth;
@@ -40,10 +41,11 @@ public:
 		defaultArmor = armor;
 		defaultWeakness = weakness;
 		defaultRegernation = regernation;
+		defaultRegenerateTime = regenerateTime;
 		defaultCritChance = critChance;
 		defaultCritMultiplyer = critMultiplyer;
 		defaultHasHealCritEnabled = hasHealCritEnabled;
-		defaultEffectRadiusBoundScaler = effectRadiusBoundScaler;
+		defaultEffectRadiusScaler = effectRadiusScaler;
 		Reset();
 	}
 
@@ -67,7 +69,7 @@ public:
 	}
 	float CalculateDamageReceived(float incomingDamage) const {
 		// simple armor calculation, can be improved
-		return incomingDamage * (100.f / (100 + armor - weakness));
+		return incomingDamage * ((100.0f + weakness) / (100 + armor));
 	}
 
 	void Reset() {
@@ -92,9 +94,9 @@ public:
 		critChance = defaultCritChance;
 		critMultiplyer = defaultCritMultiplyer;
 		regernation = defaultRegernation;
+		regenerateTime = defaultRegenerateTime;
 		hasHealCritEnabled = defaultHasHealCritEnabled;
-
-		effectRadiusBoundScaler = defaultEffectRadiusBoundScaler;
+		effectRadiusScaler = defaultEffectRadiusScaler;
 	}
 private:
 	inline float clip(float value, float min, float max) {
@@ -128,9 +130,10 @@ public:
 	float critChance;
 	float critMultiplyer;
 	float regernation;
+	float regenerateTime;
 	bool hasHealCritEnabled;
 
-	float effectRadiusBoundScaler;
+	float effectRadiusScaler;
 
 
 	// base stats used to reset the statsheet to default values
@@ -155,9 +158,9 @@ public:
 	float defaultCritChance;
 	float defaultCritMultiplyer;
 	float defaultRegernation;
+	float defaultRegenerateTime;
 	bool defaultHasHealCritEnabled;
-
-	float defaultEffectRadiusBoundScaler;
+	float defaultEffectRadiusScaler;
 };
 
 

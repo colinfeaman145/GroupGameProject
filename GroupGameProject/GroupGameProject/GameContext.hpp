@@ -17,7 +17,7 @@
 class Grid;
 
 
-#define DEBUGMODE false
+#define DEBUGMODE true
 #define GOD_MODE true
 
 

@@ -53,6 +53,8 @@ public:
 	GridOccupancy GetOccupancy() const;
 	Visibility IsVisible();
 
+	void HandleCollision(Collidable* other, Vector2 penetration) override;
+
 	// setter
 	virtual void SetPosition(Vector2 pos);
 	void SetVelocity(Vector2 vel);

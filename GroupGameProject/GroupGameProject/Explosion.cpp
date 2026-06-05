@@ -1,51 +1,90 @@
 #include "Explosion.hpp"
 #include "AnimatedSprite.hpp"
 #include "GameContext.hpp"
-#include "Attackable.hpp"
 
-Explosion::Explosion() {
-
+Explosion::Explosion(const Explosion& other)
+	: Explosion(other.radius * 2, other.damage, other.onPlayersTeam) {
 }
 
-bool Explosion::Initialize(EventContext ctx, float radius) {
-	SDL_Texture* explosionTexture = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Explosions/explosion.png");
-	explosionAnimation = new AnimatedSprite();
-	explosionAnimation->Initialize(explosionTexture, 125, 125, 0, 0, radius, radius, 4, 16);
-	explosionAnimation->SetDrawLayer(RenderLayer::PARTICLE);
-	explosionAnimation->SetFrameDuration(0.05);
-	explosionAnimation->SetLooping(false);
+Explosion::Explosion(int size, int dam, bool playersExplosion) {
 
-	Entity::Initialize(ctx.targetPosition, explosionAnimation);
+	AnimatedSprite* s = new AnimatedSprite();
+	SDL_Texture* tex = context.txm->LoadTexture(context.renderer, "../../assets/sprites/Explosions/explosion.png");
+	s->Initialize(tex, 125, 125, 0, 0, size, size, 4, 16);
+	s->SetFrameDuration(0.15);
+	s->SetLooping(false);
+	s->SetLeaveOnLastFrame(false);
+	SetCanCollide(false);
+	sprite = s;
+	radius = (float)size / 2;
+	position = Vector2();
+	velocity = Vector2();
 
-	SetPosition({ ctx.targetPosition.x - explosionAnimation->GetWidth() / 2, ctx.targetPosition.y - explosionAnimation->GetHeight() / 2 });
+	collisionBound = CollisionShape::MakeCircle(radius * 1.2);
 
-	collideType = CollidableType::ENEMY;
+	damage = dam;
+	onPlayersTeam = playersExplosion;
 
-	damage = ctx.hitInfo.damageDealt;
-	source = ctx.source;
-
-	explosionAnimation->Animate();
-	context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
-	return true;
-}
-
-void Explosion::Draw(Renderer* renderer) {
-	Entity::Draw(renderer);
+	canDamage = false;
+	activated = false;
+	damageDelay = 0.3;//2ish frames
+	currentTimer = 0;
 }
 
 void Explosion::Process(float deltaTime) {
+	if (activated) {
+		currentTimer += deltaTime;
+		if (currentTimer >= damageDelay && !damageDealt) {
+			canDamage = true;
+		}
+	}
+
+	if (canDamage) {
+		context.grid->ResolveCollisions(this);
+		canDamage = false;
+		damageDealt = true;
+	}
+
+	AnimatedSprite* a = static_cast<AnimatedSprite*>(sprite);
+	if (!a->IsAnimating()) {
+		activated = false;
+		currentTimer = 0;
+	}
 	Entity::Process(deltaTime);
 }
 
+void Explosion::Explode() {
+	activated = true;
+	damageDealt = false;
+	static_cast<AnimatedSprite*>(sprite)->Restart();
+	static_cast<AnimatedSprite*>(sprite)->Animate();
+}
+
+//center around pos
+void Explosion::SetPosition(Vector2 pos) {
+	position = Vector2(pos.x - radius, pos.y - radius);
+	sprite->SetPosition(position);
+	context.grid->UpdateOccupancy(static_cast<Entity*>(this), &GridCell::AddOther, &GridCell::RemoveOther);
+}
+
+bool Explosion::isActive() {
+	return activated;
+}
+
+float Explosion::GetDamageScaler(Collidable* c) {
+	float dist = Distance(position, c->GetPosition());
+	return (dist / radius) * 1.25;
+}
+
+
 void Explosion::HandleCollision(Collidable* other, Vector2 penetration) {
-	if (std::find(collisions.begin(), collisions.end(), other) != collisions.end()) {
-		return; // already collided with this target
+	if (canDamage) {
+		if ((onPlayersTeam && other->GetCollidableType() == CollidableType::ENEMY) ||
+		   (!onPlayersTeam && other->GetCollidableType() == CollidableType::PLAYER)) {
+			HitInfo info;
+			info.damageDealt = damage * GetDamageScaler(other);
+			info.appliesOnHitEffects = true;
+			DealDamageTo(static_cast<Attackable*>(other), info);
+		}
 	}
-	auto target = dynamic_cast<Attackable*>(other);
-	if (target == nullptr) return;
-
-
-	source->DealDamageTo(target, { damage, 0, false, false, true });
-	target->ApplyStatusEffect({ StatusEffectType::Burning, 3, 0, 0, source });
-	collisions.push_back(other);
 }

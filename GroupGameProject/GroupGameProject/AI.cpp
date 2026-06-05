@@ -60,7 +60,6 @@ void AI::SetTarget(Collidable* c) {
 }
 
 void AI::Hone() {
-
     if (target == nullptr) return;
     if (!isChasing) return;
 
@@ -92,5 +91,6 @@ void AI::Hone() {
             velocity = flowDir * m_pStats->GetFinalSpeed();
         adjustCourseTimer = 5.0f;
     }
+
     return;
 }

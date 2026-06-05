@@ -6,14 +6,13 @@
 @required=true
 
 X X X X X X X X X X X 
-X F F F F F F F F F X
-X F F F F D F F F F X
+X F F F F D F F O F X
 X F F F F F F F F F X
 X F F F F B F F F F X
 X F F F F F F F F F X
+X F F F F L F F F F X
 X F F F F F F F F F X
+X F F F F F F F F V X
 X F F F F F F F F F X
-X F F F F F F F F F X
-X F F F F F F F F F X
-X F F F F F F F F F X
+X J F M F F F F F F X
 X X X X X S X X X X X

@@ -6,11 +6,11 @@
 @required=true
 
 X X X X X X X X X
-X F F F F F F F X
+X F F F F F J F X
 X F F F F F F F X
 X F F F F F F F X
 W F F F T F F F E
 X F F F F F F F X
-X F F F F F F F X
-X F F F F F F F X
+X F R F F F A F X
+X F F F O F F F X
 X X X X X X X X X

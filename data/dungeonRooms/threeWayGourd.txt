@@ -6,11 +6,11 @@
 @required=false
 
 X X X X N X X X X . . . . .
-X F F F F F F F X X X X X X
-X F F F F F F F F F F F F X 
-X F F F F F F F F F F F F X
-W F F F G F F F F G F F F X
-X F F F F F F F F F F F F X
-X F F F F F F F F F F F F X
+X O F F F F F F X X X X X X
+X F F F F F F F F F F F R X 
+X F F F F F F J F F F F F X
+W F F F F F F F F F F F F X
+X F F F F F F F F F F F I X
+X V F F M F F F F C F F F X
 X F F F F F F F X X X X X X
 X X X X S X X X X . . . . .

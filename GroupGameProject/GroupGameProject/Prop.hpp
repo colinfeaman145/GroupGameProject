@@ -1,8 +1,8 @@
 #pragma once
-#include "Entity.hpp"
+#include "Attackable.hpp"
 #include <string>
 
-class Prop : public Entity {
+class Prop : public Attackable {
 
 public:	
 	// Inherited via Entity

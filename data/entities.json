@@ -17,10 +17,11 @@
       "armor": 20,
       "weakness": 0,
       "regeneration": 5,
-      "critChance": 0.5,
+      "regenerateTime": 7.5,
+      "critChance": 0.05,
       "critMultiplyer": 1.5,
       "hasHealCritEnabled": 0,
-      "effectRadiusBoundScaler": 0
+      "effectRadiusScaler": 1.0
     },
     "animations": {
       "idle": {
@@ -100,12 +101,13 @@
       "bonusAttackSpeed": 0,
       "attackSpeedMult": 1,      
       "armor": 0,
-      "weakness": 0,
+      "weakness" : 0,
       "regeneration": 0,
+      "regenerateTime": 7.5,
       "critChance": 0,
       "critMultiplyer": 1.5,
       "hasHealCritEnabled": 0,
-      "effectRadiusBoundScaler": 0
+      "effectRadiusScaler": 1.0
     },
     "animations": {
       "idle": {
@@ -174,12 +176,13 @@
       "attackSpeedMult": 1,
       "speedMult": 1,
       "armor": 0,
-      "weakness": 0,
+      "weakness" : 0,
       "regeneration": 0,
+      "regenerateTime": 7.5,
       "critChance": 0,
       "critMultiplyer": 1.5,
       "hasHealCritEnabled": 0,
-      "effectRadiusBoundScaler": 0
+      "effectRadiusScaler": 1.0
     },
     "animations": {
       "idle": {

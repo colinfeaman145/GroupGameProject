@@ -106,8 +106,8 @@
     "description": "Applies time scaling effects to owner",
     "spritePath": "",
     "params": {
-      "healthIncreasePerLevel": 0.3,
-      "damageIncreasePerLevel": 0.2
+      "healthIncreasePerLevel": 0.15,
+      "damageIncreasePerLevel": 0.1
     }
   },
   "8": {
@@ -169,11 +169,13 @@
   "14": {
     "id": 14,
     "name": "BloodyDagger",
-    "description": "On hit, apply Bleeding. Each stack increases bleed duration.",
+    "description": "On hit, chance to apply Bleeding. Each stack increases chance & duration.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item11.png",
     "params": {
+      "baseChance": 0.05,
+      "chanceIncreasePerStack": 0.03,
       "baseDuration": 3.0,
-      "durationPerStack": 1.5
+      "durationPerStack": 0.75
     }
   },
   "15": {
@@ -199,10 +201,10 @@
     "description": "Killing an enemy causes an explosion around their corpse. Stacks increase radius and damage.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item749.png",
     "params": {
-      "baseDamageMultiplier": 1.5,
+      "baseDamageMultiplier": 2,
       "damageMultiplierPerStack": 0.5,
-      "baseRadius": 2000,
-      "radiusPerStack": 150
+      "baseRadius": 1.5,
+      "radiusIncreasePerStack": 0.1
     }
   },
   "17": {
@@ -211,18 +213,18 @@
     "description": "Critical hits ignite the target, dealing bonus damage as burn over time.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item910.png",
     "params": {
-      "burnDamageMultiplier": 0.3,
+      "burnDamageMultiplier": 0.5,
       "burnDuration": 3.0
     }
   },
   "18": {
     "id": 18,
     "name": "PhantomCloak",
-    "description": "Dodging grants brief invincibility and a damage bonus. Stacks extend both.",
+    "description": "Increase damage and invincibilty time after dodging.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item877.png",
     "params": {
-      "baseInvincibleDuration": 0.5,
-      "invincibleDurationPerStack": 0.3,
+      "baseInvincibleDuration": 0.1,
+      "invincibleDurationPerStack": 0.025,
       "damageBoostPerStack": 0.2,
       "boostDurationBonus": 1.0
     }
@@ -242,20 +244,571 @@
     "description": "Enemies affected by 4 or more debuffs take greatly increased damage.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item207.png",
     "params": {
-      "debuffThreshold": 4,
-      "baseDamageMultiplier": 1.5,
-      "damageMultiplierPerStack": 0.2,
-      "markDuration": 7.0,
-      "markDurationPerStack": 7.0
+      "weaknessIncreasePerStack": 7.5,
+      "markDuration": 5.0,
+      "markDurationPerStack": 2.0
     }
   },
   "21": {
     "id": 21,
     "name": "DemonsSoulPrison",
-    "description": "Instantly kill enemies below a HP threshold. Stacks hyperbolically increase the threshold.",
+    "description": "Chance to instantly kill enemies below a HP threshold. Chance and threshold increase with stacking.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item561.png",
     "params": {
-      "executeThresholdPerStack": 0.07
+      "executeThresholdBase": 0.2,
+      "executeThresholdPerStack": 0.05,
+      "executeChanceBase": 0.35,
+      "executeChancePerStack": 0.1
+    }
+  },
+  "22": {
+    "id": 22,
+    "name": "GoldenBoots",
+    "description": "Receive a temporary speed boost on cashout. Duration and speed increases with stacking.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item265.png",
+    "params": {
+      "baseDuration": 5.0,
+      "increasePerStack": 1.5,
+      "strengthIncreasePerStack": 0.25
+    }
+  },
+  "23": {
+    "id": 23,
+    "name": "HeartyApple",
+    "description": "Increases armor!",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item322.png",
+    "params": {
+      "baseIncrease": 7.5
+    }
+  },
+  "24": {
+    "id": 24,
+    "name": "QuestionableBerries",
+    "description": "Increases attack speed and crit chance, but decrease health.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item330.png",
+    "params": {
+      "attackSpeedIncrease": 0.5,
+      "critChanceIncrease": 0.01,
+      "healthDecreasePercent": 0.025
+    }
+  },
+  "25": {
+    "id": 25,
+    "name": "FirePendant",
+    "description": "Killing an emeny close to you temporarily sets you on fire and sharply increases attack speed.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item890.png",
+    "params": {
+      "effectDurationBase": 4,
+      "effectDurationPerStack": 1.5,
+      "effectBase": 2,
+      "effectIncreasePerStack": 0.5
+    }
+  },
+  "26": {
+    "id": 26,
+    "name": "VengantTongue",
+    "description": "Getting hit below 50% health activates a rampage. Stacks increase duration.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item1181.png",
+    "params": {
+      "effectDurationBase": 15,
+      "effectDurationPerStack": 5
+    }
+  },
+  "27": {
+    "id": 27,
+    "name": "SporeStone",
+    "description": "When an enemy with a status effect is killed, pick one effect, and give it to two nearby enemies. Strength increases with stacking.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item593.png",
+    "params": {
+      "durationPercentIncrease": 0.25,
+      "spreadStrength": 0.5,
+      "spreadStrengthOnStack": 0.25
+    }
+  },
+  "28": {
+    "id": 28,
+    "name": "ColdStone",
+    "description": "On hit, chance to effect with freezing",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item594.png",
+    "params": {
+      "baseDuration": 4,
+      "freezeChance": 0.2,
+      "freezeChanceIncreasePerStack": 0.075
+    }
+  },
+  "29": {
+    "id": 29,
+    "name": "Medkit",
+    "description": "Increase regeneration",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item913.png",
+    "params": {
+      "increasePerStack": 2.5
+    }
+  },
+  "30": {
+    "id": 30,
+    "name": "SuspiciousMushroom",
+    "description": "Random small chance to be poisoned, but permanently sharply increase damage",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item389.png",
+    "params": {
+      "damageIncreaseMult": 1.25,
+      "damageIncreaseMultPerStack": 1.1 
+    }
+  },
+  "31": {
+    "id": 31,
+    "name": "Encore",
+    "description": "Every 30 seconds, when below 15% health, become invincible for a short period.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item842.png",
+    "params": {
+      "thresholdBase": 0.15,
+      "thresholdIncreasePerStack": 0.03 ,
+      "invincibleTimePerStack": 0.75,
+      "cooldownBase": 30,
+      "cooldownDecreasePerStack": 3
+    }
+  },
+  "32": {
+    "id": 32,
+    "name": "SurpriseBottle",
+    "description": "50% chance on kill to effect all close by enenemies with poison. Stacks increase poison strength.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item902.png",
+    "params": {
+      "strengthBase": 1.25 ,
+      "strengthPerStack": 0.375,
+      "durationBase": 4,
+      "durationPerStack": 1.25
+    }
+  },
+  "33": {
+    "id": 33,
+    "name": "SpeedGauge",
+    "description": "Every nearby enemy increases your speed temporarily",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item941.png",
+    "params": {
+      "speedStrengthPerEnemy": 0.15,
+      "bonusPerStack": 0.4
+    }
+  },
+    "34": {
+    "id": 34,
+    "name": "BirD",
+    "description": "Increases radius for items that effect in a radius",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item1241.png",
+    "params": {
+      "increasePerStack": 0.2
+    }
+  },
+  "35": {
+    "id": 35,
+    "name": "SharpEyeCrystal",
+    "description": "On low health, increase crit chance",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item539.png",
+    "params": {
+      "healthThresholdBase": 0.2,
+      "healthThresholdIncreasePerStack": 0.0375,
+      "critChanceIncrease": 0.035
+    }
+  },
+  "36": {
+    "id": 36,
+    "name": "ShinyTurtleShell",
+    "description": "On cashout, temporarily increase defense sharply, but decrease movement speed",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item540.png",
+    "params": {
+      "armorIncreaseBase": 50,
+      "durationPerStack": 7 
+    }
+  },
+  "37": {
+    "id": 37,
+    "name": "MoonPie",
+    "description": "On crit, receive rampage effect",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item521.png",
+    "params": {
+      "durationPerStack": 10 
+    }
+  },
+  "38": {
+    "id": 38,
+    "name": "HighPressure",
+    "description": "If poisoned or burning, increase crit chance",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item942.png",
+    "params": {
+      "critChacneIncreasePerStack": 0.075
+    }
+  },
+  "39": {
+    "id": 39,
+    "name": "SteadyAimTreat",
+    "description": "When frozen, decrease attack speed and sharply increase damage",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item396.png",
+    "params": {
+      "attackSpeedIncreasePerStack": 0.125,
+      "baseDamageMultIncrease": 1.25,
+      "damageMultIncreasePerStack": 0.35
+    }
+  },
+  "40": {
+    "id": 40,
+    "name": "ColdTreat",
+    "description": "On death, corpse effects nearby enemies in a radius with freezing.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item401.png",
+    "params": {
+      "freezingDurationBase": 1.5,
+      "freezingDurationPerStack": 0.5
+    }
+  },
+  "41": {
+    "id": 41,
+    "name": "Devil'sFart",
+    "description": "Periodically release a wave of heat affecting nearby enemies with burning",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item869.png",
+    "params": {
+      "cooldownBase": 25,
+      "cooldownDecreasePerStack": 5,
+      "burningDurationBase": 5,
+      "burningDurationPerStack": 2,
+      "burningStrengthPerStack": 0.75
+    }
+  },
+  "42": {
+    "id": 42,
+    "name": "GasMask",
+    "description": "Take less damage while poisoned.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item279.png",
+    "params": {
+      "armorIncreasePerStack": 12.5
+    }
+  },
+  "43": {
+    "id": 43,
+    "name": "RuleChanger",
+    "description": "When on fire, also receive rampage effect",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item627.png",
+    "params": {
+      "rampageStrengthPerStack": 1,
+      "rampageBonusTimeBase": 10,
+      "rampageBonusTimePerStack": 3.5
+    }
+  },
+  "44": {
+    "id": 44,
+    "name": "PlaybackReel",
+    "description": "Chance on hit to deal double damage. Stacks increase odds.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item756.png",
+    "params": {
+      "chancePerStack": 0.05
+    }
+  },
+  "45": {
+    "id": 45,
+    "name": "StrengthPotion",
+    "description": "Randomly receive attack boost and attack speed boost",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item903.png",
+    "params": {
+      "chancePerStack": 0.002,
+      "durationBase": 5,
+      "strengthPerStack": 0.35 
+    }
+  },
+  "46": {
+    "id": 46,
+    "name": "LacedDagger",
+    "description": "On hit, deal poison damage",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item829.png",
+    "params": {
+      "durationPerStack": 2
+    }
+  },
+  "47": {
+    "id": 47,
+    "name": "DevilsDeal",
+    "description": "Always have rampage effect and death mark. Rampage strength increase with stack.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item648.png",
+    "params": {
+      "rampageStrengthPerStack": 2
+    }
+  },
+  "48": {
+    "id": 48,
+    "name": "GodsDeal",
+    "description": "200% increase to health, 50% decrease to damage. 75% increase to health and 15% decrease to damage per stack.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item652.png",
+    "params": {
+      "baseHealthIncrease": 2,
+      "healthIncreasePerStack": 0.75,
+      "baseDamageDecrease": 0.5,
+      "damageDecreasePerStack": 0.15
+    }
+  },
+  "49": {
+    "id": 49,
+    "name": "ComboDeal",
+    "description": "Comes with a drink",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item402.png",
+    "params": {
+      "healthIncreasePerStack": 20,
+      "damageIncreasePerStack": 10,
+      "attackSpeedBoostPerStack": 0.15
+    }
+  },
+  "50": {
+    "id": 50,
+    "name": "GeishaMask",
+    "description": "Affect enemies with bleeding if attack lands shortly after dodgeing.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item302.png",
+    "params": {
+      "attackWindowBase": 0.75,
+      "attackWindowPerStack": 0.35,
+      "baseBleedDuration": 10,
+      "bleedDurationPerStack": 3
+    }
+  },
+  "51": {
+    "id": 51,
+    "name": "CowboyHat",
+    "description": "Nearby enemies are slowed",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item212.png",
+    "params": {
+      "baseSlowStrength": 1.5,
+      "slowStrengthPerStack": 0.25 
+    }
+  },
+  "52": {
+    "id": 52,
+    "name": "PestilentHelm",
+    "description": "Nearby enemies take more damage",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item208.png",
+    "params": {
+      "weaknessPerStack": 7.5
+    }
+  },
+  "53": {
+    "id": 53,
+    "name": "PrancingShoes",
+    "description": "After not taking damage for a period of time, receive movement speed boost.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item267.png",
+    "params": {
+      "speedBoostStengthPerStack": 0.2,
+      "timeAfterLastDamage": 5.0
+    }
+  },
+  "54": {
+    "id": 54,
+    "name": "Adrenaline",
+    "description": "On hit, slightly increase movement speed permanetely.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item915.png",
+    "params": {
+      "speedIncreasePerStack": 0.002
+    }
+  },
+  "55": {
+    "id": 55,
+    "name": "OvercalculatedShot",
+    "description": "Sharply increase crit damage, but decrease armor",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item961.png",
+    "params": {
+      "critMultIncreasePerStack": 0.75,
+      "armorDecreasePerStack": 20 
+    }
+  },
+  "56": {
+    "id": 56,
+    "name": "Crusader",
+    "description": "Increase damage based on the difference of armor and weakness. Increase scales with stacks.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item222.png",
+    "params": {
+      "damageIncreasePerDifference": 2
+    }
+  },
+  "57": {
+    "id": 57,
+    "name": "Symbiote",
+    "description": "On heal, 5% chance to be poisoned and increase damage permanently. Stacks increase effect strength.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item1081.png",
+    "params": {
+      "damageMultIncreasePerStack": 0.075,
+      "basePoisonDuration": 5,
+      "poisonDurationPerStack": 1
+    }
+  },
+  "58": {
+    "id": 58,
+    "name": "RetaliationNecklace",
+    "description": "Dodgeing shortly after being hit temporarily boosts damage.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item831.png",
+    "params": {
+      "baseDodgeWindowTime": 1,
+      "dodgeWindowTimePerStack": 0.25,
+      "durationPerStack": 2,
+      "baseDamageBoost": 0.35,
+      "damageBoostPerStack": 0.15
+    }
+  },
+  "59": {
+    "id": 59,
+    "name": "AthleticCloak",
+    "description": "Small chance on hit to receive a large attack speed boost, but all nearby enemies also receive a speed boost.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item876.png",
+    "params": {
+      "baseDuration": 5,
+      "durationPerStack": 2,
+      "enemySpeedStrength": 1.0,
+      "chancePerStack": 0.075,
+      "baseAttackSpeedBoost": 1.0,
+      "attackSpeedBoostPerStack": 0.35
+    }
+  },
+  "60": {
+    "id": 60,
+    "name": "HeavyGreives",
+    "description": "Triple crit chance, but dodgeing deals 25% of your health. Stacks decrease damamge taken from dodgeing.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item244.png",
+    "params": {
+      "baseDamagePercent": 0.25,
+      "damagerPercentDecreasePerStack": 0.5
+    }
+  },
+  "61": {
+    "id": 61,
+    "name": "BrittleCrown",
+    "description": "Increase all stats, but chance on hit to receive any random effect.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item205.png",
+    "params": {
+      "percentIncerasePerStack": 0.15,
+      "onHitChancePerStack": 0.15
+    }
+  },
+  "62": {
+    "id": 62,
+    "name": "FocusFicus",
+    "description": "Crit chance increases after standing still for 1 second.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item996.png",
+    "params": {
+      "increasePerStack": 0.075,
+      "baseIncrease": 0.2
+    }
+  },
+  "63": {
+    "id": 63,
+    "name": "Fih",
+    "description": "When freezing effect ends, receive poison effect and convert to spoiled fih.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item996.png",
+    "params": {
+      "poisonDuration": 8
+    }
+  },
+  "64": {
+    "id": 64,
+    "name": "SpoiledFih",
+    "description": "Below 25% health, consume fih and fully heal. Receive temporary bleeding and sharp permanent health boost.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item996.png",
+    "params": {
+      "bleedingDuration": 8,
+      "healthMultIncrease": 0.75
+    }
+  },
+  "65": {
+    "id": 65,
+    "name": "ChefHat",
+    "description": "On enemy kill, chance to cook a consumable food item. Chance increase with stacks.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item307.png",
+    "params": {
+      "baseChance": 0.35,
+      "chancePerStack": 0.1
+    }
+  },
+  "66": {
+    "id": 66,
+    "name": "Milk",
+    "description": "On heal, consume and add 10 armor.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item370.png",
+    "params": {
+    }
+  },
+  "67": {
+    "id": 67,
+    "name": "Pineapple",
+    "description": "When incoming attack deals more than 25% of health, consume and deal 50% health to source.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item373.png",
+    "params": {
+    }
+  },
+  "68": {
+    "id": 68,
+    "name": "SpicyPepper",
+    "description": "When below 20% health, consume and receive speed boost",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item377.png",
+    "params": {
+      "speedBoostStrength": 1.0,
+      "speedBoostDuration": 10
+    }
+  },
+  "69": {
+    "id": 69,
+    "name": "Sushi",
+    "description": "When dodgeing below 50% health, consume and receive 3 seconds of invincibility.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item421.png",
+    "params": {
+    }
+  },
+  "70": {
+    "id": 70,
+    "name": "Onion",
+    "description": "When poisoned, consume and cure poison.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item473.png",
+    "params": {
+    }
+  },
+  "71": {
+    "id": 71,
+    "name": "HeartySoup",
+    "description": "When frozen or burning, consume and cure yourself.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item476.png",
+    "params": {
+    }
+  },
+  "72": {
+    "id": 72,
+    "name": "Melon",
+    "description": "If its Thursday, on hit eat and heal fully. Otherwise, give 3% regeneration boost per stack.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item336.png",
+    "params": {
+    }
+  },
+  "73": {
+    "id": 73,
+    "name": "Bread",
+    "description": "On enemy kill, 10% chance to get hungry and eat, granting a short attack boost.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item476.png",
+    "params": {
+      "attackBoostDuration": 10.0,
+      "attackBoostStrength": 1.0
+    }
+  },
+  "74": {
+    "id": 74,
+    "name": "EmptyPlate",
+    "description": "Grants 3 random consumable food items.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item804.png",
+    "params": {
+    }
+  },
+  "75": {
+    "id": 75,
+    "name": "EmptyPan",
+    "description": "Grants 5 random consumable food items.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item805.png",
+    "params": {
+    }
+  },
+  "76": {
+    "id": 76,
+    "name": "EmptyCauldron",
+    "description": "Grants 10 random consumable food items.",
+    "spritePath": "..\\..\\assets\\sprites\\Items\\item807.png",
+    "params": {
     }
   },
  "22": {
