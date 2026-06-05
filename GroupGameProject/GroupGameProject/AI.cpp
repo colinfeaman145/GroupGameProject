@@ -30,7 +30,7 @@ void AI::Process(float deltaTime) {
     adjustCourseTimer -= deltaTime;
     framesSinceLastHone++;
 
-    if (framesSinceLastHone >= 10) {//if walking
+    if (framesSinceLastHone >= 5) {//if walking
         Hone(); //move towards target
         framesSinceLastHone = 0;
     }

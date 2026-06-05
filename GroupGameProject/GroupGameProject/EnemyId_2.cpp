@@ -59,7 +59,7 @@ void EnemyId_2::EnterState(EnemyState newState) {
 
 void EnemyId_2::DoAttack() {
     if (auto player = dynamic_cast<Attackable*>(target))
-        player->ApplyStatusEffect({ StatusEffectType::Bleeding, 5.0f, 0, 0, this });
+        player->ApplyStatusEffect({ StatusEffectType::Bleeding, 5.0f, (Attackable*)this, 5, true });
 }
 
 void EnemyId_2::HandleCollision(Collidable* other, Vector2 penetration) {

@@ -256,10 +256,11 @@
       "armor": 0,
       "weakness": 0,
       "regeneration": 0,
+      "regenerateTime": 7.5,
       "critChance": 0,
       "critMultiplyer": 1.5,
       "hasHealCritEnabled": 0,
-      "effectRadiusBoundScaler": 0
+      "effectRadiusScaler": 0
     },
     "animations": {
       "idle": {
@@ -295,7 +296,7 @@
         "frameDuration": 0.1
       }
     },
-    "inventory": [
+    "inventory": [       
     ],
     "spawner": {
       "spawnRadius": 150,
@@ -304,6 +305,11 @@
           "id": 3,
           "dropRatePerItem": 0.5,
           "count": 3
+        },
+	{
+          "id": 8,
+          "dropRatePerItem": 1,
+          "count": 1
         }
       ]
     },
