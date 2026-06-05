@@ -63,6 +63,11 @@ void PlayerHUD::Process(float deltaTime)
     HandleGunSpriteRotation();
     HandleHUDElementsProcess(deltaTime);
     HandleTimerUpdate();
+    for (auto& p : popups) p.timer -= deltaTime;
+    std::erase_if(popups, [](ItemPopup& p) {
+        if (p.timer <= 0) { delete p.nameText; delete p.descText; return true; }
+        return false;
+        });
 }
 
 void PlayerHUD::Draw(Renderer* renderer)
@@ -73,6 +78,20 @@ void PlayerHUD::Draw(Renderer* renderer)
     }
 
     HandleHUDElementsDraw(renderer);
+    int popupY = HEIGHT - 100;
+    for (int i = (int)popups.size() - 1; i >= 0; i--) {
+        auto& p = popups[i];
+        float alpha = min(p.timer / 3.0f, 1.0f) * 255.0f;
+        int popupX = WIDTH - 420;
+        renderer->AddFilledRect(popupX - 10, popupY - 5, 410, 55, { 0, 0, 0, alpha * 0.6f }, RenderLayer::UI);
+        p.nameText->SetColor({ 255, 220, 50, alpha });
+        p.nameText->SetPosition(popupX, popupY);
+        p.nameText->Draw(renderer);
+        p.descText->SetColor({ 200, 200, 200, alpha });
+        p.descText->SetPosition(popupX, popupY + 28);
+        p.descText->Draw(renderer);
+        popupY -= 65;
+    }
 }
 
 
@@ -271,6 +290,17 @@ void PlayerHUD::SetInventoryHUD() {
 
 void PlayerHUD::HandleTimerUpdate() {
 
+}
+
+void PlayerHUD::PushPopup(const std::string& name, const std::string& desc) {
+    const std::string fontPath = "../../assets/fonts/pixelpurl/PixelPurl.ttf";
+    ItemPopup p;
+    p.nameText = new Text();
+    p.nameText->Initialize(name, fontPath, 28);
+    p.descText = new Text();
+    p.descText->Initialize(desc, fontPath, 20);
+    p.timer = 3.0f;
+    popups.push_back(p);
 }
 
 void PlayerHUD::SetDifficultyHUD() {

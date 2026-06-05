@@ -62,12 +62,11 @@ void Player::Process(float deltaTime) {
 		if (walkSoundTimer <= 0) {
 			FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
 			FMOD_VECTOR vel = { 0,0,0 };
-			context.am->PlaySound("walking", "SFX", pos, vel, { 0.9f, 1.1f });
-			walkSoundTimer = 0.6f;
+			context.am->PlaySound("walking", "Footsteps", pos, vel, { 0.9f, 1.1f });			walkSoundTimer = 0.6f;
 		}
 	}
 	else {
-		walkSoundTimer = 0.0f;
+		walkSoundTimer = 0.6f;  // reset so first step plays immediately next time
 	}
 
 	context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
@@ -219,6 +218,14 @@ void Player::HandleCollision(Collidable* other, Vector2 penetration) {
 		if (m_inventory->Count(8) == 0) return;//need at least 1 key to open door
 		context.dc->StageCompleted();
 		m_inventory->Remove(8, 1);//remove 1 key
+	}
+}
+
+void Player::AddItem(ItemID id, int count) {
+	Attackable::AddItem(id, count);
+	auto def = context.ir->Get(id);
+	if (def.data.contains("name") && def.data.contains("description")) {
+		playerHud->PushPopup(def.data["name"], def.data["description"]);
 	}
 }
 

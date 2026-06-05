@@ -11,6 +11,7 @@ public:
 	void Process(float deltaTime) override;
 	void Draw(Renderer* renderer) override;
 	void HandleCollision(Collidable* other, Vector2 penetration) override;
+	void AddItem(ItemID id, int count) override;
 
 private:
 	void HandleAnimation();

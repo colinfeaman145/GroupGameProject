@@ -4,6 +4,13 @@
 #include <SDL.h>
 #include <vector>
 #include "Element.hpp"
+#include "Text.hpp"
+
+struct ItemPopup {
+    Text* nameText;
+    Text* descText;
+    float timer;
+};
 
 class Text;
 class Sprite;
@@ -52,6 +59,8 @@ public:
     void SetDifficultyHUD();
     void SetStatSheetHUD();
 
+    void PushPopup(const std::string& name, const std::string& desc);
+
 private:
     Player* player;
     SDL_Texture* BulletTexture;
@@ -67,5 +76,7 @@ private:
 
     Text* timerText;
     std::vector<Sprite*> playerHudElements;
+
+    std::vector<ItemPopup> popups;
 };
 #endif // PLAYERHUD_HPP

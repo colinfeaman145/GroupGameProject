@@ -55,7 +55,7 @@ public:
 
 
 	// item effects
-	void AddItem(ItemID id, int count);
+	virtual void AddItem(ItemID id, int count);
 	void RemoveItem(ItemID id, int count);
 	void RecalculateStats();
 	void FireEvent(EventType type, EventContext ctx);
