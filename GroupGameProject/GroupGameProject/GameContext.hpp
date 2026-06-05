@@ -17,8 +17,8 @@
 class Grid;
 
 
-#define DEBUGMODE true
-#define GOD_MODE true
+#define DEBUGMODE false
+#define GOD_MODE false
 
 
 struct GameContext {
