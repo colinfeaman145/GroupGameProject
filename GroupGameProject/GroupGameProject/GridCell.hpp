@@ -39,8 +39,8 @@ public:
     const vector<Enemy*>& GetEnemies() const { return enemies; }
 
     //walls
-    bool PlaceWall(Direction dir);
-    bool RemoveWall(Direction dir);
+    bool PlaceWall(Sprite* spr);
+    bool RemoveWall();
     bool IsWall() const;
 
     //other entities

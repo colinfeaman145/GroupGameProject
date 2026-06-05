@@ -30,9 +30,11 @@ public:
 	void ApplyHeal(EventContext& ctx);
 	float GetHealthPercent() const;
 	int GetUniqueStatusEffectCount();
+	void HandleCollision(Collidable* other, Vector2 penetration) override;
 
 	// getter
 	bool IsAlive() const { return isAlive; };
+	float GetSpeed();
 	int GetHealth();
 	int GetMaxHealth();
 	PercentageBar* GetHealthBar() const { return healthBar; };

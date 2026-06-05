@@ -45,8 +45,10 @@ void GridCell::Draw(Renderer* renderer) {
         e->Draw(renderer);
     }
 
-    Color c = CanCollide() ? Color(255, 50, 50, 255) : Color(50, 255, 50, 255);
-    Collidable::Draw(renderer, c);
+    if (DEBUGMODE) {
+        Color c = CanCollide() ? Color(255, 50, 50, 255) : Color(50, 255, 50, 255);
+        Collidable::Draw(renderer, c);
+    }
 }
 
 void GridCell::Process(float deltaTime, bool isRendered) {
@@ -65,9 +67,10 @@ void GridCell::Process(float deltaTime, bool isRendered) {
 
 vector<Collidable*> GridCell::GetCollidables() const {
     vector<Collidable*> result;
-    result.reserve(enemies.size() + 2 + entities.size());
+    result.reserve(enemies.size() + 1 + entities.size());
 
-    for (int i = 0; i < 2; ++i)
+    if (CanCollide()) //includes self when it's a wall
+        result.push_back(const_cast<GridCell*>(this));
 
     for (Enemy* e : enemies)
         result.push_back(e);
@@ -97,13 +100,14 @@ void GridCell::ClearEnemies() {
 }
 
 //WALLS
-bool GridCell::PlaceWall(Direction dir) {
+bool GridCell::PlaceWall(Sprite* spr) {
     SetCanCollide(true);
     isWall = true;
+    SetSprite(spr);
     return isWall;
 }
 
-bool GridCell::RemoveWall(Direction dir) {
+bool GridCell::RemoveWall() {
     SetCanCollide(false);
     isWall = false;
     return isWall;

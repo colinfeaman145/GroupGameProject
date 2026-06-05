@@ -34,5 +34,7 @@ private:
 
 	PlayerHUD* playerHud;
 
+	float refreshFlowFieldTimer;
+
 };
 
