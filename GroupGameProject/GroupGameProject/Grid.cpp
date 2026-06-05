@@ -271,3 +271,14 @@ Attackable* Grid::GetRandomEnemyInRange(Entity* entity, int searchRadius) {
 	}
 	return targetsInRange.empty() ? nullptr : targetsInRange[rand() % targetsInRange.size()];
 }
+
+void Grid::ClearAllEntities() {
+    for (int row = 0; row < gridHeight; row++) {
+        for (int col = 0; col < gridWidth; col++) {
+            if (cells[row][col]) {
+                cells[row][col]->ClearEnemies();
+                cells[row][col]->ClearEntities();
+            }
+        }
+    }
+}

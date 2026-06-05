@@ -126,6 +126,7 @@ class ItemId_4 : public ItemEffect {
 class ItemId_5 : public ItemEffect {
 	void OnEvent(EventType type, EventContext ctx, int stacks) {
 		if (type != EventType::OnGettingHit) return;
+		if (!ctx.target) return;
 		ctx.target->ApplyStatusEffect({ StatusEffectType::Invincible, data["params"]["duration"], ctx.target });
 	}
 };
@@ -180,6 +181,7 @@ class ItemId_9 : public ItemEffect {
 public:
 	void OnEvent(EventType type, EventContext ctx, int stacks) override {
 		if (type != EventType::OnGettingHit) return;
+		if (!ctx.target) return;
 		if (!ctx.source || ctx.hitInfo.damageDealt <= 0.f) return;
 
         float reflectPercent = GetHyperbolicStackingItemValue((float)data["params"]["reflectPercentage"], stacks);
@@ -322,6 +324,7 @@ class ItemId_16 : public ItemEffect {
 public:
     void OnEvent(EventType type, EventContext ctx, int stacks) override {
         if (type != EventType::OnKill) return;
+		if (!ctx.target) return;
 
         float baseMult = (float)data["params"]["baseDamageMultiplier"];
         float stackMult = (float)data["params"]["damageMultiplierPerStack"];
@@ -452,6 +455,7 @@ public:
 			float strengthPerStack = data["params"]["strengthIncreasePerStack"].get<float>();
 			int speedBoostDuration = ItemEffect::GetLinearStackingItemValue(baseDuration, increasePerStack, stacks);
 
+			if (!ctx.target) return;
 			StatusEffect effect = StatusEffect();
 			effect.duration = speedBoostDuration + 0.5;
 			effect.type = StatusEffectType::SpeedBoost;
@@ -482,7 +486,7 @@ class ItemId_24 : public ItemEffect {
 public:
 	void OnPickup(Attackable* owner, int stacks) {
 		float attackSpeedIncrease = data["params"]["attackSpeedIncrease"].get<float>();
-		float critIncrease = data["params"]["baseIncrease"].get<float>();
+		float critIncrease = data["params"]["critChanceIncrease"].get<float>();
 		float healthDecrease = data["params"]["healthDecreasePercent"].get<float>();
 		owner->m_pStats->bonusAttackSpeed += attackSpeedIncrease;
 		owner->m_pStats->critChance += critIncrease;
@@ -491,7 +495,7 @@ public:
 
 	void OnRemove(Attackable* owner, int stacks) {
 		float attackSpeedIncrease = data["params"]["attackSpeedIncrease"].get<float>();
-		float critIncrease = data["params"]["baseIncrease"].get<float>();
+		float critIncrease = data["params"]["critChanceIncrease"].get<float>();
 		float healthDecrease = data["params"]["healthDecreasePercent"].get<float>();
 		owner->m_pStats->bonusAttackSpeed -= attackSpeedIncrease;
 		owner->m_pStats->critChance -= critIncrease;
@@ -505,6 +509,7 @@ class ItemId_25 : public ItemEffect {
 public:
 	void OnEvent(EventType type, EventContext ctx, int stacks) override {
 		if (type != EventType::OnKill) return;
+		if (!ctx.target) return;
 		auto target = context.grid->GetRandomEnemyInRange(ctx.target, 1);
 		if (!target) return; //if no close target, no effect
 
@@ -535,6 +540,7 @@ class ItemId_26 : public ItemEffect {
 public:
 	void OnEvent(EventType type, EventContext ctx, int stacks) override {
 		if (type != EventType::OnGettingHit) return;
+		if (!ctx.target) return;
 		if (ctx.target->GetHealthPercent() > 0.5) return; 
 
 		float effectDuration = data["params"]["effectDurationBase"].get<float>();
@@ -554,6 +560,7 @@ class ItemId_27 : public ItemEffect {
 public:
 	void OnEvent(EventType type, EventContext ctx, int stacks) override {
 		if (type != EventType::OnKill) return;
+		if (!ctx.target) return;
 		auto enemyEffects = ctx.target->GetStatusEffects();
 		if (enemyEffects.size() == 0) return;
 
@@ -572,8 +579,8 @@ public:
 		effect.duration = toBeSpread.duration * durationPercent;
 		effect.type = toBeSpread.type;
 		effect.strength = strength;
-		target1->ApplyStatusEffect(effect);
-		if(target2 != target1) target2->ApplyStatusEffect(effect);
+		if (target1) target1->ApplyStatusEffect(effect);
+		if (target2 && target2 != target1) target2->ApplyStatusEffect(effect);
 	}
 };
 
@@ -583,6 +590,7 @@ class ItemId_28 : public ItemEffect {
 public:
 	void OnEvent(EventType type, EventContext ctx, int stacks) override {
 		if (type != EventType::OnHit) return;
+		if (!ctx.target) return;
 
 		float duration = data["params"]["baseDuration"].get<float>();
 		float freezeChance = data["params"]["freezeChance"].get<float>();
@@ -633,6 +641,7 @@ public:
 	}
 	void OnEvent(EventType type, EventContext ctx, int stacks) override {
 		if (type != EventType::OnStep) return;
+		if (!ctx.target) return;
 
 		uniform_real_distribution<float> unluckyRoll(0, 500);
 		if (unluckyRoll(gen) != 323) return;
@@ -650,6 +659,7 @@ class ItemId_31 : public ItemEffect {
 public:
 	void OnEvent(EventType type, EventContext ctx, int stacks) override {
 		if (type != EventType::OnHit) return;
+		if (!ctx.target) return;
 		if (internalTimer > 0) return;
 
 		float thresholdBase = data["params"]["thresholdBase"].get<float>();
@@ -678,6 +688,7 @@ class ItemId_32 : public ItemEffect {
 public:
 	void OnEvent(EventType type, EventContext ctx, int stacks) override {
 		if (type != EventType::OnHit) return;
+		if (!ctx.target) return;
 		uniform_int_distribution<int> coinFlip(1, 2);
 		if (coinFlip(gen) == 1) return;
 
@@ -863,6 +874,7 @@ class ItemId_40 : public ItemEffect {
 public:
 	void OnEvent(EventType type, EventContext ctx, int stacks) override {
 		if (type != EventType::OnKill) return;
+		if (!ctx.target) return;
 
 		float duration = GetLinearStackingItemValue(
 			data["params"]["freezingDurationBase"].get<float>(),
@@ -1487,6 +1499,7 @@ class ItemId_67 : public ItemEffect {
 public:
 	void OnEvent(EventType type, EventContext ctx, int stacks) override {
 		if (type != EventType::OnGettingHit) return;
+		if (!ctx.target) return;
 
 		float maxHealth = ctx.target->m_pStats->GetFinalHealth();
 		if (ctx.hitInfo.damageDealt < maxHealth * 0.25f) return;

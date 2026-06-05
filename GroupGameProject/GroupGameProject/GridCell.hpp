@@ -35,6 +35,7 @@ public:
     void AddEnemy(Enemy* enemy);
     void RemoveEnemy(Enemy* enemy);
     void ClearEnemies();
+    void ClearEntities() { entities.clear(); }
     const vector<Enemy*>& GetEnemies() const { return enemies; }
 
     //walls

@@ -57,18 +57,21 @@ void TestingAreaScene::ResetGameState() {
     context.timer->Reset();
 }
 
-
 void TestingAreaScene::GenerateNewMap(Player* player) {
+    elements.clear();
+    elementsToAdd.clear();
+    elementsToDelete.clear();
+
     if (context.grid != nullptr) {
+        context.grid->ClearAllEntities();
         delete context.grid;
         context.grid = nullptr;
     }
-    // grid setup
+
     context.grid = new Grid(GRID_WIDTH, GRID_HEIGHT, CELL_SIZE);
     context.grid->Initialize();
     AddElement(context.grid);
 
-    //make dungeon
     DungeonGenerator* dg = new DungeonGenerator(player);
     dg->LoadRooms("../../data/dungeonRooms/");
     dg->Generate();

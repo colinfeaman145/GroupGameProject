@@ -211,6 +211,7 @@ void Player::HandleCollision(Collidable* other, Vector2 penetration) {
 
 void Player::AddItem(ItemID id, int count) {
 	Attackable::AddItem(id, count);
+	if (!playerHud) return;  
 	auto def = context.ir->Get(id);
 	if (def.data.contains("name") && def.data.contains("description")) {
 		playerHud->PushPopup(def.data["name"], def.data["description"]);

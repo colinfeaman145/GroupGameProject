@@ -56,6 +56,7 @@ public:
     void AddEnemy(Enemy* enemy);
     void RemoveEnemy(Enemy* enemy);
     void UpdateEnemyOccupancy(Enemy* enemy);
+    void ClearAllEntities();
 
        //Other
     void AddOther(Entity* e);
