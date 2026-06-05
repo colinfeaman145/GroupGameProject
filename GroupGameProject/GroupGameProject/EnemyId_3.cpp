@@ -43,7 +43,7 @@ void EnemyId_3::UpdateState() {
 
 
 
-	printf("EnemyId_3 State: %d - %d\n", newState, isChasing);
+	//printf("EnemyId_3 State: %d - %d\n", newState, isChasing);
     if (newState != currentState)
         EnterState(newState);
 }

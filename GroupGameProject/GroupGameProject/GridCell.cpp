@@ -68,6 +68,7 @@ void GridCell::Process(float deltaTime, bool isRendered) {
     for (Entity* e : pendingEntities) {
         entities.push_back(e);
     }
+    pendingEntities.clear();
 
 	std::erase_if(entities, [](Entity* const& p) { return p->isToBeDeleted;});
 }
@@ -79,8 +80,8 @@ vector<Collidable*> GridCell::GetCollidables() const {
     if (CanCollide()) //includes self when it's a wall
         result.push_back(const_cast<GridCell*>(this));
 
-		for (Enemy* e : enemies)
-			result.push_back(e);
+	for (Enemy* e : enemies)
+		result.push_back(e);
 
 	for (Entity* e : entities)
 		result.push_back(e);

@@ -33,7 +33,7 @@ public:
 		defaultBonusDamage = bonusDamage;
 		defaultDamageMult = damageMult;
 		defaultBaseSpeed = baseSpeed;
-		defaultBonusDamage = bonusSpeed;
+		defaultBonusDamage = bonusDamage;
 		defaultSpeedMult = speedMult;
 		defaultBaseAttackSpeed = baseAttackSpeed;
 		defaultBonusAttackSpeed = bonusAttackSpeed;

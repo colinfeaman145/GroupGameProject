@@ -95,6 +95,8 @@ struct CollisionShape {
 };
 
 class Collidable {
+public:
+    uint32_t seenStamp = 0;//for saving memory in GetNearbyCollidables()
 protected:
     CollisionShape collisionBound;
     CollidableType collideType;

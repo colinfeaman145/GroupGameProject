@@ -40,7 +40,6 @@ void Entity::Process(float deltaTime) {
     hasBeenProcessed = true;
     hasBeenDrawn = false;
 
-
     position = position + (velocity * deltaTime);
 
     //stay inside grid

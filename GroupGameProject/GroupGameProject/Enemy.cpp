@@ -42,8 +42,6 @@ void Enemy::Process(float deltaTime) {
             }
         }
     }
-
-    AI::Process(deltaTime);
 }
 
 void Enemy::HandleCollision(Collidable* other, Vector2 penetration) {

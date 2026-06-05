@@ -169,12 +169,14 @@ vector<GridCell*>& Grid::GetNeighbourCells(GridCoord coord, int radius) {
 vector<Collidable*>& Grid::GetNearbyCollidables(GridCoord coord, int radius) {
 
     collidableScratch.clear();
-    collidableSeen.clear();
+    ++frameStamp;
 
     for (GridCell* cell : GetNeighbourCells(coord, radius)) {
         for (Collidable* c : cell->GetCollidables()) {
-            if (collidableSeen.insert(c).second) //returns false if alrady present
+            if (c->seenStamp != frameStamp) {
+                c->seenStamp = frameStamp;
                 collidableScratch.push_back(c);
+            }
         }
     }
     return collidableScratch;
@@ -206,15 +208,13 @@ bool Grid::ResolveCollisions(Entity* entity) {
 
     if (!entity) return false;
     bool anyCollision = false;
-
     //find search area
     const GridOccupancy& occ = entity->GetOccupancy();
-    int searchRadius = max(occ.maxCol - occ.minCol, occ.maxRow - occ.minRow) + 3;
+    int searchRadius = max(occ.maxCol - occ.minCol, occ.maxRow - occ.minRow) + 1;
     GridCoord center = { (occ.minCol + occ.maxCol) / 2, (occ.minRow + occ.maxRow) / 2 };
 
     //get entity to check for collision
     vector<Collidable*> candidates = GetNearbyCollidables(center, searchRadius);
-
     //check entities for collision
     for (Collidable* other : candidates) {
         if (!other) continue;//if destroyed
@@ -231,6 +231,7 @@ bool Grid::ResolveCollisions(Entity* entity) {
             anyCollision = true;
         }
     }
+
     return anyCollision;
 }
 
