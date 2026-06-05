@@ -299,7 +299,7 @@ void PlayerHUD::PushPopup(const std::string& name, const std::string& desc) {
     p.nameText->Initialize(name, fontPath, 28);
     p.descText = new Text();
     p.descText->Initialize(desc, fontPath, 20);
-    p.timer = 3.0f;
+    p.timer = 7.0f;
     popups.push_back(p);
 }
 
