@@ -4,6 +4,7 @@
 #include "GridCoord.hpp"
 #include "Vector2.hpp"
 #include <vector>
+#include <future>
 
 struct FlowField {
     std::vector<Vector2> vectors;
@@ -11,7 +12,7 @@ struct FlowField {
     GridCoord target = { -1, -1 };
     bool dirty = true;
     int computedRadius;
-
+    
     void Reset(int gridWidth, int gridHeight) {
         int total = gridWidth * gridHeight;
         vectors.assign(total, Vector2(0.f, 0.f));

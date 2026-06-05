@@ -5,7 +5,9 @@
 
 
 float DifficultyCalculator::TimeFactor() {
-    return 10.0506 * pow(1, 0.2);
+	// determines how impactfull the time is for difficulty
+	// increase will make the difficulty increase faster
+	return 0.1000 * pow(1, 0.2); 
 }
 
 float DifficultyCalculator::StageFactor() {

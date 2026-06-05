@@ -58,11 +58,18 @@ void GridCell::Process(float deltaTime, bool isRendered) {
         e->Process(deltaTime);
         context.grid->UpdateEnemyOccupancy(e);
     }
+
     for (Entity* e : entities) {
         if (e->hasBeenProcessed) continue;
         e->Process(deltaTime);
         context.grid->UpdateOccupancy(e, &GridCell::AddOther, &GridCell::RemoveOther);
     }
+
+    for (Entity* e : pendingEntities) {
+        entities.push_back(e);
+    }
+
+	std::erase_if(entities, [](Entity* const& p) { return p->isToBeDeleted;});
 }
 
 vector<Collidable*> GridCell::GetCollidables() const {
@@ -72,13 +79,13 @@ vector<Collidable*> GridCell::GetCollidables() const {
     if (CanCollide()) //includes self when it's a wall
         result.push_back(const_cast<GridCell*>(this));
 
-    for (Enemy* e : enemies)
-        result.push_back(e);
+		for (Enemy* e : enemies)
+			result.push_back(e);
 
-     for (Entity* e : entities)
-        result.push_back(e);
+	for (Entity* e : entities)
+		result.push_back(e);
 
-    return result;
+	return result;
 }
 
 
@@ -120,7 +127,7 @@ bool GridCell::IsWall() const {
 
 //OTHER
 void GridCell::AddOther(Entity* e) {
-    entities.push_back(e);
+    pendingEntities.push_back(e);
 }
 
 void GridCell::RemoveOther(Entity* e) {

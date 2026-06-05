@@ -8,25 +8,27 @@
 Enemy::Enemy() = default;
 Enemy::~Enemy() = default;
 
-void Enemy::Initialize(Vector2 pos) {
+bool Enemy::Initialize(Vector2 pos, Sprite* spr) {
 
 	LoadEntityDataFromJson(data);
+	targetRadius = data["params"]["targetRadius"].get<int>();
     // the idle animation is always the base animation
     Attackable::Initialize(pos, idleAnimation);
     collideType = CollidableType::ENEMY;
     SetCollisionBound(CollisionShape::MakeCircle(radius * 0.75));
     idleAnimation->Animate();
+    return true;
 }
 
 void Enemy::Draw(Renderer* renderer) {
 
-    Attackable::Draw(renderer);
+    AI::Draw(renderer);
 }
 
 void Enemy::Process(float deltaTime) {
 
     //standard process
-    Attackable::Process(deltaTime);
+    AI::Process(deltaTime);
     context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
 
     //if player nearby KILL FUCK EM UP
@@ -47,6 +49,10 @@ void Enemy::Process(float deltaTime) {
 void Enemy::HandleCollision(Collidable* other, Vector2 penetration) {
     Attackable::HandleCollision(other, penetration);
     if (!IsAlive()) return;
+
+	if ((int)currentAttackCooldown > 0) return;
+	currentAttackCooldown = attackCooldown;
+
     if (other->GetCollidableType() != CollidableType::PLAYER) return;//only damage player
 
 	if (auto contact = dynamic_cast<Attackable*>(other)) {
@@ -61,6 +67,15 @@ void Enemy::HandleCollision(Collidable* other, Vector2 penetration) {
 }
 
 void Enemy::OnStuck() {
+}
+
+bool Enemy::IsTargetInAttackRange() {
+	if (!target) return false;
+	if (auto attackableTarget = dynamic_cast<Attackable*>(target)) {
+		float distance = (attackableTarget->GetPosition() - GetPosition()).Length();
+		return distance <= targetRadius;
+	}
+
 }
 
 void Enemy::SetAttackCooldown(float atckCool) {

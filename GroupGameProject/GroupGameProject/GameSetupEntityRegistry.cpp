@@ -27,4 +27,9 @@ void Game::SetupEntityRegistry(const std::string& filepath) {
 		.type = EntityType::GENERIC,
 		.data = data["3"]
 	});
+	context.er->RegisterEntity({
+		.id = 4,
+		.type = EntityType::BOSS,
+		.data = data["4"]
+	});
 }

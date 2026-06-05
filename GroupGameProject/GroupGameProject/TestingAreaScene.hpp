@@ -1,7 +1,9 @@
 #pragma once
 #include "Scene.hpp"
 
+
 class Player;
+class EnemySpawner;
 
 #define GRID_WIDTH 50000
 #define GRID_HEIGHT 50000
@@ -9,7 +11,8 @@ class Player;
 
 class TestingAreaScene : public Scene {
 public:
-    TestingAreaScene() {}
+    TestingAreaScene() = default;
+	~TestingAreaScene();
 
     bool Initialize() override;
     void Process(float deltaTime) override;
@@ -20,8 +23,8 @@ public:
     Player* GetPlayer() const;
 
 protected:
-    Sprite* levelBackground;
     Player* player;
+    EnemySpawner* spawner;
     bool hasStageCompleted;
 };
 

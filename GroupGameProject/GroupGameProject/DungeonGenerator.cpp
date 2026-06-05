@@ -240,11 +240,14 @@ void DungeonGenerator::ApplyToGrid() {
                         cell->AddOther(shopSocket);//does nothing because other does not get drawn by gridCell
                         break;
                     }
+                    case('G'): {
+                        AddDungeonTileFloor(cell);
+						enemySpawnLocations.push_back({cell, EntityType::GENERIC});
+                        break;
+                    }
                     case('B'): {
                         AddDungeonTileFloor(cell);
-                        Enemy* enemy = Entity::CreateEntityFromJson<EnemyId_2>(context.er->Get(2).data);
-                        enemy->Initialize(cell->GetCenter() - enemy->GetRadius());
-                        cell->AddEnemy(enemy);
+						enemySpawnLocations.push_back({cell, EntityType::BOSS});
                         break;
                     }
                     case('P'): {
@@ -389,4 +392,8 @@ void DungeonGenerator::ApplyToGrid() {
 
         }
     }
+}
+
+vector<SpawnLocation> DungeonGenerator::GetEnemySpawnLocations() {
+    return enemySpawnLocations;
 }

@@ -3,11 +3,20 @@
 #include "Player.hpp"
 #include "DungeonGenerator.hpp"
 #include "Camera.hpp"
+#include "EnemySpawner.hpp"
+
+TestingAreaScene::~TestingAreaScene() {
+    delete player;
+    player = nullptr;
+    delete spawner;
+    spawner = nullptr;
+}
 
 bool TestingAreaScene::Initialize() {
+    spawner = new EnemySpawner();
     context.dc->RegisterOnStageCompleted([this] {
 		this->hasStageCompleted = true;
- });
+    });
     ResetGameState();
     context.am->AddGroup("SFX");
     context.am->AddGroup("Music");
@@ -32,12 +41,12 @@ void TestingAreaScene::Process(float deltaTime) {
     Scene::Process(deltaTime);
     ReadInputs(deltaTime);
 
-    if (hasStageCompleted) {
-        GenerateNewMap(player);
-        hasStageCompleted = false;
-    }
+	if (hasStageCompleted) {
+		GenerateNewMap(player);
+		hasStageCompleted = false;
+	}
 
-       // context.am->Process(player->GetPosition(), deltaTime);
+	spawner->Process(deltaTime);
 }
 
 void TestingAreaScene::Draw(Renderer* renderer) {
@@ -50,9 +59,12 @@ void TestingAreaScene::ResetGameState() {
         delete player;
         player = nullptr;
 	}
-	player = Entity::CreateEntityFromJson<Player>(context.er->Get(1).data);
-	player->Initialize({ 0,0 });
-	GenerateNewMap(player);
+	auto playerEntity = EnemySpawner::CreateEntityFromJson(context.er->Get(1).data);
+	if (auto p = dynamic_cast<Player*>(playerEntity)) {
+		player = p;
+	    player->Initialize({ 0,0 });
+	    GenerateNewMap(player);
+	}
 
     context.timer->Reset();
 }
@@ -75,6 +87,8 @@ void TestingAreaScene::GenerateNewMap(Player* player) {
     DungeonGenerator* dg = new DungeonGenerator(player);
     dg->LoadRooms("../../data/dungeonRooms/");
     dg->Generate();
+
+	spawner->Initialise(dg->GetEnemySpawnLocations(), 5, 1, player);
 }
 
 void TestingAreaScene::ReadInputs(float deltaTime) {

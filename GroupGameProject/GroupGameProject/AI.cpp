@@ -2,28 +2,33 @@
 #include "Grid.hpp"
 #include "Sprite.hpp"
 #include "GameContext.hpp"
+#include "StatSheet.hpp"
+
+
+AI::AI() : 
+    target(nullptr),
+    adjustCourseTimer(0),
+    currentRetargetTime(0),
+    retargetCooldown(2.0f),
+    framesSinceLastHone(0), 
+    targetRadius(100), 
+    previousPosition(0, 0), 
+    stuckTime(0), 
+    isChasing(false) {}
+
+bool AI::Initialize(Vector2 pos, Sprite* spr) {
+	Attackable::Initialize(pos, spr);
+	return true;
+}
 
 void AI::Process(float deltaTime) {
     if (!IsAlive()) return;
 
+    Attackable::Process(deltaTime);
     //update timers
     currentRetargetTime -= deltaTime;
     adjustCourseTimer -= deltaTime;
-    frozenTime -= deltaTime;
     framesSinceLastHone++;
-
-    //update move speed
-    movementSpeed = GetSpeed();
-
-    //if (frozenTime > 0) {//if frozen
-    //    SetFlash(true);
-    //    return;
-    //}
-    //else if (!frozen) {//on first frame unfrozen
-    //    frozen = false;
-    //    velocity = Vector2();
-    //    Hone();
-    //}
 
     if (framesSinceLastHone >= 5) {//if walking
         Hone(); //move towards target
@@ -43,8 +48,6 @@ void AI::Draw(Renderer* renderer) {
     Attackable::Draw(renderer);
 }
 
-
-
 void AI::SetTarget(Collidable* c) {
     if (target) {
         auto& vec = target->targetedBy;
@@ -58,6 +61,8 @@ void AI::SetTarget(Collidable* c) {
 
 void AI::Hone() {
     if (target == nullptr) return;
+    if (!isChasing) return;
+
 
     GridCoord myCell = context.grid->WorldToGrid(GetPosition());
     GridCoord targetCoord = context.grid->WorldToGrid(target->GetPosition());
@@ -65,7 +70,7 @@ void AI::Hone() {
     if (myCell.col == targetCoord.col && myCell.row == targetCoord.row) {
         Vector2 toTarget = target->GetCenter() - Collidable::GetCenter();
         if (toTarget.Length() > max(sprite->GetWidth(), sprite->GetHeight()))
-            velocity = toTarget.Normalized() * movementSpeed;
+            velocity = toTarget.Normalized() * m_pStats->GetFinalSpeed();
         return;
     }
 
@@ -83,8 +88,9 @@ void AI::Hone() {
     if ((dx * dx + dy * dy) < (threshold * threshold) || adjustCourseTimer < 0) {
         Vector2 flowDir = context.grid->GetFlowVector(myCell, targetCoord);
         if (flowDir.x != 0.f || flowDir.y != 0.f)
-            velocity = flowDir * movementSpeed;
-        adjustCourseTimer = 1.0f;
+            velocity = flowDir * m_pStats->GetFinalSpeed();
+        adjustCourseTimer = 5.0f;
     }
+
     return;
 }

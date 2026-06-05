@@ -51,10 +51,11 @@ private:
     GridCoord coords;
     Vector2 position;
     Sprite* sprite;
-    vector <Entity*> entities;//player, attackCone
+    vector <Entity*> entities;
     vector<Enemy*> enemies;
     vector<Explosion*> explosions;
     //vector<Resource*> drops;
+    vector<Entity*> pendingEntities;
     bool isWall;
 };
 

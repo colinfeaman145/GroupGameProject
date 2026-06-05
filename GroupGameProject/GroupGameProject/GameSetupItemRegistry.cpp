@@ -8,7 +8,6 @@
 #include "Item.hpp"
 #include "Items.hpp"
 
-
 using json = nlohmann::json;
 
 void Game::SetupItemRegistry(const std::string& filepath) {

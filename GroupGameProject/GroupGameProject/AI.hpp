@@ -7,6 +7,8 @@
 class AI : public Attackable {
 
 	public:
+		AI();
+		virtual bool Initialize(Vector2 pos, Sprite* spr) override;
 		virtual void Process(float deltaTime) override;
 		virtual void Draw(Renderer* renderer) override;
 
@@ -24,13 +26,11 @@ class AI : public Attackable {
 		float retargetCooldown;
 		int framesSinceLastHone;
 		int targetRadius;
-		float movementSpeed;
 
 		//status
 		Vector2 previousPosition;
 		float stuckTime;
-		float frozenTime;
-		bool frozen;
+		bool isChasing;
 };
 
 #endif

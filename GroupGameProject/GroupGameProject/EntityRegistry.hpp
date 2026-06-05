@@ -43,7 +43,7 @@ public:
 		}
 		else {
 
-			std::mt19937 gen(random_device{}());
+			std::mt19937 gen(std::random_device{}());
 			std::uniform_int_distribution<int> dist(0, entityOfType.size() - 1);
 			auto randIndex = dist(gen);
 			return entityOfType[randIndex];

@@ -6,19 +6,11 @@
 
 class EnemyId_2 : public Enemy {
 public:
-	virtual void Initialize(Vector2 pos) override;
+	bool Initialize(Vector2 pos, Sprite* spr = nullptr) override;
 	void Process(float deltaTime) override;
-	void Approach(float deltaTime);
-	void Recover(float deltaTime);
+	void UpdateState();
+	void EnterState(EnemyState newState);
+	void DoAttack();
 	void HandleCollision(Collidable* other, Vector2 penetration) override;
-	void HandleAttackAnimation();
-	void HandleRecoverAnimation();
-	void RecalculateDirection();
-
-private:
-	float maxSpeed;
-	float acceleration;
-	float deceleration;
-	Vector2 currentTargetPosition;
 };
 

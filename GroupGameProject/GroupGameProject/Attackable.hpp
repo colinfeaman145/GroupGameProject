@@ -18,12 +18,12 @@ class EventContext;
 
 //A living thing
 class Attackable : public Entity {
-public:
-	Attackable();
-	~Attackable();
-	virtual bool Initialize(Vector2 pos, Sprite* spr) override;
-	virtual void Process(float deltaTime) override;
-	virtual void Draw(Renderer* renderer) override;
+	public:
+		Attackable();
+		~Attackable();
+		virtual bool Initialize(Vector2 pos, Sprite* spr) override;
+		virtual void Process(float deltaTime) override;
+		virtual void Draw(Renderer* renderer) override;
 
 	void DealDamageTo(Attackable* target, HitInfo info);
 	void ApplyDamage(EventContext& ctx);
@@ -44,14 +44,14 @@ public:
 	vector<StatusEffect> GetStatusEffects();
 
 
-	// setter
-	void SetFlash(bool flash);
-	void SetHealth(float h);
-	void SetPosition(Vector2 pos) override;
-	void SetDead();
-	void SetSprites(AnimatedSprite* move, AnimatedSprite* attack, AnimatedSprite* die);
-	void SetSpritesDrawSize(int size);
-	void SetSpriteDirection(bool b);
+		// setter
+		void SetFlash(bool flash);
+		void SetHealth(float h);
+		void SetPosition(Vector2 pos) override;
+		void SetDead();
+		void SetSprites(AnimatedSprite* move, AnimatedSprite* attack, AnimatedSprite* die);
+		void SetSpritesDrawSize(int size);
+		void SetSpriteDirection(bool b);
 
 
 	// item effects
@@ -88,10 +88,10 @@ protected:
 	std::vector<StatusEffect> m_activeStatusEffects;
 	CollisionShape effectRadiusBound;
 
-	PercentageBar* healthBar;
-	bool isAlive;
+		PercentageBar* healthBar;
+		bool isAlive;
 
-	float flashDuration;
+		float flashDuration;
 
 	AnimatedSprite* deathAnimation;
 	AnimatedSprite* movingAnimation;
@@ -103,3 +103,4 @@ protected:
 };
 
 #endif
+

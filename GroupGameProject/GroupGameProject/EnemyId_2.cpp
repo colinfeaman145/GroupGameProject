@@ -3,95 +3,65 @@
 #include "InlineHelper.hpp"
 #include "AnimatedSprite.hpp"
 #include "GameContext.hpp"
+#include "StatSheet.hpp"
 
 
-void EnemyId_2::Initialize(Vector2 pos) {
+bool EnemyId_2::Initialize(Vector2 pos, Sprite* spr) {
 	Enemy::Initialize(pos);
 	ChangeState(EnemyState::IDLE);
-	acceleration = data["params"]["acceleration"];
-	deceleration = data["params"]["deceleration"];
-	maxSpeed = data["params"]["maxSpeed"];
-}
 
+	return true;
+}
 
 void EnemyId_2::Process(float deltaTime) {
-	Enemy::Process(deltaTime);
-	if (target == nullptr) return;
-	if (currentState == EnemyState::IDLE) {
-		RecalculateDirection();
-		ChangeState(EnemyState::APPROACHING);
-	}
+    Enemy::Process(deltaTime);
+    if (!IsAlive() || target == nullptr) return;
 
-	if (GetPosition().IsNear(currentTargetPosition, GetRadius())) {
-		ChangeState(EnemyState::RECOVERING);
-	}
-
-	if (velocity.IsNear({ 0,0 }, 5) && currentState == EnemyState::RECOVERING) {
-		ChangeState(EnemyState::IDLE);
-	}
-
-	if (abs(velocity.x) < maxSpeed && abs(velocity.y) < maxSpeed) {
-		Approach(deltaTime);
-	}
-	Recover(deltaTime);
+    UpdateState();
+    sprite->SetFlip(target->GetPosition().x < GetPosition().x);
 }
 
+void EnemyId_2::UpdateState() {
+    // Don't interrupt a playing attack animation
+    if (currentState == EnemyState::ATTACKING && attackingAnimation->IsAnimating())
+        return;
 
-
-
-// attack player while in a specific animation
-void EnemyId_2::Approach(float deltaTime) {
-	if (currentState != EnemyState::APPROACHING) return;
-	velocity.x *= 1 + (acceleration * deltaTime);
-	velocity.y *= 1 + (acceleration * deltaTime);
-	HandleAttackAnimation();
+    EnemyState newState = IsTargetInAttackRange() ? EnemyState::ATTACKING
+        : EnemyState::APPROACHING;
+    if (newState != currentState)
+        EnterState(newState);
 }
 
-void EnemyId_2::HandleAttackAnimation() {
-	if (!attackingAnimation->IsAnimating()) {
-		sprite = attackingAnimation;
-		attackingAnimation->Animate();
-		idleAnimation->Restart();
-		idleAnimation->Pause();
-		if (target->GetPosition().x < GetPosition().x) sprite->SetFlip(true);
-		else sprite->SetFlip(false);
-	}
+void EnemyId_2::EnterState(EnemyState newState) {
+    currentState = newState;
 
+    switch (newState) {
+
+    case EnemyState::APPROACHING:
+        sprite = idleAnimation;
+        idleAnimation->Animate();
+        attackingAnimation->Restart();
+        attackingAnimation->Pause();
+        isChasing = true;
+        break;
+
+    case EnemyState::ATTACKING:
+        sprite = attackingAnimation;
+        attackingAnimation->Restart();
+        attackingAnimation->Animate();
+        idleAnimation->Pause();
+        isChasing = false;
+        velocity = { 0, 0 };
+        DoAttack();
+        break;
+    }
+}
+
+void EnemyId_2::DoAttack() {
+    if (auto player = dynamic_cast<Attackable*>(target))
+        player->ApplyStatusEffect({ StatusEffectType::Bleeding, 5.0f, (Attackable*)this, 5, true });
 }
 
 void EnemyId_2::HandleCollision(Collidable* other, Vector2 penetration) {
 	Enemy::HandleCollision(other, penetration);
-	if (other->GetCollidableType() != CollidableType::PLAYER) return;
-	if (auto player = dynamic_cast<Attackable*>(other)) {
-		player->ApplyStatusEffect({ StatusEffectType::Bleeding, 5.0f, this });
-	}
 }
-
-// if not hit the player
-void EnemyId_2::Recover(float deltaTime) {
-	if (currentState != EnemyState::RECOVERING) return;
-	velocity.x /= 1 + (deceleration * deltaTime);
-	velocity.y /= 1 + (deceleration * deltaTime);
-	HandleRecoverAnimation();
-}
-
-void EnemyId_2::HandleRecoverAnimation() {
-	if (!idleAnimation->IsAnimating()) {
-		sprite = idleAnimation;
-		idleAnimation->Animate();
-		attackingAnimation->Restart();
-		attackingAnimation->Pause();
-
-	}
-	if (target->GetPosition().x < GetPosition().x) sprite->SetFlip(true);
-	else sprite->SetFlip(false);
-}
-
-void EnemyId_2::RecalculateDirection() {
-	currentTargetPosition = target->GetPosition();
-	velocity = (currentTargetPosition - GetPosition()).Normalized();
-}
-
-
-
-

@@ -66,13 +66,18 @@ bool Attackable::Initialize(Vector2 pos, Sprite* spr) {
 
 	SetEffectRadiusBound(radius * m_pStats->effectRadiusScaler);
 
+	SetEffectRadiusBound(radius);
+
 	isAlive = true;
 	return true;
 }
 
 void Attackable::Process(float deltaTime) {
 
-	if (!IsAlive() && !IsDying()) return;
+	if (!IsAlive() && !IsDying()) {
+		isToBeDeleted = true;
+		return;
+	}
 
 	Entity::Process(deltaTime);
 	for (auto& [itemID, stacks] : m_inventory->All()) { //tick timer for each item
@@ -191,6 +196,7 @@ void Attackable::ApplyDamage(EventContext& ctx) {
 	if ((int)m_pStats->GetCurrentHealth() <= 0 && IsAlive()) {
 		FireEvent(EventType::OnDeath, ctx);
 		ctx.source->FireEvent(EventType::OnKill, ctx);
+		ctx.source->recentKillCount++;
 		SetDead();
 	}
 

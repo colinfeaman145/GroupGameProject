@@ -5,6 +5,7 @@
 #include "Element.hpp"
 #include "Collidable.hpp"
 
+
 #include "json.hpp"
 
 using json = nlohmann::json;
@@ -60,22 +61,12 @@ public:
 	void SetOccupancy(GridOccupancy occ);
 	void SetVisibliliy(Visibility visible);
 
-	template<typename T>
-	static T* CreateEntityFromJson(json data) {
-		auto newItem = new T();
-		if (auto entity = dynamic_cast<Entity*>(newItem)) {
-			entity->data = data;
-		}
-		else {
-			delete newItem;
-			throw std::runtime_error("Type T must be derived from Enemy");
-		}
-		return newItem;
-	}
+
 
 public:
 	bool hasBeenProcessed;
 	bool hasBeenDrawn;
+	json data;
 protected:
 	Sprite* sprite;
 	Visibility visibility;
@@ -83,7 +74,6 @@ protected:
 	Vector2 position;
 	Vector2 velocity;
 	GridOccupancy occupancy;//what gridCells the entity is in(used for collision detection)
-	json data;
 
 
 

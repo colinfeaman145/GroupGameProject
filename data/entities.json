@@ -1,16 +1,17 @@
 {
   "1": {
+    "id":1,
     "stats": {
       "baseHealth": 100,
       "bonusHealth": 0,
       "healthMult": 1,
-      "baseDamage": 5,
+      "baseDamage": 40,
       "bonusDamage": 0,
       "damageMult": 1,
-      "baseSpeed": 5000,
+      "baseSpeed": 3000,
       "bonusSpeed": 0,
       "speedMult": 1,
-      "baseAttackSpeed": 5,
+      "baseAttackSpeed": 1,
       "bonusAttackSpeed": 0,
       "attackSpeedMult": 1,
       "armor": 20,
@@ -60,15 +61,15 @@
       {
         "id": 1,
         "stacks": 50
-      },
-      {
-        "id": 3,
-        "stacks": 2000
-      },
+      },      
       {
         "id": 5,
         "stacks": 1
-      }      
+      },
+      {
+        "id": 6,
+        "stacks": 5
+      }
     ],
     "spawner": {
       "spawnRadius": 200,
@@ -85,6 +86,7 @@
     }
   },
   "2": {
+    "id":2,
     "stats": {
       "baseHealth": 100,
       "bonusHealth": 0,
@@ -92,12 +94,12 @@
       "baseDamage": 20,
       "bonusDamage": 0,
       "damageMult": 1,
-      "baseSpeed": 12,
+      "baseSpeed": 500,
       "bonusSpeed": 0,
+      "speedMult": 1,
       "baseAttackSpeed": 1,
       "bonusAttackSpeed": 0,
-      "attackSpeedMult": 1,
-      "speedMult": 1,
+      "attackSpeedMult": 1,      
       "armor": 0,
       "weakness" : 0,
       "regeneration": 0,
@@ -148,19 +150,18 @@
       "spawnRadius": 150,
       "items": [
         {
-          "id": 8,
+          "id": 3,
           "dropRatePerItem": 1,
           "count": 1
         }
       ]
     },
-    "params": {
-      "acceleration": 10.0,
-      "deceleration": 2.0,
-      "maxSpeed": 1500
+    "params": {      
+      "targetRadius": 500
     }
   },
   "3": {
+    "id":3,
     "stats": {
       "baseHealth": 100,
       "bonusHealth": 0,
@@ -218,7 +219,10 @@
       }
     },
     "inventory": [
-      
+      {
+        "id": 1,
+        "stacks": 1
+      }
     ],
     "spawner": {
       "spawnRadius": 150,
@@ -231,7 +235,90 @@
       ]
     },
     "params": {
-      
+      "targetRadius": 1500
+    }
+  },
+  "4": {
+    "id":4,
+    "stats": {
+      "baseHealth": 1000,
+      "bonusHealth": 0,
+      "healthMult": 1,
+      "baseDamage": 10,
+      "bonusDamage": 0,
+      "damageMult": 1,
+      "baseSpeed": 500,
+      "bonusSpeed": 0,
+      "baseAttackSpeed": 0.7,
+      "bonusAttackSpeed": 0,
+      "attackSpeedMult": 1,
+      "speedMult": 1,
+      "armor": 0,
+      "weakness": 0,
+      "regeneration": 0,
+      "regenerateTime": 7.5,
+      "critChance": 0,
+      "critMultiplyer": 1.5,
+      "hasHealCritEnabled": 0,
+      "effectRadiusScaler": 0
+    },
+    "animations": {
+      "idle": {
+        "path": "../../assets/sprites/Enemy/Monsters_Creatures_Fantasy/Slime/idle.png",
+        "frameWidth": 156,
+        "frameHeight": 156,
+        "framesPerRow": 14,
+        "framesTotal": 14,
+        "frameDuration": 0.1
+      },
+      "moving": {
+        "path": "../../assets/sprites/Enemy/Monsters_Creatures_Fantasy/Slime/walk.png",
+        "frameWidth": 156,
+        "frameHeight": 156,
+        "framesPerRow": 6,
+        "framesTotal": 6,
+        "frameDuration": 0.1
+      },
+      "death": {
+        "path": "../../assets/sprites/Enemy/Monsters_Creatures_Fantasy/Slime/death.png",
+        "frameWidth": 156,
+        "frameHeight": 156,
+        "framesPerRow": 11,
+        "framesTotal": 11,
+        "frameDuration": 0.1
+      },
+      "attacking": {
+        "path": "../../assets/sprites/Enemy/Monsters_Creatures_Fantasy/Slime/attack.png",
+        "frameWidth": 156,
+        "frameHeight": 156,
+        "framesPerRow": 19,
+        "framesTotal": 19,
+        "frameDuration": 0.1
+      }
+    },
+    "inventory": [       
+    ],
+    "spawner": {
+      "spawnRadius": 150,
+      "items": [
+        {
+          "id": 3,
+          "dropRatePerItem": 0.5,
+          "count": 3
+        },
+	{
+          "id": 8,
+          "dropRatePerItem": 1,
+          "count": 1
+        }
+      ]
+    },
+    "params": {
+      "targetRadius": 2000,
+      "chargeSpeed": 2000,
+      "bulletSpeed": 1000,
+      "bulletWaveCount": 1,
+      "bulletWaveInterval": 0.5
     }
   }
 }

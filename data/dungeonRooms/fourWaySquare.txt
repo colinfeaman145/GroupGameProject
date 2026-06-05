@@ -7,9 +7,9 @@
 
 X X X X N X X X X
 X J F F F F F F X
-X F F F F F F F X
+X F F G F F F F X
 X F F F F F R F X
-W F M F F F F F E
+W F M F F G F F E
 X F F F F F F F X
 X F F F F M F F X
 X F I F F F F F X

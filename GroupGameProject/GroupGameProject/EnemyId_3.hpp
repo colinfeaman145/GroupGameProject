@@ -4,14 +4,14 @@
 class EnemyId_3 : public Enemy {
 public:
 	// lifecycle functions
-	virtual void Initialize(Vector2 pos);
-	virtual void Draw(Renderer* renderer) override;
-	virtual void Process(float deltaTime) override;
-	virtual void HandleCollision(Collidable* other, Vector2 penetration) override;
-	void RecalculateTargetLocation();
+	bool Initialize(Vector2 pos, Sprite* spr = nullptr) override;
+	void Draw(Renderer* renderer) override;
+	void Process(float deltaTime) override;
+	void UpdateState();
+	void HandleCollision(Collidable* other, Vector2 penetration) override;
+	void EnterState(EnemyState newState);
 
-private:
-	void HandleAttack();
+	void DoAttack();
 
 private:
 	Vector2 currentTargetPos;
