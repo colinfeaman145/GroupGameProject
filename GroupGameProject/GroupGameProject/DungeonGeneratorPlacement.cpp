@@ -176,13 +176,7 @@ void DungeonGenerator::PlaceHallway(GridCoord fromCoord, Direction dir, int leng
 
     GridCoord current = { fromCoord.col + step.col, fromCoord.row + step.row };
 
-    //printf("[PlaceHallway] from (%d,%d) dir=%d length=%d\n",
-        //fromCoord.col, fromCoord.row, (int)dir, length);
-    // and inside the loop:
-
-    for (int i = 0; i < length + 1; ++i) {
-        //printf("  step(%d,%d) HasFloor=%d HasWall=%d IsEmpty=%d\n",
-            //current.col, current.row, HasFloor(current), HasWall(current), IsEmpty(current));
+    for (int i = 0; i < length + 2; ++i) {
         if (!IsValidCoord(current)) break;
 
         if (HasFloor(current)) break; //reached another room's floor

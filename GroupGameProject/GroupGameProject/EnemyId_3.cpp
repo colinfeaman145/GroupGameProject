@@ -3,9 +3,17 @@
 #include "AnimatedSprite.hpp"
 #include "GameContext.hpp"
 #include "InlineHelper.hpp"
+#include "PercentageBar.hpp"
 
 bool EnemyId_3::Initialize(Vector2 pos, Sprite* spr) {
 	Enemy::Initialize(pos);
+    int size = context.grid->GetCellSize() * 2;
+    radius *= 0.75;
+    movingAnimation->SetDrawSize(size, size);
+    idleAnimation->SetDrawSize(size, size);
+    attackingAnimation->SetDrawSize(size, size);
+    SetCollisionBound(CollisionShape::MakeCircle(radius, Vector2((size / 2) - radius, (size / 2) - radius)));
+    healthBar->SetOffset((size - healthBar->GetWidth()) / 2, size * 0.2);
 	return true;
 }
 

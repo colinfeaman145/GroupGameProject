@@ -8,10 +8,10 @@
       "baseDamage": 40,
       "bonusDamage": 0,
       "damageMult": 1,
-      "baseSpeed": 3000,
+      "baseSpeed": 1500,
       "bonusSpeed": 0,
       "speedMult": 1,
-      "baseAttackSpeed": 1,
+      "baseAttackSpeed": 1.25,
       "bonusAttackSpeed": 0,
       "attackSpeedMult": 1,
       "armor": 20,
@@ -61,7 +61,11 @@
       {
         "id": 1,
         "stacks": 50
-      },      
+      },  
+      {
+        "id": 4,
+        "stacks": 1
+      },    
       {
         "id": 5,
         "stacks": 1
@@ -69,7 +73,7 @@
       {
         "id": 6,
         "stacks": 5
-      }
+      }      
     ],
     "spawner": {
       "spawnRadius": 200,

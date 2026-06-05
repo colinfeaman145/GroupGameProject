@@ -6,7 +6,7 @@
 inline int WIDTH = 0;
 inline int HEIGHT = 0;
 #define CAM_SPEED 10 //only used for Move function
-#define RENDER_DISTANCE 10 
+#define RENDER_DISTANCE 5 
 
 class Camera {
 public:
