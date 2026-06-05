@@ -204,7 +204,7 @@
       "baseDamageMultiplier": 2,
       "damageMultiplierPerStack": 0.5,
       "baseRadius": 1.5,
-      "radiusIncreasePerStack": 0.1
+      "radiusPerStack": 0.1
     }
   },
   "17": {
@@ -809,16 +809,6 @@
     "description": "Grants 10 random consumable food items.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item807.png",
     "params": {
-    }
-  },
- "22": {
-    "id": 22,
-    "name": "Golden boots",
-    "description": "Give temporary speed boost when cashing out",
-    "spritePath": "..\\..\\assets\\sprites\\Items\\item265.png",
-    "params": {
-      "baseDuration": 10,
-      "increasePerStack": 5
     }
   }
 }

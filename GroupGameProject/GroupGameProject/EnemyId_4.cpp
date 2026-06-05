@@ -3,13 +3,23 @@
 #include "StatSheet.hpp"
 #include "AnimatedSprite.hpp"
 #include "Bullet.hpp"
+#include "PercentageBar.hpp"
 
 EnemyId_4::EnemyId_4(): lastAttack(-1), bulletHellWavesLeft(0), bulletHellWaveTimer(0) {
 
 }
 
 bool EnemyId_4::Initialize(Vector2 pos, Sprite* spr) {
+
     Enemy::Initialize(pos);
+    int size = context.grid->GetCellSize() * 3;
+    radius *= 0.75;
+    movingAnimation->SetDrawSize(size, size);
+    idleAnimation->SetDrawSize(size, size);
+    attackingAnimation->SetDrawSize(size, size);
+    SetCollisionBound(CollisionShape::MakeCircle(radius, Vector2((size / 2) - radius, (size / 2) - radius)));
+    healthBar->SetOffset((size - healthBar->GetWidth()) / 2, size * 0.3);
+
     EnterState(BossState::APPROACHING);
 
     chargeSpeed = data["params"]["chargeSpeed"];

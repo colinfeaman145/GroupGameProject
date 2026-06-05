@@ -643,7 +643,7 @@ public:
 		if (type != EventType::OnStep) return;
 		if (!ctx.target) return;
 
-		uniform_real_distribution<float> unluckyRoll(0, 500);
+		uniform_int_distribution<int> unluckyRoll(0, 1000000);
 		if (unluckyRoll(gen) != 323) return;
 
 		StatusEffect effect = StatusEffect();
@@ -863,8 +863,10 @@ public:
 			if (effect.type == StatusEffectType::Freezing) isFrozen = true;
 		}
 
-		ctx.source->ApplyStatusEffect({ StatusEffectType::AttackSpeedBoost, 1, ctx.source, attackSpeedPenalty });
-		ctx.source->ApplyStatusEffect({ StatusEffectType::DamageBoost, 1, ctx.source, damageBoost });
+		if(isFrozen){
+			ctx.source->ApplyStatusEffect({ StatusEffectType::AttackSpeedBoost, 1, ctx.source, attackSpeedPenalty });
+			ctx.source->ApplyStatusEffect({ StatusEffectType::DamageBoost, 1, ctx.source, damageBoost });
+		}
 	}
 };
 
@@ -1037,7 +1039,7 @@ public:
 		float strength = data["params"]["rampageStrengthPerStack"].get<float>() * stacks;
 
 		ctx.source->ApplyStatusEffect({ StatusEffectType::Rampage, 50.0f, ctx.source, strength });
-		ctx.source->ApplyStatusEffect({ StatusEffectType::DeathMark, 50.0f, ctx.source });
+		ctx.source->ApplyStatusEffect({ StatusEffectType::DeathMark, 50.0f, ctx.source, strength * 5});
 	}
 };
 

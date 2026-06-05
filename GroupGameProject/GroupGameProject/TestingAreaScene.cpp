@@ -88,7 +88,7 @@ void TestingAreaScene::GenerateNewMap(Player* player) {
     dg->LoadRooms("../../data/dungeonRooms/");
     dg->Generate();
 
-	spawner->Initialise(dg->GetEnemySpawnLocations(), 5, 1, player);
+	spawner->Initialise(dg->GetEnemySpawnLocations(), 15, 1, player);
 }
 
 void TestingAreaScene::ReadInputs(float deltaTime) {
