@@ -55,6 +55,9 @@ void Bullet::Process(float deltaTime) {
 	}
 }
 void Bullet::HandleCollision(Collidable* other, Vector2 penetration) {
+
+	if (!other->CanCollide()) return;
+
 	if (dynamic_cast<Attackable*>(other) == source) {
 		return;//dont hit shooting entity
 	}
@@ -66,6 +69,9 @@ void Bullet::HandleCollision(Collidable* other, Vector2 penetration) {
 		source->DealDamageTo(target, info);
 		collisions.push_back(other);
 		pierceCount--;
+	}
+	if (other->GetCollidableType() == CollidableType::STRUCTURE) {
+		isToBeDeleted = true;
 	}
 }
 

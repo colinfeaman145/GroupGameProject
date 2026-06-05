@@ -34,7 +34,7 @@ void Player::Initialize(Vector2 pos) {
 	collideType = CollidableType::PLAYER;
 	dodgeCooldown = 1;
 	dodgeDuration = 0.5;
-	dodgeDistance = 2;
+	dodgeDistance = 1.25;
 	walkSoundTimer = 0.0f;
 
 	idleAnimation->Animate();
@@ -62,7 +62,8 @@ void Player::Process(float deltaTime) {
 		if (walkSoundTimer <= 0) {
 			FMOD_VECTOR pos = { GetPosition().x, 0, GetPosition().y };
 			FMOD_VECTOR vel = { 0,0,0 };
-			context.am->PlaySound("walking", "Footsteps", pos, vel, { 0.9f, 1.1f });			walkSoundTimer = 0.6f;
+			context.am->PlaySound("walking", "Footsteps", pos, vel, { 0.9f, 1.1f });			
+			walkSoundTimer = 0.6f;
 		}
 	}
 	else {

@@ -204,7 +204,7 @@
       "baseDamageMultiplier": 2,
       "damageMultiplierPerStack": 0.5,
       "baseRadius": 1.5,
-      "radiusIncreasePerStack": 0.1
+      "radiusPerStack": 0.1
     }
   },
   "17": {

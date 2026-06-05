@@ -13,6 +13,7 @@ GridCell::GridCell(Sprite* spr) {
     enemies.reserve(16);
     isWall = false;
     SetCollisionBound(CollisionShape::MakeAABB(context.grid->GetCellSize(), context.grid->GetCellSize()));
+    collideType = CollidableType::STRUCTURE;
     SetCanCollide(false);
 }
 
@@ -64,7 +65,7 @@ void GridCell::Process(float deltaTime, bool isRendered) {
         e->Process(deltaTime);
         context.grid->UpdateOccupancy(e, &GridCell::AddOther, &GridCell::RemoveOther);
     }
-
+    
     for (Entity* e : pendingEntities) {
         entities.push_back(e);
     }
