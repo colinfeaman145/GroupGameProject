@@ -317,7 +317,7 @@
       "targetRadius": 2000,
       "chargeSpeed": 2000,
       "bulletSpeed": 1000,
-      "bulletWaveCount": 1,
+      "bulletWaveCount": 4,
       "bulletWaveInterval": 0.5
     }
   }

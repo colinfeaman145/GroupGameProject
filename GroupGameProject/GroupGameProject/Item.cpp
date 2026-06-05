@@ -46,6 +46,9 @@ void Item::HandleCollision(Collidable* other, Vector2 penetration) {
 	if (isToBeDeleted) {
 		return;
 	}
+	if (!canCollide) {
+		return;
+	}
 
 	if (auto entity = dynamic_cast<Attackable*>(other)) {
 		entity->AddItem(id, 1);
