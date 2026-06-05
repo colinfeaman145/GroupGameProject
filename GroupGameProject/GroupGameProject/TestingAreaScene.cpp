@@ -32,6 +32,7 @@ bool TestingAreaScene::Initialize() {
     context.am->LoadSound("../../assets/audio/walking.wav", "walking", 1.5f);
     context.am->LoadMusicTrack("../../assets/audio/game_music.wav", "game_music");
     context.am->SetGroupVolume("SFX", 0.8f);
+    context.am->SetGroupVolume("Music", 0.3f);
     context.am->AddGroup("Footsteps");
     context.am->SetGroupVolume("Footsteps", 0.15f);
     return true;

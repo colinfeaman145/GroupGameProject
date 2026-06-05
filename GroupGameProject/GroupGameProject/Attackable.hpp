@@ -26,7 +26,7 @@ class Attackable : public Entity {
 		virtual void Draw(Renderer* renderer) override;
 
 	void DealDamageTo(Attackable* target, HitInfo info);
-	void ApplyDamage(EventContext& ctx);
+	virtual void ApplyDamage(EventContext& ctx);
 	void ApplyHeal(EventContext& ctx);
 	float GetHealthPercent() const;
 	int GetUniqueStatusEffectCount();

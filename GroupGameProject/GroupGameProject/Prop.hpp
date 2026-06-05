@@ -10,6 +10,7 @@ public:
 	virtual void Draw(Renderer* renderer) override;
 	virtual void Process(float deltaTime) override;
 	void HandleCollision(Collidable* other, Vector2 penetration) override;
+	void ApplyDamage(EventContext& ctx) override;
 
 public:
 	std::string name;
