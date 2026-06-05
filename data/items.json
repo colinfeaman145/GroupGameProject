@@ -38,10 +38,10 @@
         {
           "tier": 1,
           "goldCount": 5,
-          "threshold": 1,
-          "randomItemCount": 5,
-          "selectableItemCount": 1,
-          "commonChance": 0.7,
+          "threshold": 5,
+          "randomItemCount": 4,
+          "selectableItemCount": 0,
+          "commonChance": 1,
           "rareChance": 0,
           "epicChance": 0,
           "legendaryChance": 0
@@ -49,10 +49,10 @@
         {
           "tier": 2,
           "goldCount": 10,
-          "threshold": 2,
-          "randomItemCount": 4,
+          "threshold": 15,
+          "randomItemCount": 8,
           "selectableItemCount": 2,
-          "commonChance": 0.6,
+          "commonChance": 1,
           "rareChance": 0,
           "epicChance": 0,
           "legendaryChance": 0
@@ -60,10 +60,10 @@
         {
           "tier": 3,
           "goldCount": 10,
-          "threshold": 3,
-          "randomItemCount": 6,
-          "selectableItemCount": 3,
-          "commonChance": 0.4,
+          "threshold": 25,
+          "randomItemCount": 12,
+          "selectableItemCount": 0,
+          "commonChance": 1,
           "rareChance": 0,
           "epicChance": 0,
           "legendaryChance": 0
@@ -72,7 +72,7 @@
           "tier": 4,
           "goldCount": 15,
           "threshold": 40,
-          "randomItemCount": 8,
+          "randomItemCount": 16,
           "selectableItemCount": 4,
           "commonChance": 0.2,
           "rareChance": 0,
@@ -189,7 +189,7 @@
       "targetNumIncreasePerStack": 1,
       "damageOfTotalDamage": 0.8,
       "baseRangeInTiles": 2,
-      "rangePerStack": 1,      
+      "rangePerStack": 1,
       "ttl": 5,
       "bulletSpeed": 5000,
       "bulletSprite": "../../assets/sprites/Bullets/SMG_Pistols_bullets.png"
@@ -352,7 +352,7 @@
     "spritePath": "..\\..\\assets\\sprites\\Items\\item389.png",
     "params": {
       "damageIncreaseMult": 1.25,
-      "damageIncreaseMultPerStack": 1.1 
+      "damageIncreaseMultPerStack": 1.1
     }
   },
   "31": {
@@ -362,7 +362,7 @@
     "spritePath": "..\\..\\assets\\sprites\\Items\\item842.png",
     "params": {
       "thresholdBase": 0.15,
-      "thresholdIncreasePerStack": 0.03 ,
+      "thresholdIncreasePerStack": 0.03,
       "invincibleTimePerStack": 0.75,
       "cooldownBase": 30,
       "cooldownDecreasePerStack": 3
@@ -374,7 +374,7 @@
     "description": "50% chance on kill to effect all close by enenemies with poison. Stacks increase poison strength.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item902.png",
     "params": {
-      "strengthBase": 1.25 ,
+      "strengthBase": 1.25,
       "strengthPerStack": 0.375,
       "durationBase": 4,
       "durationPerStack": 1.25
@@ -390,7 +390,7 @@
       "bonusPerStack": 0.4
     }
   },
-    "34": {
+  "34": {
     "id": 34,
     "name": "BirD",
     "description": "Increases radius for items that effect in a radius",
@@ -417,7 +417,7 @@
     "spritePath": "..\\..\\assets\\sprites\\Items\\item540.png",
     "params": {
       "armorIncreaseBase": 50,
-      "durationPerStack": 7 
+      "durationPerStack": 7
     }
   },
   "37": {
@@ -426,7 +426,7 @@
     "description": "On crit, receive rampage effect",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item521.png",
     "params": {
-      "durationPerStack": 10 
+      "durationPerStack": 10
     }
   },
   "38": {
@@ -509,7 +509,7 @@
     "params": {
       "chancePerStack": 0.002,
       "durationBase": 5,
-      "strengthPerStack": 0.35 
+      "strengthPerStack": 0.35
     }
   },
   "46": {
@@ -572,7 +572,7 @@
     "spritePath": "..\\..\\assets\\sprites\\Items\\item212.png",
     "params": {
       "baseSlowStrength": 1.5,
-      "slowStrengthPerStack": 0.25 
+      "slowStrengthPerStack": 0.25
     }
   },
   "52": {
@@ -610,7 +610,7 @@
     "spritePath": "..\\..\\assets\\sprites\\Items\\item961.png",
     "params": {
       "critMultIncreasePerStack": 0.75,
-      "armorDecreasePerStack": 20 
+      "armorDecreasePerStack": 20
     }
   },
   "56": {
@@ -725,6 +725,7 @@
     "description": "On heal, consume and add 10 armor.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item370.png",
     "params": {
+      
     }
   },
   "67": {
@@ -733,6 +734,7 @@
     "description": "When incoming attack deals more than 25% of health, consume and deal 50% health to source.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item373.png",
     "params": {
+      
     }
   },
   "68": {
@@ -751,6 +753,7 @@
     "description": "When dodgeing below 50% health, consume and receive 3 seconds of invincibility.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item421.png",
     "params": {
+      
     }
   },
   "70": {
@@ -759,6 +762,7 @@
     "description": "When poisoned, consume and cure poison.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item473.png",
     "params": {
+      
     }
   },
   "71": {
@@ -767,6 +771,7 @@
     "description": "When frozen or burning, consume and cure yourself.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item476.png",
     "params": {
+      
     }
   },
   "72": {
@@ -775,6 +780,7 @@
     "description": "If its Thursday, on hit eat and heal fully. Otherwise, give 3% regeneration boost per stack.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item336.png",
     "params": {
+      
     }
   },
   "73": {
@@ -793,6 +799,7 @@
     "description": "Grants 3 random consumable food items.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item804.png",
     "params": {
+      
     }
   },
   "75": {
@@ -801,6 +808,7 @@
     "description": "Grants 5 random consumable food items.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item805.png",
     "params": {
+      
     }
   },
   "76": {
@@ -809,16 +817,7 @@
     "description": "Grants 10 random consumable food items.",
     "spritePath": "..\\..\\assets\\sprites\\Items\\item807.png",
     "params": {
-    }
-  },
- "22": {
-    "id": 22,
-    "name": "Golden boots",
-    "description": "Give temporary speed boost when cashing out",
-    "spritePath": "..\\..\\assets\\sprites\\Items\\item265.png",
-    "params": {
-      "baseDuration": 10,
-      "increasePerStack": 5
+      
     }
   }
 }
