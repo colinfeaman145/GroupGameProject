@@ -212,7 +212,24 @@ void DungeonGenerator::ApplyToGrid() {
             for (char t : contents) {
                 switch (t) {
                     case('X'): {
-                        cell->PlaceWall(Direction::N);
+                        auto isFloor = [&](int c, int r) {
+                            for (char t : dungeon[r][c])
+                                if (t != 'X') return true;
+                            return false;
+                            };
+
+                        bool openS = row < context.grid->GetGridHeight() - 1 && isFloor(col, row + 1);
+
+                        string texPath = openS
+                            ? "../../assets/sprites/DungeonTextures/dungeonWallBrickNorth.jpg"
+                            : "../../assets/sprites/DungeonTextures/dungeonWallBrick.png";
+
+                        SDL_Texture* wallTex = context.txm->LoadTexture(context.renderer, texPath.c_str());
+                        Sprite* spr = new Sprite();
+                        spr->Initialize(wallTex, 384, 384, 0, 0, 500, 500);
+                        spr->SetDrawLayer(RenderLayer::GROUND);
+
+                        cell->PlaceWall(spr);
                         break;
                     }
                     case('T'): {
@@ -245,6 +262,7 @@ void DungeonGenerator::ApplyToGrid() {
 						spr->SetDrawLayer(RenderLayer::GROUND);
                         Prop* door = new Prop();
                         door->Initialize("Door", cell->GetPosition(), spr);
+                        door->SetCanCollide(false);
                         cell->AddOther(door);
                         break;
                     }

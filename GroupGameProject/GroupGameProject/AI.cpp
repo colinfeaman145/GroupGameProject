@@ -12,15 +12,18 @@ void AI::Process(float deltaTime) {
     frozenTime -= deltaTime;
     framesSinceLastHone++;
 
-    if (frozenTime > 0) {//if frozen
-        SetFlash(true);
-        return;
-    }
-    else if (!frozen) {//on first frame unfrozen
-        frozen = false;
-        velocity = Vector2();
-        Hone();
-    }
+    //update move speed
+    movementSpeed = GetSpeed();
+
+    //if (frozenTime > 0) {//if frozen
+    //    SetFlash(true);
+    //    return;
+    //}
+    //else if (!frozen) {//on first frame unfrozen
+    //    frozen = false;
+    //    velocity = Vector2();
+    //    Hone();
+    //}
 
     if (framesSinceLastHone >= 5) {//if walking
         Hone(); //move towards target
@@ -54,7 +57,6 @@ void AI::SetTarget(Collidable* c) {
 }
 
 void AI::Hone() {
-
     if (target == nullptr) return;
 
     GridCoord myCell = context.grid->WorldToGrid(GetPosition());
@@ -77,14 +79,12 @@ void AI::Hone() {
     float dy = Collidable::GetCenter().y - cellCenter.y;
     float threshold = cellSize * 0.35f;
 
-    /*
     //smaller = closer to center before allowing vector change
     if ((dx * dx + dy * dy) < (threshold * threshold) || adjustCourseTimer < 0) {
         Vector2 flowDir = context.grid->GetFlowVector(myCell, targetCoord);
         if (flowDir.x != 0.f || flowDir.y != 0.f)
             velocity = flowDir * movementSpeed;
-        adjustCourseTimer = 5.0f;
-    }*/
-
+        adjustCourseTimer = 1.0f;
+    }
     return;
 }

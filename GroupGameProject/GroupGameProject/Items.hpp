@@ -482,7 +482,7 @@ class ItemId_24 : public ItemEffect {
 public:
 	void OnPickup(Attackable* owner, int stacks) {
 		float attackSpeedIncrease = data["params"]["attackSpeedIncrease"].get<float>();
-		float critIncrease = data["params"]["baseIncrease"].get<float>();
+		float critIncrease = data["params"]["critChanceIncrease"].get<float>();
 		float healthDecrease = data["params"]["healthDecreasePercent"].get<float>();
 		owner->m_pStats->bonusAttackSpeed += attackSpeedIncrease;
 		owner->m_pStats->critChance += critIncrease;
@@ -491,7 +491,7 @@ public:
 
 	void OnRemove(Attackable* owner, int stacks) {
 		float attackSpeedIncrease = data["params"]["attackSpeedIncrease"].get<float>();
-		float critIncrease = data["params"]["baseIncrease"].get<float>();
+		float critIncrease = data["params"]["critChanceIncrease"].get<float>();
 		float healthDecrease = data["params"]["healthDecreasePercent"].get<float>();
 		owner->m_pStats->bonusAttackSpeed -= attackSpeedIncrease;
 		owner->m_pStats->critChance -= critIncrease;

@@ -1,19 +1,27 @@
 #include "Prop.hpp"
-
+#include "Sprite.hpp"
 
 bool Prop::Initialize(std::string name, Vector2 pos, Sprite* spr) {
 	this->name = name;
-	Entity::Initialize(pos, spr);
+	Attackable::Initialize(pos, spr);
+	SetHealth(100);
+	int propWidth = sprite->GetWidth() * 0.75;
+	int propHeight = sprite->GetHeight() * 0.75;
+	SetCollisionBound(CollisionShape::MakeAABB(propWidth, propHeight, Vector2(-propWidth / 2, -propHeight / 2)));
+	sprite->SetDrawLayer(RenderLayer::NATURE);
 	return true;
 }
 
 void Prop::Draw(Renderer* renderer) {
-	Entity::Draw(renderer);
+	if (GetHealth() <= 0) return;
+	Attackable::Draw(renderer);
 }
 
 void Prop::Process(float deltaTime) {
-	Entity::Process(deltaTime);
+	if (GetHealth() <= 0) return;
+	Attackable::Process(deltaTime);
 }
 
 void Prop::HandleCollision(Collidable* other, Vector2 penetration) {
+	Entity::HandleCollision(other, penetration);
 }

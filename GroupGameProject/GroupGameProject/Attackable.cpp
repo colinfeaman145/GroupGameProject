@@ -102,7 +102,7 @@ void Attackable::Draw(Renderer* renderer) {
 
 	if (!IsAlive() && !IsDying()) return;
 	Entity::Draw(renderer);
-	healthBar->Draw(renderer);
+	if(GetHealth() < GetMaxHealth()) healthBar->Draw(renderer);
 }
 
 void Attackable::TickRegeneration(float deltaTime) {
@@ -130,6 +130,10 @@ void Attackable::TickRegeneration(float deltaTime) {
 	m_fLastHealTick = 0;
 	ApplyHeal(ctx);
 
+}
+
+float Attackable::GetSpeed() {
+	return m_pStats->GetFinalSpeed();
 }
 
 int Attackable::GetHealth() {
@@ -674,4 +678,8 @@ void Attackable::LoadStatsFromJson(json stats) {
 
 void Attackable::SetEffectRadiusBound(float radius, Vector2 offset) {
 	effectRadiusBound = CollisionShape::MakeCircle(radius, offset);
+}
+
+void Attackable::HandleCollision(Collidable* other, Vector2 penetration) {
+	Entity::HandleCollision(other, penetration);
 }

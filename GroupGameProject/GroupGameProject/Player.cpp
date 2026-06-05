@@ -28,6 +28,9 @@ void Player::Initialize(Vector2 pos) {
 		playerHud->Initialize();
 	}
 
+	int playerWidth = sprite->GetWidth() * 0.3;
+	int playerHeight = sprite->GetHeight() * 0.45;
+	SetCollisionBound(CollisionShape::MakeAABB(playerWidth, playerHeight, Vector2(-playerWidth / 2, 0)));
 	collideType = CollidableType::PLAYER;
 	dodgeCooldown = 1;
 	dodgeDuration = 0.5;
@@ -68,6 +71,14 @@ void Player::Process(float deltaTime) {
 	}
 
 	context.grid->UpdateOccupancy((Entity*)this, &GridCell::AddOther, &GridCell::RemoveOther);
+
+	//refresh flow field
+	refreshFlowFieldTimer -= deltaTime;
+	if (refreshFlowFieldTimer <= 0.f) {
+		refreshFlowFieldTimer = 1.0f;
+		GridCoord myCoord = context.grid->WorldToGrid(GetPosition());
+		context.grid->InvalidateFlowFieldsNear(myCoord, 20);
+	}
 }
 
 void Player::Draw(Renderer* renderer) {
@@ -201,6 +212,7 @@ void Player::HandleMovement() {
 }
 
 void Player::HandleCollision(Collidable* other, Vector2 penetration) {
+	Attackable::HandleCollision(other, penetration);
 	//handle collisions here
 	auto prop = dynamic_cast<Prop*>(other);
 	if (prop != nullptr && prop->name == "Door") {
